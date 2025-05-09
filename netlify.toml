@@ -31,3 +31,13 @@
     to = "/geps/gep-1294"
     status = 301
     force = true
+
+[[redirects]]
+    from = "/ko/*"
+    to = "/ko/:splat"
+    status = 200
+
+[[redirects]]
+    from = "/*"
+    to = "/:splat"
+    status = 200

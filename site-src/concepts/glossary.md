@@ -1,69 +1,71 @@
-# Gateway API Glossary
+# 게이트웨이 API 용어집 (Gateway API Glossary)
 
-### Consumer Route
+### 소비자 라우트 (Consumer Route)
 
-A Route bound to a workload's Service by a consumer of a given workload,
-refining the specific consumer's use of the workload.
+워크로드의 서비스에 연결된 라우트로, 특정 소비자(Consumer)에 의해 바인딩되며,
+해당 소비자의 워크로드 사용을 세밀하게 조정한다.
 
-### Gateway Controller
 
-A _gateway controller_ is software that manages the infrastructure associated
-with routing traffic across contexts using Gateway API, analogous to the
-earlier _ingress controller_ concept. Gateway controllers often, but not
-always, run in the cluster where they're managing infrastructure.
+### 게이트웨이 컨트롤러 (Gateway Controller)
 
-### East/West traffic
+_게이트웨이 컨트롤러_ 는 게이트웨이 API를 사용하여 컨텍스트들 간
+트래픽 라우팅과 관련된 인프라를 관리하는 소프트웨어로,
+이전의 _인그레스 컨트롤러_ 개념과 유사하다.
+항상 그런 것은 아니지만, 게이트웨이 컨트롤러는 보통 인프라를 관리하는 클러스터 내에서 실행된다.
 
-Traffic from workload to workload within a cluster.
 
-### Endpoint routing
+### 동/서 트래픽 (East/West traffic)
 
-_Endpoint routing_ is sending requests to a specific Service directly to one
-of the endpoints of the Service backend, bypassing routing decisions which
-might be made by the underlying network infrastructure. This is commonly
-necessary for advanced routing cases like sticky sessions, where the gateway
-will need to guarantee that every request for a specific session goes to the
-same endpoint.
+클러스터 내부 워크로드 간 트래픽
 
-### North/South traffic
+### 엔드포인트 라우팅 (Endpoint routing)
 
-Traffic from outside a cluster to inside a cluster (and vice versa).
+_엔드포인트 라우팅_ 은 특정 서비스에 대한 요청을
+서비스 백엔드의 엔드포인트 중 하나로 직접 전송하여,
+기반 네트워크 인프라에 의해 이루어질 수 있는 라우팅 결정을 우회한다.
+이는 일반적으로 스티키 세션과 같은 고급 라우팅 사례에서 필요한데,
+이 경우 게이트웨이는 특정 세션에 대한 모든 요청이 동일한 엔드포인트로 전달되도록
+보장해야 한다.
 
-### Producer Route
+### 남/북 트래픽 (North/South traffic)
 
-A Route bound to a workload's Service by the creator of a given workload,
-defining what is acceptable use of the workload. Producer routes must always
-be in the same Namespace as their workload's Service.
+클러스터 외부에서 클러스터 내부로의 트래픽 (반대 방향 포함)
 
-### Service backend
+### 생산자 라우트 (Producer Route)
 
-The part of a Kubernetes Service resource that is a set of endpoints
-associated with Pods and their IPs. Some east/west traffic happens by having
-workloads direct requests to specific endpoints within a Service backend.
+워크로드의 생산자에 의해 워크로드의 서비스에 바인딩된 라우트로,
+워크로드의 허용 가능한 사용을 정의한다.
+생산자 라우트는 항상 해당 워크로드의 서비스와 동일한 네임스페이스에 있어야 한다.
 
-### Service frontend
+### 서비스 백엔드 (Service backend)
 
-The part of a Kubernetes Service resource that allocates a DNS record and a
-cluster IP. East/west traffic often - but not always - works by having
-workloads direct requests to a Service frontend.
+쿠버네티스 서비스 리소스의 일부로, 파드와 그 IP와 연관된 엔드포인트 집합.
+일부 동/서 트래픽은 워크로드가 서비스 백엔드 내의 특정 엔드포인트로 요청을
+직접 전달함으로써 발생한다.
 
-### Service mesh
+### 서비스 프론트엔드 (Service frontend)
 
-A _service mesh_ is software that manages infrastructure providing security,
-reliability, and observability for communications between workloads (east/west
-traffic). Service meshes generally work by intercepting communications between
-workloads at a very low level, often (though not always) by inserting proxies
-next to the workload's Pods.
+쿠버네티스 서비스 리소스의 일부로, DNS 레코드와 클러스터 IP를 할당한다.
+동/서 트래픽은 보통 (항상은 아님) 워크로드가 서비스 프론트엔드로 요청을
+직접 전달함으로써 동작한다.
 
-### Service routing
+### 서비스 메시 (Service mesh)
 
-_Service routing_ is sending requests to a specific Service to the service
-frontend, allowing the underlying network infrastructure (usually `kube-proxy`
-or a [service mesh](#service-mesh)) to choose the specific endpoint to which
-the request is routed.
+_서비스 메시_ 는 워크로드 간 통신 (통/서 트래픽)에 대한 보안, 신뢰성 및 관찰 가능성을
+제공하는 인프라를 관리하는 소프트웨어이다.
+서비스 메시는 일반적으로 매우 낮은 수준에서
+워크로드 간 통신을 가로채는 방식으로 동작하며,
+보통 (항상은 아님) 워크로드의 파드 옆에 프록시를 삽입하는 방식을 사용한다.
 
-### Workload
+### 서비스 라우팅 (Service routing)
 
-An instance of computation that provides a function within a cluster,
-comprising the Pods providing the compute, and the
-Deployment/Job/ReplicaSet/etc which owns those Pods.
+_서비스 라우팅_ 은 특정 서비스에 대한 요청을 서비스 프론트엔드로 전송하여,
+기반 네트워크 인프라 (일반적으로 `kube-proxy`
+또는 [서비스 메시](#service-mesh))가 요청이 라우팅될
+특정 엔드포인트를 선택하도록 한다. 
+
+### 워크로드 (Workload)
+
+클러스터 내에서 기능을 제공하는 컴퓨팅 인스턴스로,
+컴퓨팅을 제공하는 파드와 해당 파드를 소유하는
+디플로이먼트/잡/레플리카셋 등으로 구성된다.

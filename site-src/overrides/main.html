@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block site_meta %}
+  {{ super() }}
+  {% if page and page.meta and page.meta.lang %}
+    <meta name="lang:current" content="{{ page.meta.lang }}">
+  {% else %}
+    <meta name="lang:current" content="en">
+  {% endif %}
+{% endblock %} 

@@ -1,211 +1,211 @@
-# Introduction
+# 소개
 
-Gateway API is an official Kubernetes project focused on L4 and L7 routing in
-Kubernetes. This project represents the next generation of Kubernetes Ingress,
-Load Balancing, and Service Mesh APIs. From the outset, it has been designed to
-be generic, expressive, and role-oriented.
+게이트웨이 API는
+쿠버네티스의 L4 및 L7 라우팅에 초점을 맞춘 공식 쿠버네티스 프로젝트이다.
+이 프로젝트는 쿠버네티스 인그레스, 로드 밸런싱, 서비스 메시 API의 차세대 버전을 대표한다.
+시작부터 범용적이고 표현력이 풍부하며 역할 중심으로 설계되었다.
 
-The overall resource model focuses on 3 separate
-[personas](concepts/roles-and-personas.md) and corresponding resources that
-they are expected to manage:
+전체 자원 모델은 3개의 개별
+[페르소나](concepts/roles-and-personas.md)와
+그들이 관리할 것으로 예상되는 자원에 초점을 맞춘다.
 
 <!-- Source: https://docs.google.com/presentation/d/11HEYCgFi-aya7FS91JvAfllHiIlvfgcp7qpi_Azjk4E/edit#slide=id.g292839eca6d_1_0 -->
 <img src="/images/resource-model.png" alt="Gateway API Resource Model" class="center" />
 
-Most of the configuration in this API is contained in the Routing layer. These
-protocol-specific resources ([HTTPRoute](api-types/httproute.md),
-[GRPCRoute](api-types/grpcroute.md), etc) enable advanced routing capabilities
-for both Ingress and Mesh.
+이 API의 대부분의 설정은 라우팅 레이어에 포함되어 있다.
+이러한 프로토콜별 자원
+([HTTPRoute](api-types/httproute.md), [GRPCRoute](api-types/grpcroute.md) 등)은
+인그레스와 메시 모두에 대해 고급 라우팅 기능을 제공한다.
 
-The Gateway API Logo helps illustrate the dual purpose of this API, enabling
-routing for both North-South (Ingress) and East-West (Mesh) traffic to share the
-same configuration.
+게이트웨이 API 로고는 API의 이중 목적을 시각적으로 설명하며,
+북-남 (인그레스) 및 동-서 (메시) 트래픽이
+동일한 구성 설정을 공유하며 라우팅을 가능하게 한다.
 
 <img src="/images/logo/logo-text-horizontal.png" alt="Gateway API Logo" class="center" />
 
-## Gateway API for Ingress <a name="for-ingress"></a>
+## 인그레스를 위한 게이트웨이 API <a name="for-ingress"></a>
 
-??? success "Standard Channel since v0.5.0"
+??? success "v0.5.0부터의 표준 채널"
 
-    Gateway, GatewayClass, and HTTPRoute have been part of the Standard Channel
-    of Gateway API since v0.5.0 and are considered stable APIs. For more
-    information refer to our [versioning guide](concepts/versioning.md).
+    게이트웨이, 게이트웨이클래스, HTTPRoute는 v0.5.0부터 게이트웨이
+    API의 표준 채널에 포함되었으며 안정적인 API로 간주된다.
+    자세한 내용은 [버전 관리 가이드](concepts/versioning.md)를 참조하자.
 
-When using Gateway API to manage ingress traffic, the [Gateway](api-types/gateway.md) resource
-defines a point of access at which traffic can be routed across multiple
-contexts -- for example, from outside the cluster to inside the cluster
-([north/south traffic]).
+게이트웨이 API를 사용하여 인그레스 트래픽을 관리할 때,
+[게이트웨이](api-types/gateway.md) 자원은 트래픽이
+여러 컨텍스트를 거쳐 라우팅될 수 있는 접근 지점을 정의한다.
+예를 들어, 클러스터 외부에서 내부로의 ([남/북 트래픽])이 있다.
 
-Each Gateway is associated with a [GatewayClass](api-types/gatewayclass.md), which
-describes the actual kind of [gateway controller] that will handle traffic for
-the Gateway; individual routing resources (such as
-[HTTPRoute](api-types/httproute.md)) are then [associated with the Gateway
-resources][gateway-attachment]. Separating these different concerns into
-distinct resources is a critical part of the role-oriented nature of Gateway
-API, as well as allowing for multiple kinds of gateway controllers (represented
-by GatewayClass resources), each with multiple instances (represented by Gateway
-resources), in the same cluster.
+각 게이트웨이는 [게이트웨이클래스](api-types/gatewayclass.md)와 연결되며,
+이는 게이트웨이의 트래픽을 처리할 [게이트웨이 컨트롤러]의 실제 유형을 설명한다.
+개별 라우팅 자원(예: [HTTPRoute](api-types/httproute.md))은
+[게이트웨이 자원과 연결된다][게이트웨이 자원 연결].
+이러한 서로 다른 관심사를 별도의 자원으로 분리하는 것은
+게이트웨이 API의 역할 지향적 특성의 핵심 부분이며,
+동일한 클러스터 내에서
+여러 유형의 게이트웨이 컨트롤러(게이트웨이클래스 자원으로 표현)와
+각각의 여러 인스턴스(게이트웨이 자원으로 표현)를 허용한다.
 
-[Ingress API]:https://kubernetes.io/docs/concepts/services-networking/ingress/
-[north/south traffic]:concepts/glossary.md#northsouth-traffic
-[east/west traffic]:concepts/glossary.md#eastwest-traffic
-[gateway controller]:concepts/glossary.md#gateway-controller
-[gateway-attachment]:concepts/api-overview.md#attaching-routes-to-gateways
+[인그레스 API]:https://kubernetes.io/ko/docs/concepts/services-networking/ingress/
+[남/북 트래픽]:concepts/glossary.md#northsouth-traffic
+[동/서 트래픽]:concepts/glossary.md#eastwest-traffic
+[게이트웨이 컨트롤러]:concepts/glossary.md#gateway-controller
+[게이트웨이 자원 연결]:concepts/api-overview.md#attaching-routes-to-gateways
 
-## Gateway API for Service Mesh (the [GAMMA initiative](mesh/gamma.md)) <a name="for-service-mesh"></a>
+## 서비스 메시를 위한 게이트웨이 API ([GAMMA initiative](mesh/gamma.md)) <a name="for-service-mesh"></a>
 
-??? success "Standard Channel since v1.1.0"
+??? success "v1.1.0부터의 표준 채널"
 
-    The [GAMMA initiative](mesh/gamma.md) work for supporting service mesh use
-    cases has been part of the Standard Channel since v1.1.0 and is considered
-    GA. For more information refer to our [versioning guide](concepts/versioning.md).
+    서비스 메시 사용 사례를 지원하기 위한 [GAMMA 이니셔티브](mesh/gamma.md)
+    작업은 v1.1.0부터 표준 채널에 포함되었으며 GA로 간주된다.
+    자세한 내용은 [버전 관리 가이드](concepts/versioning.md)를 참조하자.
 
-Things are a bit different when using Gateway API to manage a [service
-mesh][service-mesh]. Since there will usually only be one mesh active in the
-cluster, the [Gateway](api-types/gateway.md) and
-[GatewayClass](api-types/gatewayclass.md) resources are not used; instead,
-individual route resources (such as [HTTPRoute](api-types/httproute.md)) are
-[associated directly with Service resources][mesh-attachment], permitting the
-mesh to manage traffic from any traffic directed to that Service while
-preserving the role-oriented nature of Gateway API.
+게이트웨이 API를 사용하여 [서비스 메시][서비스-메시]를 관리할 때는 상황이 약간 다르다.
+클러스터 내에서 일반적으로 하나의 메시만 활성화되므로
+[게이트웨이](api-types/gateway.md)와 [게이트웨이클래스](api-types/gatewayclass.md) 자원은
+사용되지 않는다.
+대신, 개별 라우팅 자원(예: [HTTPRoute](api-types/httproute.md))은
+[서비스 자원과 직접 연결][메시-연결]되며, 이를 통해 메시가 해당 서비스로 향하는
+모든 트래픽을 관리하면서
+게이트웨이 API의 역할 지향적 특성을 유지한다.
 
-To date, [GAMMA](mesh/gamma.md) has been able to support mesh functionality with
-fairly minimal changes to Gateway API. One particular area that has
-rapidly become critical for GAMMA, though, is the definition of the different
-[facets of the Service resource][service-facets].
+현재까지 [GAMMA](mesh/gamma.md)는 게이트웨이 API에
+최소한의 변경만으로 메시 기능을 지원해왔다.
+하지만 GAMMA에서 특히 빠르게 중요해진 영역은
+[서비스 자원의 다양한 측면][서비스-측면] 정의이다.
 
 [gamma]:/concepts/gamma/
-[service-mesh]:concepts/glossary.md#service-mesh
-[service-facets]:/concepts/service-facets
-[mesh-attachment]:/concepts/gamma#gateway-api-for-mesh
+[서비스-메시]:concepts/glossary.md#service-mesh
+[서비스-측면]:/concepts/service-facets
+[메시-연결]:/concepts/gamma#gateway-api-for-mesh
 
-## Getting started
+## 시작하기
 
-Whether you are a user interested in using Gateway API or an implementer
-interested in conforming to the API, the following resources will help give
-you the necessary background:
+게이트웨이 API 사용에 관심 있는 사용자든,
+API 준수를 원하는 구현자든,
+아래의 자원은 필요한 배경 정보를 제공한다.
 
-- [API overview](concepts/api-overview.md)
-- [User guides](guides/index.md)
-- [Implementations](implementations.md)
-- [API reference spec](reference/spec.md)
-- [Community links](/contributing/community) and [developer guide](contributing/devguide.md)
+- [API 개요](concepts/api-overview.md)
+- [사용자 가이드](guides/index.md)
+- [구현](implementations.md)
+- [API 참조 사양](reference/spec.md)
+- [커뮤니티 링크](/contributing/community)와 [개발자 가이드](contributing/devguide.md)
 
-## Gateway API concepts
-The following design goals drive the concepts of Gateway API. These
-demonstrate how Gateway aims to improve upon current standards like Ingress.
+## 게이트웨이 API 개념
+이어지는 설계 목표는 게이트웨이 API의 개념을 이끌어낸다.
+이는 게이트웨이가 인그레스와 같은 현재 표준을 어떻게 개선하려는지 보여준다.
 
-- **Role-oriented** - Gateway is composed of API resources which model
-organizational roles that use and configure Kubernetes service networking.
-- **Portable** - This isn't an improvement but rather something
-that should stay the same. Just as Ingress is a universal specification with
-[numerous implementations](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/),
-Gateway API is designed to be a portable specification supported by many
-implementations.
-- **Expressive** - Gateway API resources support core functionality for things
-like header-based matching, traffic weighting, and other capabilities that
-were only possible in Ingress through custom annotations.
-- **Extensible** - Gateway API allows for custom resources to be linked at
-various layers of the API. This makes granular customization possible at the
-appropriate places within the API structure.
+- **역할-지향적** - 게이트웨이는 쿠버네티스 서비스 네트워킹을 사용하고 설정하는 조직적 역할을
+모델링하는 API 자원으로 구성되어 있다.
+- **이식성** - 이는 개선이라기보다는 유지해야 할 특성이다.
+인그레스가
+[수많은 구현](https://kubernetes.io/ko/docs/concepts/services-networking/ingress-controllers/)을 가진 보편적 사양인 것처럼,
+게이트웨이 API는 다양한 구현을 지원하는
+이식 가능한 사양으로 설계되었다.
+- **표현력** - 게이트웨이 API 자원은
+헤더 기반 매칭, 트래픽 가중치 설정 등
+인그레스에서는 사용자 정의 주석을 통해서만 가능했던 핵심 기능을 지원한다.
+- **확장 가능** - 게이트웨이 API는 API의 다양한 계층에서
+사용자 정의 자원을 연결할 수 있도록 한다.
+이를 통해 API 구조 내 적절한 위치에서 세분화된 사용자 정의가 가능하다.
 
-Some other notable capabilities include:
+기타 주목할 만한 기능은 다음과 같다.
 
-- **GatewayClasses** - GatewayClasses formalize types of load balancing
-implementations. These classes make it easy and explicit for users to
-understand what kind of capabilities are available via the Kubernetes resource
-model.
-- **Shared Gateways and cross-Namespace support** - They allow the sharing of
-load balancers and VIPs by permitting independent Route resources to attach to
-the same Gateway. This allows teams (even across Namespaces) to share
-infrastructure safely without direct coordination.
-- **Typed Routes and typed backends** - Gateway API supports typed Route
-resources and also different types of backends. This allows the API to be
-flexible in supporting various protocols (like HTTP and gRPC) and
-various backend targets (like Kubernetes Services, storage buckets, or
-functions).
-- Experimental **Service mesh support** with the [GAMMA initiative][gamma] -
-Gateway API supports associating routing resources with Service resources,
-to configure service meshes as well as ingress controllers.
+- **게이트웨이클래스** - 게이트웨이클래스는 부하 분산 구현의 유형을 공식화한다.
+이러한 클래스는 사용자가 쿠버네티스 자원 모델을 통해
+어떤 기능이 사용 가능한지
+명확하고 쉽게 이해할 수 있도록 한다.
+- **공유 게이트웨이와 네임스페이스 간 지원** - 독립적인 라우트 자원이
+동일한 게이트웨이에 연결될 수 있도록 하여 로드 밸런서와 VIPs를 공유한다.
+이를 통해 팀(심지어 네임스페이스를 넘어) 간
+직접적인 조정 없이 안전하게 인프라를 공유할 수 있다.
+- **타입화된 라우트 및 백엔드** - 게이트웨이 API는
+타입화된 라우트 자원과 다양한 백엔드 유형을 지원한다.
+이를 통해 API는 (HTTP, gRPC와 같이) 다양한 프로토콜과
+(쿠버네티스 서비스, 스토리지 버킷, 함수와 같은) 다양한 백엔드 타겟을
+지원하는 데 유연성을 갖는다.
+- 실험적 **서비스 메시 지원** ([GAMMA 이니셔티브][gamma]) -
+게이트웨이 API는 라우팅 자원을 서비스 자원과 연결하여
+인그레스 컨트롤러뿐만 아니라 서비스 메시를 구성할 수 있도록 지원한다.
 
-## Why does a role-oriented API matter?
+## 왜 역할 지향적 API가 중요한가?
 
-Whether it’s roads, power, data centers, or Kubernetes clusters,
-infrastructure is built to be shared. However, shared infrastructure raises a
-common challenge - how to provide flexibility to users of the infrastructure
-while maintaining control by owners of the infrastructure?
+도로, 전력, 데이터 센터, 쿠버네티스 클러스터 등 인프라는 공유를 목적으로 구축된다.
+하지만 공유 인프라는 공통적인 도전 과제를 제시한다.
+즉, 인프라 사용자에게 유연성을 제공하면서
+인프라 소유자의 통제력을 어떻게 유지할 것인가?
 
-Gateway API accomplishes this through a role-oriented design for
-Kubernetes service networking that strikes a balance between distributed
-flexibility and centralized control. It allows shared network infrastructure
-(hardware load balancers, cloud networking, cluster-hosted proxies etc) to be
-used by many different and non-coordinating teams, all bound by the policies
-and constraints set by cluster operators.
+게이트웨이 API는 쿠버네티스 서비스 네트워킹을 위한 역할 지향적 설계를 통해
+분산된 유연성과 중앙 집중식 통제 간의 균형을 이룬다.
+이를 통해 공유 네트워크 인프라(하드웨어 부하 분산기, 클라우드 네트워킹, 클러스터 호스팅 프록시 등)를
+클러스터 운영자가 설정한 정책과 제약에 따라
+서로 협력하지 않는 다양한 팀이 사용할 수
+있다.
 
-The roles used for Gateway API's design are defined by three personas:
+게이트웨이 API의 설계에 사용되는 역할은 세 가지 페르소나로 정의된다.
 
-### Personas
+### 페르소나
 
-- **Ian** (he/him) is an _infrastructure provider_. His role is the care and
-  feeding of a set of infrastructure that permits multiple isolated clusters
-  to serve multiple tenants. He is not beholden to any single tenant; rather,
-  he worries about all of them collectively.
+- **Ian** (그/그의)은 <em>인프라 제공자</em>이다.
+  그의 역할은 여러 개별 클러스터가 다수의 테넌트를 제공할 수 있도록 인프라를 관리하고 유지하는 것이다.
+  그는 단일 테넌트에 얽매이지 않고,
+  모든 테넌트를 집합적으로 고려한다.
 
-- **Chihiro** (they/them) is a _cluster operator_. Their role is to manage a
-  single cluster, ensuring that it meets the needs of its several users.
-  Again, Chihiro is beholden to no single user of their cluster; they need to
-  make sure that the cluster serves all of them as needed.
+- **Chihiro** (그들/그들의)은 <em>>클러스터 운영자</em>이다.
+  그들의 역할은 단일 클러스터를 관리하여 여러 사용자의 요구를 충족하도록 하는 것이다.
+  Chihiro는 클러스터의 단일 사용자에게 얽매이지 않으며,
+  클러스터가 모든 사용자를 필요에 따라 지원하도록 해야 한다.
 
-- **Ana** (she/her) is an _application developer_. Ana is in a unique position
-  among the Gateway API roles: her focus is on the business needs her
-  application is meant to serve, _not_ Kubernetes or Gateway API. In fact,
-  Ana is likely to view Gateway API and Kubernetes as pure friction
-  getting in her way to get things done.
+- **Ana** (그녀/그녀의)은 <em>애플리케이션 개발자</em>이다.
+  Ana는 게이트웨이 API 역할 중 유일한 위치에 있다.
+  그녀의 초점은 애플리케이션이 제공해야 하는 비즈니스 요구에 있으며,
+  쿠버네티스나 게이트웨이 API 자체가 아니다.
+  실제로, Ana는 게이트웨이 API와 쿠버네티스를 일을 완수하는 데 방해가 되는 순수한 마찰로 볼 가능성이 높다.
 
-(These three are discussed in more detail in [Roles and
-Personas](concepts/roles-and-personas.md).)
+(이 세 가지에 대한 자세한 내용은 [역할 및 페르소나](concepts/roles-and-personas.md)에서
+자세히 설명한다).
 
-It should be clear that while Ana, Chihiro, and Ian do not necessarily see
-eye-to-eye about everything, they need to work together to keep things running
-smoothly. This is the core challenge of Gateway API in a nutshell.
+Ana, Chihiro, Ian이 모든 점에서 의견이 일치하지는 않지만,
+원활한 운영을 위해 협력해야 한다는 점은 분명하다.
+한마디로 이것이 게이트웨이 API의 핵심 과제이다.
 
-### Use Cases
+### 사용 사례
 
-The [example use cases][use-cases] show this role-oriented model at work. Its
-flexibility allows the API to adapt to vastly different organizational models
-and implementations while remaining a portable and standard API.
+[예제 사용 사례][사용-사례]는 역할-지향적 모델이 작동하는 모습을 보여준다.
+이 모델의 유연성은 API가 매우 다른 조직 모델과 구현에 적응하면서도
+이식 가능하고 표준적인 API로 남을 수 있게 한다.
 
-The use cases presented are deliberately cast in terms of the roles presented
-above. Ultimately Gateway API is meant for use by humans, which means that
-it must fit the uses to which each of Ana, Chihiro, and Ian will put it.
+제시된 사용 사례는 위에서 소개한 역할들을 기준으로 의도적으로 구성되었다.
+궁극적으로 게이트웨이 API는 인간이 사용하도록 설계되었으며,
+이는 Ana, Chihiro, Ian 각각이 API를 사용하는 목적에 맞아야 함을 의미한다.
 
-[use-cases]:concepts/use-cases.md
+[사용-사례]:concepts/use-cases.md
 
-## What's the difference between Gateway API and an API Gateway?
+## 게이트웨이 API와 API 게이트웨이의 차이점은 무엇인가?
 
-An [API gateway](https://glossary.cncf.io/api-gateway/) is a tool that
-aggregates unique application APIs, making them all available in one place.
-It allows organizations to move key functions, such as authentication and
-authorization or limiting the number of requests between applications, to a
-centrally managed location. An API gateway functions as a common interface to (often external) API consumers.
+[API 게이트웨이](https://glossary.cncf.io/api-gateway/)는
+고유한 애플리케이션 API를 집계하여 한 곳에서 모두 사용 가능하게 만드는 도구이다.
+이를 통해 조직은 인증, 권한 부여, 애플리케이션 간 요청 수 제한과 같은 핵심 기능을
+중앙에서 관리할 수 있다.
+API 게이트웨이는 (종종 외부) API 소비자를 위한 공통 인터페이스로 기능한다.
 
-Gateway API is an interface, defined as a set of Kubernetes resources, that 
-models service networking in Kubernetes. One of the main resources is a `Gateway`,
-which declares the Gateway type (or class) to instantiate and its configuration.
-As a Gateway provider, you can implement Gateway API to model Kubernetes service
-networking in an expressive, extensible, and role-oriented way.
+게이트웨이 API는 쿠버네티스에서 서비스 네트워킹을 모델링하는 일련의 쿠버네티스 자원으로 정의된
+인터페이스이다.
+주요 자원 중 하나는 `게이트웨이`로, 인스턴스화할 게이트웨이 유형(또는 클래스)과 그 설정을 선언한다.
+게이트웨이 제공자로서 게이트웨이 API를 구현하여
+쿠버네티스 서비스 네트워킹을 표현력 있고 확장 가능하며 역할 지향적인 방식으로 모델링할 수 있다.
 
-Some API gateways can be programmed using the Gateway API.
+일부 API 게이트웨이는 게이트웨이 API를 사용하여 프로그래밍할 수 있다.
 
-## Who is working on Gateway API?
+## 누가 게이트웨이 API를 개발하고 있는가?
 
-Gateway API is a
-[SIG-Network](https://github.com/kubernetes/community/tree/master/sig-network)
-project being built to improve and standardize service networking in Kubernetes.
-Check out the [implementations reference](implementations.md) to see the latest
-projects & products that support Gateway. If you are interested in contributing
-to or building an implementation using Gateway API then don’t hesitate to [get
-involved!](/contributing/community)
+게이트웨이 API는
+쿠버네티스에서 서비스 네트워킹을 개선하고 표준화하기 위해
+[SIG-네트워크](https://github.com/kubernetes/community/tree/master/sig-network)
+프로젝트로 개발되고 있다.
+최신 게이트웨이를 지원하는 프로젝트 및 제품은 [구현 참조](implementations.md)에서 확인할 수 있다.
+게이트웨이 API를 사용해 기여하거나 구현을 구축하는 데 관심이 있다면 주저하지 말고
+[참여하라!](/contributing/community)
 
-[sig-network]: https://github.com/kubernetes/community/tree/master/sig-network
+[sig-네트워크]: https://github.com/kubernetes/community/tree/master/sig-network
 

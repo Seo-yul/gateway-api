@@ -198,7 +198,7 @@ nav:
     - 개념:
       - API 개요: ko/concepts/api-overview.md
       - 적합성: ko/concepts/conformance.md
-      - 역할 및 인물: ko/concepts/roles-and-personas.md
+      - 역할 및 페르소나: ko/concepts/roles-and-personas.md
       - 보안 모델: ko/concepts/security-model.md
       - 도구: ko/concepts/tooling.md
       - 사용 사례: ko/concepts/use-cases.md

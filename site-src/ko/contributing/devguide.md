@@ -1,15 +1,23 @@
 # Developer Guide
+# 개발자 가이드
 
 ## Project Management
+## 프로젝트 관리
 
 We are using the GitHub issues and project dashboard to manage the list of TODOs
 for this project:
+우리는 이 프로젝트의 할 일 목록을 관리하기 위해 GitHub 이슈와 프로젝트 대시보드를 활용하고 있다.
+
 
 * [Open issues][gh-issues]
 * [Project dashboard][gh-dashboard]
+* [이슈 열기][gh-issues]
+* [프로젝트 대시보드][gh-dashboard]
 
 Issues labeled `good first issue` and `help wanted` are especially good for a
 first contribution.
+`good first issue`와 `help wanted`라고 표시된 이슈는 특히
+첫 번째 기여에 특히 좋다.
 
 We use [milestones][gh-milestones] to track our progress towards releases.
 These milestones are generally labeled according to the [semver][semver]

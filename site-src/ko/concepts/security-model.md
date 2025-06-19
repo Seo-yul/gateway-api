@@ -1,63 +1,63 @@
-# Security Model
+# 보안 모델
 
-## Introduction
-Gateway API has been designed to enable granular authorization for each role in
-a typical organization.
+## 소개
+게이트웨이 API는 일반적인 조직 내 각 역할에 대해 세분화된 권한 부여를 가능하게 하도록
+설계되었다.
 
-## Resources
-Gateway API has 3 primary API resources:
+## 리소스
+게이트웨이 API는 3개의 주요 API 리소스를 가진다.
 
-* **GatewayClass** defines a set of gateways with a common configuration and
-  behavior.
-* **Gateway** requests a point where traffic can be translated to Services
-  within the cluster.
-* **Routes** describe how traffic coming via the Gateway maps to the Services.
+* **GatewayClass**는
+  공통 구성과 동작을 가진 게이트웨이 세트를 정의한다.
+* **Gateway**는
+  트래픽이 클러스터 내의 서비스로 변환될 수 있는 지점을 요청한다.
+* **Routes**는
+  게이트웨이를 통해 들어오는 트래픽이 서비스에 매핑되는 방식을 설명한다.
 
-## Roles and personas
+## 역할과 페르소나
 
-There are 3 primary roles in Gateway API, as described in [roles and personas]:
+게이트웨이 API에는 역할과 페르소나에 설명된 3개의 주요 역할이 있다.
 
-- **Ian** (he/him): Infrastructure Provider
-- **Chihiro** (they/them): Cluster Operator
-- **Ana** (she/her): Application Developer
+- **Ian** (그/그의): 인프라 제공자
+- **Chihiro** (그들/그들의): 클러스터 운영자
+- **Ana** (그녀/그녀의): 애플리케이션 개발자
 
-[roles and personas]:roles-and-personas.md
+[역할과 페르소나]:roles-and-personas.md
 
 ### RBAC
 
-RBAC (role-based access control) is the standard used for Kubernetes
-authorization. This allows users to configure who can perform actions on
-resources in specific scopes. RBAC can be used to enable each of the roles
-defined above. In most cases, it will be desirable to have all resources be
-readable by most roles, so instead we'll focus on write access for this model.
+RBAC (역할 기반 접근 제어)는 쿠버네티스 권한 부여를 위해 사용되는 표준 방식이다.
+이를 통해 사용자는 특정 범위 내에서 누가 어떤 리소스에 대해 작업을 수행할 수 있는지를 설정할 수 있다.
+RBAC는 앞서 정의한 각 역할에 대해 권한을 부여하는 데 사용할 수 있다. 대부분의 경우, 모든 리소스를
+대부분의 역할이 읽을 수 있도록 허용하는 것이 바람직하므로, 이 모델에서는 쓰기 권한에 초점을 맞춰 설명한다.
 
-#### Write Permissions for Simple 3 Tier Model
-| | GatewayClass | Gateway | Route |
+#### 간단한 3계층 모델에 대한 쓰기 권한
+| | 게이트웨이 클래스 | 게이트웨이 | 라우트 |
 |-|-|-|-|
-| Infrastructure Provider | Yes | Yes | Yes |
-| Cluster Operators | No | Yes | Yes |
-| Application Developers | No | No | Yes |
+| 인프라 제공자 | 있음 | 있음 | 있음 |
+| 클러스터 운영자 | 없음 | 있음 | 있음 |
+| 애플리케이션 개발자 | 없음 | 없음 | 있음 |
 
-#### Write Permissions for Advanced 4 Tier Model
-| | GatewayClass | Gateway | Route |
+#### 고급 4계층 모델에 대한 쓰기 권한
+| | 게이트웨이 클래스 | 게이트웨이 | 라우트 |
 |-|-|-|-|
-| Infrastructure Provider | Yes | Yes | Yes |
-| Cluster Operators | Sometimes | Yes | Yes |
-| Application Admins | No | In Specified Namespaces | In Specified Namespaces |
-| Application Developers | No | No | In Specified Namespaces |
+| 인프라 제공자 | 있음 | 있음 | 있음 |
+| 클러스터 운영자 | 때에따라 있음 | 있음 | 있음 |
+| 애플리케이션 관리자 | 없음 | 지정된 네임스페이스에 한함 | 지정된 네임스페이스에 한함 |
+| 애플리케이션 개발자 | 없음 | 없음 | 지정된 네임스페이스에 한함 |
 
-## Crossing Namespace Boundaries
-Gateway API provides new ways to cross namespace boundaries. These
-cross-namespace capabilities are quite powerful but need to be used carefully to
-avoid accidental exposure. As a rule, every time we allow a namespace boundary
-to be crossed, we require a handshake between namespaces. There are 2 different
-ways that can occur:
+## 네임스페이스 경계 넘기
+게이트웨이 API는 네임스페이스 경계를 넘는 새로운 방식을 제공한다.
+이러한 교차 네임스페이스 기능은 매우 강력하지만,
+실수로 리소스가 노출되지 않도록 주의해서 사용해야 한다.
+기본 원칙은 네임스페이스 경계를 넘는 경우마다 반드시 양측 간의 핸드셰이크가 있어야 한다는 것이다.
+이러한 핸드셰이크는 두 가지 방식으로 이루어질 수 있다.
 
-### 1. Route Binding
-Routes can be connected to Gateways in different namespaces. To accomplish this,
-The Gateway owner must explicitly allow Routes to bind from additional
-namespaces. This is accomplished by configuring allowedRoutes within a Gateway
-listener to look something like this:
+### 1. 라우트 바인딩
+라우트는 다른 네임스페이스에 있는 게이트웨이에 연결될 수 있다.
+이를 위해서는 게이트웨이 소유자가 명시적으로 다른 네임스페이스의 라우트가 바인딩되도록 허용해야 한다.
+이는 게이트웨이의 리스너 내에서 allowedRoutes를 설정함으로써 이루어지며,
+설정 예시는 다음과 같다.
 
 ```yaml
 namespaces:
@@ -71,41 +71,41 @@ namespaces:
       - bar
 ```
 
-This will allow routes from the "foo" and "bar" namespaces to attach to this
-Gateway listener.
+이렇게 하면 "foo"와 "bar" 네임스페이스의 라우트가
+이 게이트웨이 리스너에 연결될 수 있다.
 
-#### Risks of Other Labels
-Although it's possible to use other labels with this selector, it is not quite
-as safe. While the `kubernetes.io/metadata.name` label is consistently set on
-namespaces to the name of the namespace, other labels do not have the same
-guarantee. If you used a custom label such as `env`, anyone that is able to
-label namespaces within your cluster would effectively be able to change the set
-of namespaces your Gateway supported.
+#### 다른 레이블의 위험
+이 선택자에서 다른 레이블을 사용하는 것도 가능하지만, 그렇게 하면 안전성이 떨어진다.
+kubernetes.io/metadata.name 레이블은 네임스페이스에 대해 항상 해당 네임스페이스의 이름으로
+설정되므로 신뢰할 수 있지만, 다른 레이블들은 이런 보장이 없다.
+예를 들어 env와 같은 사용자 정의 레이블을 사용할 경우,
+클러스터 내에서 네임스페이스에 레이블을 설정할 수 있는 사람은 누구나 게이트웨이가
+지원하는 네임스페이스의 범위를 효과적으로 변경할 수 있게 된다.
 
-### 2. ReferenceGrant
-There are some cases where we allow other object references to cross namespace
-boundaries. This includes Gateways referencing Secrets and Routes referencing
-Backends (usually Services). In these cases, the required handshake is
-accomplished with a ReferenceGrant resource. This resource exists within a
-target namespace and can be used to allow references from other namespaces.
+### 2. 레퍼런스그랜트 (ReferenceGrant)
+경계를 넘는 또 다른 경우로는 게이트웨이가 시크릿을 참조하거나,
+라우트가 백엔드(보통 서비스)를 참조하는 상황이 있다.
+이런 경우에는 레퍼런스그랜트 리소스를 사용하여 필요한 핸드셰이크를 수행한다.
+레퍼런스그랜트는 대상 네임스페이스에 존재하며,
+다른 네임스페이스로부터의 참조를 허용하기 위해 사용된다.
 
-For example, the following ReferenceGrant allows references from HTTPRoutes in
-the "prod" namespace to Services that are deployed in the same namespace as
-the ReferenceGrant.
+예를 들어, 아래 레퍼런스그랜트는 "prod" 네임스페이스에 있는
+HTTPRoute가 레퍼런스그랜트와 같은 네임스페이스에
+배포된 서비스를 참조할 수 있도록 허용한다.
 
 ```yaml
 {% include 'standard/reference-grant.yaml' %}
 ```
 
-For more information on ReferenceGrant, refer to our [detailed documentation
-for this resource](../api-types/referencegrant.md).
+레퍼런스그랜트에 대한 더 자세한 정보는
+[이 리소스에 대한 상세 문서](../api-types/referencegrant.md)를 참고하자.
 
-## Advanced Concept: Limiting Namespaces Where a GatewayClass Can Be Used
-Some infrastructure providers or cluster operators may wish to limit the
-namespaces where a GatewayClass can be used. At this point, we do not have a
-solution for this built into the API. In lieu of that, we recommend using a
-policy agent such as Open Policy Agent and
-[Gatekeeper](https://github.com/open-policy-agent/gatekeeper) to enforce these
-kinds of policies. For reference, we've created an [example of
-configuration](https://github.com/open-policy-agent/gatekeeper-library/pull/24)
-that could be used for this.
+## 고급 개념: 게이트웨이 클래스를 사용할 수 있는 네임스페이스 제한하기
+일부 인프라 제공자 또는 클러스터 운영자는 게이트웨이 클래스를 사용할 수 있는 네임스페이스를
+제한하고 싶을 수 있다. 현재 API에는 이에 대한 솔루션이 내장되어 있지 않다.
+대신, Open Policy Agent 및
+[Gatekeeper](https://github.com/open-policy-agent/gatekeeper)와 같은 정책 
+에이전트를 사용하여 이러한 정책을 시행할 것을 권장한다.
+참고로, 이에 사용할 수 있는
+[구성 예제](https://github.com/open-policy-agent/gatekeeper-library/pull/24)가
+있다.

@@ -1,80 +1,80 @@
-# Roles and Personas
+# 역할과 페르소나
 
-## Background
+## 배경
 
-In the original design of Kubernetes, Ingress and Service resources were based
-on a usage model in which the developers who create Services and Ingresses
-controlled all aspects of defining and exposing their applications to their
-users.
+쿠버네티스의 원래 설계에서는,
+인그레스와 서비스 리소스가 서비스와 인그레스를 생성하는 개발자들이
+애플리케이션을 정의하고 외부에 노출하는 모든 측면을 제어하는
+사용 모델을 기반으로 한다.
 
-In practice, though, clusters and their infrastructure tend to be shared,
-which the original Ingress model doesn't capture very well. A critical factor
-is that when infrastructure is shared, not everyone using the infrastructure
-has the same concerns, and to be successful, an infrastructure project needs
-to address the needs of all the users.
+하지만 실제로는 클러스터와 인프라가 공유되는 경향이 있으며,
+원래 인그레스 모델은 이를 잘 반영하지 못한다.
+중요한 점은 인프라가 공유될 때 모든 사용자가
+동일한 관심사를 가지지 않으며,
+성공적인 인프라 프로젝트는 모든 사용자의 요구를 충족해야 한다.
 
-This raises a fundamental challenge: how do you provide the flexibility needed
-by the users of the infrastructure, while also maintaining control by the
-owners of the infrastructure?
+이는 근본적인 도전을 제기한다.
+인프라 사용자에게 필요한 유연성을 제공하는 동시에
+인프라 소유자의 제어을 유지하려면 어떻게 해야하는가?
 
-Gateway API defines several distinct roles, each with an associated
-_persona_, as a tool for surfacing and discussing the differing needs of
-different users in order to balance usability, flexibility, and control.
-Design work within Gateway API is deliberately cast in terms of these
-personas.
+게이트웨이 API는 서로 다른 사용자의
+다양한 요구를 드러내고 논의하기 위한 도구로서,
+각각의 역할에 대응하는 _페르소나_ 를 정의하여
+사용성, 유연성, 제어를 균형 있게 유지한다.
+게이트웨이 API 내의 설계 작업은 이러한 페르소나를 기준으로 의도적으로 구성된다.
 
-Note that, depending on the environment, a single human may end up taking on
-multiple roles, as discussed below.
+환경에 따라 한 사람이 여러 역할을 맡을 수 있다는것을 유의하자.
+이는 아래에서 논의한다.
 
-## Key Roles and Personas
+## 주요 역할과 페르소나
 
-Gateway API defines three roles and personas:
+게이트웨이 API는 세 가지 역할과 페르소나를 정의한다:
 
-* **Ian**<a name="ian"></a> (he/him) is an _infrastructure provider_,
-  responsible for the care and feeding of a set of infrastructure that permits
-  multiple isolated clusters to serve multiple tenants. He is not beholden to
-  any single tenant; rather, he worries about all of them collectively. Ian
-  will often work for a cloud provider (AWS, Azure, GCP, ...) or for a PaaS
-  provider.
+* **Ian**<a name="ian"></a> (그/그의)는 _인프라 제공자_ 로,
+  여러 격리된 클러스터가 여러 테넌트를 제공하도록 하는
+  인프라 세트를 관리하고 유지하는 책임을 진다. 그는
+  특정 단일 테넌트에 얽매이지 않고, 오히려 모든 테넌트들을 전체적으로 고려한다.
+  Ian은 종종 클라우드 제공자(AWS, Azure, GCP 등)나 PaaS 제공업체에서
+  일하게 된다.
 
-* **Chihiro**<a name="Chihiro"></a> (they/them) is a _cluster operator_,
-  responsible for managing clusters to ensure that they meet the needs of
-  their several users. Chihiro will typically be concerned with policies,
-  network access, application permissions, etc. Again, they are beholden to no
-  single user of any cluster; rather, they need to make sure that the clusters
-  serve all users as needed.
+* **Chihiro**<a name="Chihiro"></a> (그들/그들의)은 _클러스터 운영자_ 로서,
+  여러 사용자의 요구를 충족하도록 클러스터를 관리하는
+  책임을 진다. Chihiro는 일반적으로 정책,
+  네트워크 접근, 애플리케이션 권한 등에 관심을 가진다.
+  마찬가지로, 그들은 특정 클러스터 사용자에게 얽매이지 않고, 클러스터가
+  모든 사용자에게 필요에 따라 서비스를 제공하도록 보장해야 한다.
 
-* **Ana**<a name="ana"></a> (she/her) is an _application developer_,
-  responsible for creating and managing an application running in a cluster.
-  From Gateway API's point of view, Ana will need to manage configuration
-  (e.g. timeouts, request matching/filter) and Service composition (e.g. path
-  routing to backends). She is in a unique position among Gateway API
-  personas, since her focus is on the business needs her application is meant
-  to serve, _not_ Kubernetes or Gateway API. In fact, Ana is likely to
-  view Gateway API and Kubernetes as pure friction getting in her way to
-  get things done.
+* **Ana**<a name="ana"></a> (그녀/그녀의)는 _애플리케이션 개발자_ 로서,
+  클러스터에서 실행되는 애플리케이션을 생성하고 관리하는
+  책임을 진다. 게이트웨이 API 관점에서 Ana는 구성(예: 타임아웃,
+  요청 매칭/필터)과 서비스 구성(예: 백엔드로의 경로 라우팅)을 관리해야 한다.
+  그녀는 게이트웨이 API 페르소나 중 독특한 위치에 있으며,
+  그녀의 초점은 쿠버네티스나 게이트웨이 API가 아닌,
+  애플리케이션이 제공해야 하는 비즈니스 요구에 있다.
+  사실, Ana는 게이트웨이 API와 쿠버네티스를 일을 방해하는
+  마찰로 볼 가능성이 높다.
 
-Depending on the environment, multiple roles can map to the same user:
+환경에 따라 여러 역할이 동일한 사용자에게 매핑될 수 있다.
 
-- Giving a single user all the above roles replicates the self-service model,
-  and may actually happen in a small startup running Kubernetes on bare metal.
+- 한 명의 사용자에게 위의 모든 역할을 맡기는 것은 셀프 서비스 모델을 재현하는 것이며,
+  이는 쿠버네티스 베어메탈에서 운영하는 작은 스타트업에서 실제로 발생할 수 있다.
 
-- A more typical small startup would use clusters from a cloud provider. In
-  this situation, Ana and Chihiro may be embodied in the same person, with Ian
-  being an employee (or automated process!) within the cloud provider.
+- 보다 일반적인 소규모 스타트업의 경우, 클라우드 제공업체의 클러스터를 사용할 것이다.
+  이 경우 Ana아ㅘ Chihiro는 같은 사람이 수 있으며,
+  Ian은 크라우드 제공자 내의 직원(또는 자동화 프로세스!)일 수 있다.
 
-- In a much larger organization, we would expect each persona above to be
-  embodied by a distinct person (most likely working in different groups,
-  perhaps with little direct contact).
+- 훨씬 더 큰 조직에서는 위의 각 페르소나가
+  서로 다른 사람(아마도 다른 그룹에서 일하며,
+  직접적인 접촉이 거의 없을 가능성이 높다)으로 구현될 것으로 예상한다.
 
 ## RBAC
 
-RBAC (role-based access control) is the standard used for Kubernetes
-authorization. This allows users to configure who can perform actions on
-resources in specific scopes. We anticipate that each persona will map
-approximately to a `Role` in the Kubernetes Role-Based Authentication (RBAC)
-system and will define resource model responsibility and separation.
+RBAC(역할 기반 접근 제어)은 쿠버네티스에서 권한 부여를 위해 사용되는 표준 방식이다.
+이를 통해 사용자는 특정 범위에서 누가 어떤 리소스에 대해 작업을 수행할 수 있는지를
+설정할 수 있다.
+우리는 각 페르소나가 쿠버네티스 역할 기반 인증(RBAC) 시스템의 `Role`에 대략적으로 매핑되며,
+이를 통해 리소스 모델의 책임과 분리를 정의하게 될 것으로 예상한다.
 
-RBAC is discussed further in the [Security Model] description.
+RBAC는 [보안 모델] 설명에서 더 자세히 논의한다.
 
-[Security Model]: security-model.md#rbac
+[보안 모델]: security-model.md#rbac

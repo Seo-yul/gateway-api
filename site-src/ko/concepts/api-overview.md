@@ -1,355 +1,355 @@
-# API Overview
+# API 개요
 
-This document provides an overview of Gateway API.
+이 문서는 게이트웨이 API에 대한 개요를 제공한다.
 
-## Roles and personas
+## 역할과 페르소나
 
-There are 3 primary roles in Gateway API, as described in [roles and personas]:
+[역할과 페르소나]에 설명된 대로 게이트웨이 API에는 3가지 주요 역할이 있다.
 
-- **Ian** (he/him): Infrastructure Provider
-- **Chihiro** (they/them): Cluster Operator
-- **Ana** (she/her): Application Developer
+- **Ian** (그/그의): 인프라 제공자
+- **Chihiro** (그들/그들의): 클러스터 운영자
+- **Ana** (그녀/그녀의): 애플리케이션 개발자
 
-[roles and personas]:roles-and-personas.md
+[역할과 페르소나]:roles-and-personas.md
 
-## Resource model
+## 리소스 모델
 
-!!! note
-    Gateway API resources are in the `gateway.networking.k8s.io` API group as
-    Custom Resource Definitions (CRDs). Unqualified resource names below will
-    implicitly be in this API group.
+!!! 참고
+    게이트웨이 API 리소스는 커스텀 리소스 정의(CRDs)로서
+    `gateway.networking.k8s.io` API 그룹에 속해 있다.
+    아래의 리소스 이름은 특별한 언급이 없는 한 이 API 그룹에 속한 것으로 간주된다.
 
-There are three main types of objects in our resource model:
+리소스 모델에는 세 가지 주요 객체 타입이 있다.
 
-*GatewayClass* defines a set of gateways with a common configuration and
-behavior.
+*Gateway Class*는 공통 구성과 동작을 가진 게이트웨이 집합을
+정의한다.
 
-*Gateway* requests a point where traffic can be translated to Services within
-the cluster.
+*Gateway*는 트래픽이 클러스터 내의 서비스로 변환될 수 있는 지점을
+요청한다.
 
-*Routes* describe how traffic coming via the Gateway maps to the Services.
+*Route*는 게이트웨이를 통해 들어오는 트래픽이 서비스에 어떻게 매핑되는지 설명한다.
 
-### GatewayClass
+### 게이트웨이 클래스 (GatewayClass)
 
-??? success "Standard Channel since v0.5.0"
+??? success "v0.5.0 부터 표준 채널"
 
-    The `GatewayClass` resource is GA and has been part of the Standard Channel since
-    `v0.5.0`. For more information on release channels, refer to our [versioning
-    guide](versioning.md).
+    `GatewayClass` 리소스는 GA(정식 출시)되었으며 `v0.5.0` 부터 표준 채널의 일부이다.
+    릴리스 채널에 대한 자세한 정보는
+    [버전 관리 가이드](versioning.md)를 참조하자.
 
-GatewayClass defines a set of Gateways that share a common configuration and
-behaviour. Each GatewayClass will be handled by a single controller, although
-controllers may handle more than one GatewayClass.
+게이트웨이 클래스는 공통 구성과 동작을 공유하는 게이트웨이 집합을 정의한다.
+각 게이트웨이 클래스는 단일 컨트롤러에 의해 처리되지만,
+컨트롤러는 여러 게이트웨이 클래스를 처리할 수 있다.
 
-GatewayClass is a cluster-scoped resource. There must be at least one
-GatewayClass defined in order to be able to have functional Gateways. A
-controller that implements Gateway API does so by providing an associated
-GatewayClass resource that the user can reference from their Gateway(s).
+게이트웨이 클래스는 클러스터 범위의 리소스이다.
+기능적인 게이트웨이를 사용하기 위해서는 최소한 하나의 게이트웨이 클래스가 정의되어 있어야 한다.
+게이트웨이 API를 구현하는 컨트롤러는 사용자가 게이트웨이에서 참조할 수 있는 연관된
+게이트웨이 클래스 리소스를 제공함으로써 이를 수행한다.
 
-This is similar to
-[IngressClass](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)
-for Ingress and
-[StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) for
-PersistentVolumes. In Ingress v1beta1, the closest analog to GatewayClass is the
-`ingress-class` annotation, and in IngressV1, the closest analog is the
-IngressClass object.
+이는 인그레스의
+[인그레스 클래스](https://kubernetes.io/ko/docs/concepts/services-networking/ingress/#%EC%9D%B8%EA%B7%B8%EB%A0%88%EC%8A%A4-%ED%81%B4%EB%9E%98%EC%8A%A4)와
+퍼시스턴트 볼륨의
+[스토리지 클래스](https://kubernetes.io/ko/docs/concepts/storage/storage-classes/)와 유사하다.
+인그레스 v1beta1에서 게이트웨이 클래스와
+가장 유사한 것은 `ingress-class` 어노테이션이며,
+IngressV1에서는 인그레스 클래스 객체가 가장 유사하다.
 
-### Gateway
+### 게이트웨이 (Gateway)
 
-??? success "Standard Channel since v0.5.0"
+??? success "v0.5.0 부터 표준 채널"
 
-    The `Gateway` resource is GA and has been part of the Standard Channel since
-    `v0.5.0`. For more information on release channels, refer to our [versioning
-    guide](versioning.md).
+    `게이트웨이` 리소스는 GA(정식 출시)되었으며 `v0.5.0` 부터 표준 채널의 일부이다.
+    릴리스 채널에 대한 자세한 정보는 [버전 관리 가이드](versioning.md)를
+    참조하자.
 
-A Gateway describes how traffic can be translated to Services within the
-cluster. That is, it defines a request for a way to translate traffic from
-somewhere that does not know about Kubernetes to somewhere that does. For
-example, traffic sent to a Kubernetes Service by a cloud load balancer, an
-in-cluster proxy, or an external hardware load balancer. While many use cases
-have client traffic originating “outside” the cluster, this is not a
-requirement.
+게이트웨이는 트래픽이 클러스터 내의 서비스로 어떻게 변환될 수 있는지 설명한다.
+즉, 쿠버네티스를 알지 못하는 곳에서
+쿠버네티스를 아는 곳으로 트래픽을 변환하는 방법에 대한 요청을 정의한다.
+예를 들어, 클라우드 로드 밸런서, 클러스터 내 프록시 또는 외부 하드웨어 로드 밸런서에 의해
+쿠버네티스 서비스로 전송되는 트래픽이 이에 해당한다.
+많은 사용 사례에서 클라이언트 트래픽이 클러스터 "외부"에서 시작되지만,
+이는 필수 요구사항은 아니다.
 
-It defines a request for a specific load balancer config that implements the
-GatewayClass’ configuration and behaviour contract. The resource may be created
-by an operator directly, or may be created by a controller handling a
-GatewayClass.
+게이트웨이는 게이트웨이 클래스의 구성 및 동작 계약을 구현하는
+특정 로드 밸런서 구성에 대한 요청을 정의한다.
+이 리소스는 운영자가 직접 생성하거나,
+게이트웨이 클래스를 처리하는 컨트롤러에 의해 생성될 수 있다.
 
-As the Gateway spec captures user intent, it may not contain a complete
-specification for all attributes in the spec. For example, the user may omit
-fields such as addresses, TLS settings. This allows the controller
-managing the GatewayClass to provide these settings for the user, resulting in a
-more portable spec. This behaviour will be made clear using the GatewayClass
-Status object.
+게이트웨이 스펙은 사용자의 의도를 담고 있으므로, 스펙의 모든 속성에 대한
+완전한 명세를 포함하지 않을 수 있다.
+예를 들어, 사용자는 주소, TLS 설정과 같은 필드를 생략할 수 있다.
+이를 통해 게이트웨이 클래스를 관리하는 컨트롤러가
+사용자를 위해 이러한 설정을 제공할 수 있으며, 이는 더 이식성 있는 스펙을 제공한다.
+이러한 동작은 게이트웨이 클래스 상태 객체를 사용하여 명확하게 표시된다.
 
-A Gateway may be attached to one or more *Route references* which serve to direct
-traffic for a subset of traffic *to a specific service.*
+게이트웨이는 하나 이상의 *라우트 참조*에 연결될 수 있으며, 
+이는 트래픽의 일부를 *특정 서비스*로 전달하는 역할을 한다.
 
-### Route Resources
+### 라우트 리소스 (Route Resource)
 
-Route resources define protocol-specific rules for mapping requests from a Gateway
-to Kubernetes Services.
+라우트 리소스는 게이트웨이에서 쿠버네티스 서비스로의 요청 매핑을 위한
+프로토콜별 규칙을 정의한다.
 
-As of v1alpha2, four Route resource types are included with the API. Custom Route types
-that are implementation-specific are encouraged for other protocols. New route
-types may be added to the API in future.
+v1alpha2를 기준으로, API에는 네 가지 라우트 리소스 타입이 포함되어 있다.
+구현별로 특정한 사용자 정의 라우트 타입은 다른 프로토콜에 대해 권장된다.
+향후 API에 새로운 라우트 타입이 추가될 수 있다.
 
 #### HTTPRoute
 
-??? success "Standard Channel since v0.5.0"
+??? success "v0.5.0 부터 표준 채널"
 
-    The `HTTPRoute` resource is GA and has been part of the Standard Channel since
-    `v0.5.0`. For more information on release channels, refer to our [versioning
-    guide](versioning.md).
+    `HTTPRoute` 리소스는 GA(정식 출시)되었으며 `v0.5.0` 부터 표준 채널의 일부이다.
+    릴리스 채널에 대한 자세한 정보는 [버전 관리 가이드](versioning.md)를
+    참조하자.
 
-HTTPRoute is for multiplexing HTTP or terminated HTTPS connections. It's intended
-for use in cases where you want to inspect the HTTP stream and use HTTP request data
-for either routing or modification, for example using HTTP Headers for routing, or
-modifying them in-flight.
+HTTPRoute는 HTTP 또는 종료된 HTTPS 연결을 다중화하기 위한 것이다.
+HTTP 스트림을 검사하고 HTTP 요청 데이터를 라우팅하거나 수정에 사용하려는 경우에 사용된다.
+예를 들어, HTTP 헤더를 사용하여 라우팅하거나
+이를 전송 중에 수정하는 경우에 사용된다.
 
 #### TLSRoute
 
-??? example "Experimental Channel since v0.3.0"
+??? example "v0.3.0 부터 실험적 채널"
 
-    The `TLSRoute` resource is Alpha and has been part of the Experimental
-    Channel since `v0.3.0`. For more information on release channels, refer to
-    our [versioning guide](versioning.md).
+    `TLSRoute` 리소스는 알파 상태이며 `v0.3.0` 부터 실험적 채널의 일부이다.
+    릴리스 채널에 대한 자세한 정보는 [버전 관리 가이드](versioning.md)를
+    참조하자.
 
-TLSRoute is for multiplexing TLS connections, discriminated via SNI. It's intended
-for where you want to use the SNI as the main routing method, and are not interested
-in properties of the higher-level protocols like HTTP.  The byte stream of the
-connection is proxied without any inspection to the backend.
+TLSRoute는 SNI를 통해 구분되는 TLS 연결을 멀티플렉싱하기 위한 것이다.
+SNI를 주요 라우팅 방법으로 사용하고 싶고, HTTP와 같은 상위 레벨 프로토콜의
+속성에는 관심이 없는 경우에 사용된다. 연결의 바이트 스트림은
+백엔드로 검사 없이 프록시된다.
 
-#### TCPRoute and UDPRoute
+#### TCPRoute와 UDPRoute
 
-??? example "Experimental Channel since v0.3.0"
+??? example "v0.3.0 부터 실험적 채널"
 
-    The `TCPRoute` and `UDPRoute` resources are Alpha and have been part of the
-    Experimental Channel since `v0.3.0`. For more information on release
-    channels, refer to our [versioning guide](versioning.md).
+    `TCPRoute` 및 `UDPRoute` 리소스는 알파 상태이며 `v0.3.0` 부터 실험적 채널의 일부이다.
+    릴리스 채널에 대한 자세한 정보는 [버전 관리 가이드](versioning.md)를
+    참조하자.
 
-TCPRoute (and UDPRoute) are intended for use for mapping one or more ports
-to a single backend. In this case, there is no discriminator you can
-use to choose different backends on the same port, so each TCPRoute really needs a
-different port on the listener (in general, anyway). You can terminate TLS in
-which case the unencrypted byte stream is passed through to the backend.
-You can choose to not terminate TLS, in which case the encrypted byte stream
-is passed through to the backend.
+TCPRoute(및 UDPRoute)는 하나 이상의 포트를 단일 백엔드에 매핑하는 데 사용된다.
+이 경우, 동일한 포트에서 서로 다른 백엔드를 선택할 수 있는 구분자가 없으므로,
+일반적으로 각 TCPRoute는 리스너에서 서로 다른 포트를 필요로 한다.
+TLS를 종료할 수 있는데,
+이 경우 암호화되지 않은 바이트 스트림이 백엔드에 전달된다.
+TLS를 종료하지 않도록 선택할 수도 있으며,
+이 경우에는 암호화된 바이트 스트림이 백엔드에 전달된다.
 
 #### GRPCRoute
 
-??? success "Standard Channel since v1.1.0"
+??? success "v1.1.0 부터 표준 채널"
 
-    The `GRPCRoute` resource is GA and has been part of the Standard Channel since
-    `v1.1.0`. For more information on release channels, refer to our [versioning
-    guide](versioning.md).
+    `GRPCRoute` 리소스는 GA(정식 출시)되었으며 `v1.1.0` 부터 표준 채널의 일부이다.
+    릴리스 채널에 대한 자세한 정보는 [버전 관리 가이드](versioning.md)를
+    참조하자.
 
-GRPCRoute is for idiomatically routing gRPC traffic. Gateways supporting
-GRPCRoute are required to support HTTP/2 without an initial upgrade from HTTP/1,
-so gRPC traffic is guaranteed to flow properly.
+GRPCRoute는 gRPC 트래픽을 관용적으로 라우팅하기 위한 것이다.
+GRPCRoute를 지원하는 게이트웨이는 HTTP/1에서 초기 업그레이드 없이
+HTTP/2를 지원해야 하므로, gRPC 트래픽이 올바르게 흐를 수 있도록 보장된다.
 
-#### Route summary table
+#### 라우트 요약 표
 
-The "Routing Discriminator" column below refers to what information can be used
-to allow multiple Routes to share ports on the Listener.
+아래의 "라우팅 식별자" 열은 여러 라우트가 리스너의 포트를 공유할 수 있도록
+하는 데 사용할 수 있는 정보를 나타낸다.
 
-|Object|OSI Layer|Routing Discriminator|TLS Support|Purpose|
+|객체|OSI 계층|라우팅 식별자|TLS 지원|목적|
 |------|---------|---------------------|-----------|-------|
-|HTTPRoute| Layer 7 | Anything in the HTTP Protocol | Terminated only | HTTP and HTTPS Routing|
-|TLSRoute| Somewhere between layer 4 and 7| SNI or other TLS properties| Passthrough or Terminated | Routing of TLS protocols including HTTPS where inspection of the HTTP stream is not required.|
-|TCPRoute| Layer 4| destination port | Passthrough or Terminated | Allows for forwarding of a TCP stream from the Listener to the Backends |
-|UDPRoute| Layer 4| destination port | None | Allows for forwarding of a UDP stream from the Listener to the Backends. |
-|GRPCRoute| Layer 7 | Anything in the gRPC Protocol | Terminated only | gRPC Routing over HTTP/2 and HTTP/2 cleartext|
+|HTTPRoute| 레이어 7 | HTTP 프로토콜의 모든 것 | 종료만 가능 | HTTP 및 HTTPS 라우팅|
+|TLSRoute| 레이어 4와 7 사이 | SNI 또는 다른 TLS 속성 | 패스스루 또는 종료 | HTTP 스트림 검사가 필요하지 않은 HTTPS를 포함한 TLS 프로토콜 라우팅|
+|TCPRoute| 레이어 4 | 목적지 포트 | 패스스루 또는 종료 | 리스너에서 백엔드로 TCP 스트림 전달 허용 |
+|UDPRoute| 레이어 4 | 목적지 포트 | 없음 | 리스너에서 백엔드로 UDP 스트림 전달 허용 |
+|GRPCRoute| 레이어 7 | gRPC 프로토콜의 모든 것 | 종료만 가능 | HTTP/2 및 HTTP/2 클리어텍스트를 통한 gRPC 라우팅|
 
-Note that traffic routed via HTTPRoute and TCPRoute can be encrypted between the
-Gateway and backend (commonly referred to as reencryption). It is not possible
-to configure that with existing Gateway API resources, but implementations may
-provide custom configuration for this until there is a standardized approach
-defined by Gateway API.
+참고로 HTTPRoute 및 TCPRoute를 통해 라우팅되는 트래픽은 게이트웨이와
+백엔드 사이에서 암호화될 수 있다(일반적으로 재암호화라고 함).
+기존 게이트웨이 API 리소스로는 이를 구성할 수 없지만,
+게이트웨이 API에서 표준화된 방식이 정의될 때까지
+구현체에서 이에 대한 사용자 정의 구성을 제공할 수 있다.
 
-## Attaching Routes to Gateways
+## 라우트를 게이트웨이에 연결하기
 
-When a Route attaches to a Gateway, it represents configuration that is applied
-on the Gateway that configures the underlying load balancer or proxy. How and
-which Routes attach to Gateways is controlled by the resources themselves. Route
-and Gateway resources have built-in controls to permit or constrain how they are
-attached. Together with Kubernetes RBAC, these allow organizations to enforce
-policies for how Routes are exposed and on which Gateways.
+라우트가 게이트웨이에 연결되면, 이는 기본 로드 밸런서나 프록시를 구성하는
+게이트웨이에 적용되는 구성을 나타낸다. 라우트가 게이트웨이에 연결되는 방법과
+어떤 라우트가 연결되는지는 리소스 자체에 의해 제어된다. 라우트와
+게이트웨이 리소스에는 연결 방법을 허용하거나 제한하는 내장 제어 기능이 있다.
+쿠버네티스 RBAC와 함께 이러한 기능은 조직이 라우트가 노출되는 방식과
+어떤 게이트웨이에 노출되는지에 대한 정책을 시행할 수 있게 한다.
 
-There is a lot of flexibility in how Routes can attach to Gateways to achieve
-different organizational policies and scopes of responsibility. These are
-different relationships that Gateways and Routes can have:
+라우트가 게이트웨이에 연결되는 방법에는 다양한 조직 정책과 책임 범위를
+달성하기 위한 많은 유연성이 있다. 게이트웨이와 라우트가 가질 수 있는
+다양한 관계는 다음과 같다.
 
-- **One-to-one** - A Gateway and Route may be deployed and used by a single
-  owner and have a one-to-one relationship.
-- **One-to-many** - A Gateway can have many Routes bound to it that are owned by
-  different teams from across different Namespaces.
-- **Many-to-one** - Routes can also be bound to more than one Gateway, allowing
-  a single Route to control application exposure simultaneously across different
-  IPs, load balancers, or networks.
+- **일대일(One-to-one)** - 게이트웨이와 라우트는 단일 소유자에 의해
+  배포되고 사용되며 일대일 관계를 가질 수 있다.
+- **일대다(One-to-many)** - 게이트웨이는 서로 다른 네임스페이스의
+  다양한 팀이 소유한 여러 라우트가 바인딩될 수 있다.
+- **다대일(Many-to-one)** - 라우트도 여러 게이트웨이에 바인딩될 수 있어,
+  단일 라우트가 서로 다른 IP, 로드 밸런서 또는 네트워크에서 동시에
+  애플리케이션 노출을 제어할 수 있다.
 
-### Example
+### 예시
 
-[Chihiro] has deployed a Gateway `shared-gw` in the `infra` Namespace to be
-used by different application teams for exposing their applications outside
-the cluster. Teams A and B (in Namespaces `A` and `B` respectively) attach
-their Routes to this Gateway. They are unaware of each other and as long as
-their Route rules do not conflict with each other they can continue operating
-in isolation. Team C has special networking needs (perhaps performance,
-security, or criticality) and they need a dedicated Gateway to proxy their
-application to the outside world. Team C deploys their own Gateway
-`dedicated-gw`  in the `C` Namespace that can only be used by apps in the `C`
-Namespace.
+[Chihiro]는 `infra` 네임스페이스에 `shared-gw` 게이트웨이를 배포하여
+여러 애플리케이션 팀이 클러스터 외부에 애플리케이션을 노출할 수 있도록 했다.
+A팀과 B팀(각각 네임스페이스 `A`와 `B`에 있음)은 자신의 라우트를
+이 게이트웨이에 연결한다.
+이들은 서로에 대해 알지 못하며,
+라우트 규칙이 서로 충돌하지 않는 한 계속 독립적으로 운영할 수 있다.
+C팀은 특별한 네트워킹 요구 사항(성능, 보안 또는 중요도 등)이 있어
+애플리케이션을 외부 세계로 프록시하기 위한 전용 게이트웨이가 필요하다.
+C팀은 `C` 네임스페이스에 자체 게이트웨이인 `dedicated-gw`를 배포하며,
+이는 `C` 네임스페이스의 앱에서만 사용할 수 있다.
 
 <!-- source: https://docs.google.com/presentation/d/1neBkFDTZ__vRoDXIWvAcxk2Pb7-evdBT6ykw_frf9QQ/edit?usp=sharing -->
 ![route binding](../images/gateway-route-binding.png)
 
 [Chihiro]:roles-and-personas.md#Chihiro
 
-### How it Works
+### 작동 방식
 
-The following is required for a Route to be attached to a Gateway:
+라우트가 게이트웨이에 연결되기 위해서는 다음 사항이 필요하다.
 
-1. The Route needs an entry in its `parentRefs` field referencing the Gateway.
-2. At least one listener on the Gateway needs to allow this attachment.
+1. 라우트는 게이트웨이를 참조하는 `parentRefs` 필드에 항목이 있어야 한다.
+2. 게이트웨이의 최소 하나의 리스너가 이 연결을 허용해야 한다.
 
-#### Referencing Gateways
+#### 게이트웨이 참조
 
-??? example "Experimental Channel"
+??? example "실험적 채널"
 
-    The `Port` field described below is currently only included in the
-    "Experimental" channel of Gateway API. For more information on release
-    channels, refer to the [related documentation](versioning.md#adding-experimental-fields).
+    아래에서 설명하는 `Port` 필드는 현재 게이트웨이 API의 "실험적"
+    채널에만 포함되어 있다. 릴리스 채널에 대한 자세한 정보는
+    [관련 문서](versioning.md#adding-experimental-fields)를 참조하자.
 
-A Route can reference a Gateway by specifying the namespace (optional if the
-Route and the Gateway are in the same namespace) and name of the Gateway in
-a `parentRef`. By default, a Route will attach to all listeners of a Gateway,
-however it can restrict the selection to a subset of listeners using the
-following fields in `parentRef`:
+라우트는 네임스페이스(라우트와 게이트웨이가 동일한 네임스페이스에 있는 경우 선택 사항)와
+`parentRef`에서 게이트웨이의 이름을 지정하여 게이트웨이를 참조할 수 있다.
+기본적으로 라우트는
+게이트웨이의 모든 리스너에 연결되지만,
+`parentRef`에서 아래의 필드를 사용하여 선택을 리스너의 하위 집합으로 제한할 수 있다.
 
-1. **SectionName** When `sectionName` is set, the Route selects the listener
-   with the specified name.
-2. **Port** When `port` is set, the Route selects all listeners listening on
-   the specified port and with protocol compatible with this kind of Route.
+1. **SectionName** `sectionName`이 설정되면, 라우트는 지정된 이름을 가진
+   리스너를 선택한다.
+2. **Port** `port`가 설정되면, 라우트는 지정된 포트에서 리스닝하고
+   이 종류의 라우트와 호환되는 프로토콜을 가진 모든 리스너를 선택한다.
 
-When multiple fields in `parentRef` are set, the Route selects listeners that
-satisfy all conditions specified in those fields. For example, when both
-`sectionName` and `port` are set, the Route selects listeners with the specified
-name AND listening on the specified port.
+`parentRef`에서 여러 필드가 설정되면, 라우트는 이러한 필드에 지정된
+모든 조건을 충족하는 리스너를 선택한다. 예를 들어, `sectionName`과 `port`가
+모두 설정된 경우, 라우트는 지정된 이름을 가지고 지정된 포트에서
+리스닝하는 리스너를 선택한다.
 
-#### Restricting Route Attachment
+#### 라우트 연결 제한
 
-Each Gateway listener can restrict which Routes can be attached with the
-following mechanisms:
+각 게이트웨이 리스너는 다음 메커니즘을 사용하여 어떤 라우트를
+연결할 수 있는지 제한할 수 있다.
 
-1. **Hostname:** When the `hostname` field on a listener is set, attached Routes
-   that specify a `hostnames` field must have at least one overlapping value.
-2. **Namespaces:** The `allowedRoutes.namespaces` field on a listener can be
-   used to restrict where Routes may be attached from. The `namespaces.from`
-   field supports the following values:
-    * `Same` is the default option. Only Routes in the same namespace
-      as this Gateway may be attached.
-    * `All` will allow Routes from all Namespaces to be attached.
-    * `Selector` means that Routes from a subset of Namespaces selected by a
-      Namespace label selector may be attached to this Gateway. When `Selector`
-      is used, the `namespaces.selector` field must be used to specify label
-      selectors. This field is not supported with `All` or `Same`.
-3. **Kinds:** The `allowedRoutes.kinds` field on a listener can be used to
-   restrict the kinds of Routes that may be attached.
+1. **Hostname:** 리스너에 `hostname` 필드가 설정되면, `hostnames` 필드를
+   지정하는 연결된 라우트는 최소한 하나의 겹치는 값을 가져야 한다.
+2. **Namespaces:** 리스너의 `allowedRoutes.namespaces` 필드는 라우트가
+   연결될 수 있는 위치를 제한하는 데 사용할 수 있다. `namespaces.from`
+   필드는 다음 값을 지원한다.
+    * `Same`은 기본 옵션이다. 이 게이트웨이와 동일한 네임스페이스에 있는
+      라우트만 연결될 수 있다.
+    * `All`은 모든 네임스페이스의 라우트가 연결될 수 있도록 허용한다.
+    * `Selector`는 네임스페이스 레이블 셀렉터에 의해 선택된 네임스페이스의
+      하위 집합에서 라우트가 이 게이트웨이에 연결될 수 있음을 의미한다.
+      `Selector`가 사용될 때, `namespaces.selector` 필드는 레이블
+      셀렉터를 지정하는 데 사용되어야 한다. 이 필드는 `All` 또는 `Same`과 함께 지원되지 않는다.
+3. **Kinds:** 리스너의 `allowedRoutes.kinds` 필드를 사용하여 연결될 수
+   있는 라우트의 종류를 제한할 수 있다.
 
-If none of the above are specified, a Gateway listener will trust Routes
-attached from the same namespace that support the listener protocol.
+위의 내용이 지정되지 않은 경우, 게이트웨이 리스너는 리스너 프로토콜을
+지원하는 동일한 네임스페이스에서 연결된 라우트를 신뢰한다.
 
-#### Further Gateway - Route attachment examples
+#### 추가 게이트웨이 - 라우트 연결 예시
 
-The following `my-route` Route wants to attach to the `foo-gateway` in the
-`gateway-api-example-ns1` and will not attach to any other Gateways. Note that
-`foo-gateway` is in a different Namespace. The `foo-gateway` must allow
-attachment from HTTPRoutes in the namespace `gateway-api-example-ns2`.
+아래 `my-route` 라우트는 `gateway-api-example-ns1`의 `foo-gateway`에
+연결하려고 하며 다른 게이트웨이에는 연결되지 않는다. `foo-gateway`가
+다른 네임스페이스에 있다는 점에 유의하자. `foo-gateway`는
+`gateway-api-example-ns2` 네임스페이스의 HTTPRoute에서 연결을 허용해야 한다.
 
 ```yaml
 {% include 'standard/http-route-attachment/httproute.yaml' %}
 ```
 
-This `foo-gateway` allows the `my-route` HTTPRoute to attach.
+이 `foo-gateway`는 `my-route` HTTPRoute의 연결을 허용한다.
 
 ```yaml
 {% include 'standard/http-route-attachment/gateway-strict.yaml' %}
 ```
 
-For a more permissive example, the below Gateway will allow all HTTPRoute resources
-to attach from Namespaces with the "expose-apps: true" label.
+더 관대한 예시로, 아래 게이트웨이는 "expose-apps: true" 레이블이 있는
+네임스페이스에서 모든 HTTPRoute 리소스가 연결될 수 있도록 허용한다.
 
 ```yaml
 {% include 'standard/http-route-attachment/gateway-namespaces.yaml' %}
 ```
 
-### Combined types
+### 결합된 타입
 
-The combination of `GatewayClass`, `Gateway`, `xRoute` and `Service`(s)
-defines an implementable load-balancer. The diagram below illustrates the
-relationships between the different resources:
+`게이트웨이 클래스`, `게이트웨이`, `xRoute` 및 `서비스`의 조합은
+구현 가능한 로드 밸런서를 정의한다. 아래 다이어그램은
+서로 다른 리소스 간의 관계를 보여준다:
 
 <!-- source: https://docs.google.com/document/d/1BxYbDovMwnEqe8lj8JwHo8YxHAt3oC7ezhlFsG_tyag/edit#heading=h.8du598fded3c -->
 ![schema](../images/schema-uml.svg)
 
-### Request flow
+### 요청 흐름
 
-A typical [north/south] API request flow for a gateway implemented using a
-reverse proxy is:
+리버스 프록시를 사용하여 구현된 게이트웨이의 일반적인 [남/북]
+API 요청 흐름은 다음과 같다.
 
-1. A client makes a request to <http://foo.example.com>.
-2. DNS resolves the name to a `Gateway` address.
-3. The reverse proxy receives the request on a `Listener` and uses the [Host
-   header](https://tools.ietf.org/html/rfc7230#section-5.4) to match an
-   `HTTPRoute`.
-4. Optionally, the reverse proxy can perform request header and/or path
-   matching based on `match` rules of the `HTTPRoute`.
-5. Optionally, the reverse proxy can modify the request, i.e. add/remove
-   headers, based on `filter` rules of the `HTTPRoute`.
-6. Lastly, the reverse proxy forwards the request to one or more objects, i.e.
-   `Service`, in the cluster based on `backendRefs` rules of the `HTTPRoute`.
+1. 클라이언트가 <http://foo.example.com>에 요청을 보낸다.
+2. DNS가 이름을 `Gateway` 주소로 해석한다.
+3. 리버스 프록시가 `Listener`에서 요청을 수신하고
+   [Host 헤더](https://tools.ietf.org/html/rfc7230#section-5.4)를
+   사용하여 `HTTPRoute`와 일치시킨다.
+4. 선택적으로, 리버스 프록시는 `HTTPRoute`의 `match` 규칙을 기반으로
+   요청 헤더 및/또는 경로 매칭을 수행할 수 있다.
+5. 선택적으로, 리버스 프록시는 `HTTPRoute`의 `filter` 규칙을 기반으로
+   요청을 수정(즉, 헤더 추가/제거)할 수 있다.
+6. 마지막으로, 리버스 프록시는 `HTTPRoute`의 `backendRefs` 규칙을 기반으로
+   요청을 클러스터 내의 하나 이상의 객체(즉, `Service`)로 전달한다.
 
-[north/south]:glossary.md#northsouth-traffic
+[남/북]:glossary.md#northsouth-traffic
 
-### TLS Configuration
+### TLS 구성
 
-TLS is configured on Gateway listeners, and may be referred to across namespaces.
+TLS는 게이트웨이 리스너에서 구성되며, 네임스페이스 간에 참조될 수 있다.
 
-Please refer to the [TLS details](../guides/tls.md) guide for a deep dive on TLS.
+TLS에 대한 자세한 내용은 [TLS 세부 정보](../guides/tls.md) 가이드를 참조하자.
 
-## Attaching Routes to Services
+## 라우트를 서비스에 연결하기
 
-When using Gateway API to configure a [service mesh], the Route will
-attach directly to a Service, representing configuration meant to be applied
-to any traffic directed to the Service. How and which Routes attach to a given
-Service is controlled by the Routes themselves (working with Kubernetes RBAC),
-as covered in the [GAMMA routing documentation].
+게이트웨이 API를 사용하여 [서비스 메시](glossary.md#service-mesh)를 구성할 때,
+라우트는 서비스에 직접 연결되어 서비스로 향하는 모든 트래픽에 적용되는
+구성을 나타낸다. 어떤 라우트가 주어진 서비스에 연결되는지와 그 방법은
+라우트 자체(쿠버네티스 RBAC와 함께 작동)에 의해 제어되며,
+[GAMMA 라우팅 문서]에서 설명되어 있다.
 
 [GAMMA]:/concepts/gamma
-[GAMMA routing documentation]:/concepts/gamma#gateway-api-for-mesh
-[service mesh]:glossary.md#service-mesh
+[GAMMA 라우팅 문서]:/concepts/gamma#gateway-api-for-mesh
+[서비스 메시]:glossary.md#service-mesh
 
-## Extension points
+## 확장 포인트
 
-A number of extension points are provided in the API to provide flexibility in
-addressing the large number of use-cases that cannot be addressed by a general
-purpose API.
+일반적인 목적의 API로는 처리할 수 없는
+많은 사용 사례에 유연성을 제공하기 위해
+API에 여러 확장 포인트가 제공된다.
 
-Here is a summary of extension points in the API:
+다음은 API의 확장 포인트 요약이다.
 
-- **BackendRefs**: This extension point should be used for forwarding
-  traffic to network endpoints other than core Kubernetes Service resource.
-  Examples include an S3 bucket, Lambda function, a file-server, etc.
-- **HTTPRouteFilter**: This API type in HTTPRoute provides a way to hook into
-the request/response lifecycle of an HTTP request.
-- **Custom Routes**: If none of the above extensions points suffice for a use
-  case, Implementers can choose to create custom Route resources for protocols
-  that are not currently supported in the API. Custom Route types need to share
-  the same fields that core Route types do. These are contained within
-  CommonRouteSpec and RouteStatus.
+- **BackendRefs**: 이 확장 포인트는 코어 쿠버네티스 서비스 리소스 이외의
+  네트워크 엔드포인트로 트래픽을 전달하는 데 사용되어야 한다.
+  예를 들어 S3 버킷, Lambda 함수, 파일 서버 등이 있다.
+- **HTTPRouteFilter**: HTTPRoute의 이 API 타입은 HTTP 요청의
+  요청/응답 라이프사이클에 연결하는 방법을 제공한다.
+- **Custom Routes**: 위의 확장 포인트가 사용 사례에 충분하지 않은 경우,
+  구현자는 현재 API에서 지원되지 않는 프로토콜에 대한 커스텀 라우트 리소스를
+  생성할 수 있다.
+  커스텀 라우트 타입은 코어 라우트 타입과 동일한 필드를 공유해야 한다.
+  이러한 필드는 CommonRouteSpec과 RouteStatus 내에 포함되어 있다.
 
-Whenever you are using an extension point without any prior art, please let
-the community know. As we learn more about usage of extension points, we would
-like to find the common denominators and promote the features to core/extended
-API conformance.
+이전 사례 없이 확장 포인트를 사용하는 경우, 커뮤니티에 알려주자.
+확장 포인트의 사용에 대해 더 많이 배우면서,
+공통 분모를 찾고
+기능을 코어/확장 API 적합성으로 승격시키고자 한다.

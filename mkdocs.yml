@@ -6,11 +6,19 @@ site_dir: site
 docs_dir: site-src
 extra:
   trademark: https://www.linuxfoundation.org/legal/trademark-usage
+  alternate:
+    - name: English
+      link: /
+      lang: en
+    - name: 한국어 (Korean)
+      link: /ko/
+      lang: ko
 extra_css:
   - stylesheets/extra.css
 extra_javascript:
   - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
   - js/implementations.js
+  - js/language-switch.js
 hooks:
 - hack/mkdocs-copy-geps.py
 - hack/mkdocs-generate-conformance.py
@@ -40,6 +48,7 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  language: en
   custom_dir: site-src/overrides
 edit_uri: edit/main/site-src/
 plugins:

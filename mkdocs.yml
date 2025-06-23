@@ -210,10 +210,11 @@ nav:
     - 서비스 메시:
       - 개요: ko/mesh/index.md
       - GAMMA 이니셔티브: ko/mesh/gamma.md
-      - 서비스 패싯: ko/mesh/service-facets.md
+      - 서비스 측면: ko/mesh/service-facets.md
     - 구현:
         - 목록: ko/implementations.md
         - 비교:
+          - v1.3: ko/implementations/v1.3.md
           - v1.2: ko/implementations/v1.2.md
           - v1.1: ko/implementations/v1.1.md
           - v1.0: ko/implementations/v1.0.md
@@ -258,6 +259,9 @@ nav:
       - ko/geps/gep-1494/index.md
       - ko/geps/gep-1651/index.md
       - ko/geps/gep-2648/index.md
+      - ko/geps/gep-3379/index.md
+      - ko/geps/gep-3792/index.md
+      - ko/geps/gep-3793/index.md
     - 구현 가능:
       - ko/geps/gep-91/index.md
       - ko/geps/gep-3567/index.md

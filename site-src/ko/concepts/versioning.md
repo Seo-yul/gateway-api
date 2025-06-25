@@ -119,9 +119,9 @@ gateway.networking.k8s.io/channel: standard|experimental
 * 버그 수정:
     * 유효성 검사 수정
     * 릴리스 프로세스 또는 산출물 수정
-* 적합성 테스트:
+* 호환성 테스트:
     * 기존 테스트 수정
-    * 기존 기능에 대한 적합성 테스트 커버리지 추가
+    * 기존 기능에 대한 호환성 테스트 커버리지 추가
 
 ### 마이너 버전(예: v0.4.0 -> v0.5.0)
 * 패치 릴리스에서 유효한 모든 변경
@@ -136,7 +136,7 @@ gateway.networking.k8s.io/channel: standard|experimental
 * 모든 채널:
     * 상태에서 권장 조건 또는 사유 변경
     * 유효성 검사 완화(필수 필드를 선택적 필드로 변경 등)
-    * 명세 업데이트에 맞춘 적합성 테스트 변경
+    * 명세 업데이트에 맞춘 호환성 테스트 변경
     * 필드명 변경이나
       [새로운 쿠버네티스 API 버전](https://kubernetes.io/ko/docs/reference/using-api/#api-%EB%B2%84%EC%A0%84-%EA%B7%9C%EC%B9%99)에서 
       유효한 기타 모든 변경 사항을 포함할 수 있는 새로운 API 버전의 도입
@@ -148,8 +148,8 @@ gateway.networking.k8s.io/channel: standard|experimental
 리소스, 필드, 기능이 실험적에서 표준으로 승격되기 위해서는
 다음 기준을 충족해야 한다.
 
-* 완전한 적합성 테스트 커버리지
-* 여러 구현체에서 적합성 통과
+* 완전한 호환성 테스트 커버리지
+* 여러 구현체에서 호환성 통과
 * 광범위한 구현 및 사용
 * alpha API로 최소 6개월간 운영된 시간(soak time)
 * 최소 1회 마이너 릴리스 및 3개월간 주요 변경 없음

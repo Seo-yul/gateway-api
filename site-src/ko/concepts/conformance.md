@@ -1,11 +1,11 @@
-# 적합성
+# 호환성
 
 이 API는 광범위한 기능과 사용 사례를 다루며 널리 구현되었다.
 이러한 큰 기능 세트와 다양한 구현의 조합은
 API가 사용되는 곳마다 일관된 경험을 제공하기 위해
-명확한 적합성 정의와 테스트를 필요로 한다.
+명확한 호환성 정의와 테스트를 필요로 한다.
 
-Gateway API 적합성을 고려할 때 세 가지 중요한 개념이 있다.
+Gateway API 호환성을 고려할 때 세 가지 중요한 개념이 있다.
 
 ## 1. 릴리스 채널
 
@@ -34,8 +34,8 @@ API는 각 기능에 대한 해당 지원 수준을 정의한다.
   Implementation-specific 기능은 일반적인 확장 지점을 통하지 않는 한
   API 타입과 스키마를 가지지 않을 것이다.
 
-Core 및 Extended 세트의 동작과 기능은 행동 기반 적합성 테스트를 통해
-정의되고 검증될 것이다. Implementation-specific 기능은 적합성 테스트에서
+Core 및 Extended 세트의 동작과 기능은 행동 기반 호환성 테스트를 통해
+정의되고 검증될 것이다. Implementation-specific 기능은 호환성 테스트에서
 다루지 않는다.
 
 API 사양에서 Extended 기능을 포함하고 표준화함으로써,
@@ -61,20 +61,20 @@ BackendRef 내에서 정의된 경우 Extended 지원을 포함한다.
 이는 필드가 Core 지원 수준을 가지더라도 Extended 지원을 갖는 곳에 연결된 필터에 있는 경우,
 해석된 지원 수준은 Extended여야 함을 의미한다.
 
-## 3. 적합성 테스트
+## 3. 호환성 테스트
 
-게이트웨이 API는 적합성 테스트 세트를 포함한다.
+게이트웨이 API는 호환성 테스트 세트를 포함한다.
 이는 지정된 GatewayClass를 사용하여
 일련의 Gateway와 Route를 생성하고, 구현이 API 사양과 일치하는지 테스트한다.
 
-각 릴리스에는 적합성 테스트 세트가 포함되어 있으며,
+각 릴리스에는 호환성 테스트 세트가 포함되어 있으며,
 API가 발전함에 따라 계속 확장될 것이다.
-현재 적합성 테스트는 standard 채널의
+현재 호환성 테스트는 standard 채널의
 Core 기능 대부분을 다루며, 일부 Extended 기능을 포함한다.
 
 ### 테스트 실행
 
-적합성 테스트에는 두 가지 주요 대조적인 세트가 있다.
+호환성 테스트에는 두 가지 주요 대조적인 세트가 있다.
 
 * 게이트웨이 관련 테스트 (인그레스 테스트로도 생각할 수 있음)
 * 서비스 메시 관련 테스트
@@ -89,7 +89,7 @@ Core 기능 대부분을 다루며, 일부 Extended 기능을 포함한다.
 
 #### 게이트웨이 테스트
 
-기본적으로 `Gateway` 중심의 적합성 테스트는 클러스터에 `gateway-conformance`라는
+기본적으로 `Gateway` 중심의 호환성 테스트는 클러스터에 `gateway-conformance`라는
 이름의 GatewayClass가 설치되어 있을 것으로 예상하며, 이에 대해 테스트가
 실행된다. 대부분의 경우 다른 클래스를 사용할 것이며, 이는 해당 테스트 명령과
 함께 `-gateway-class` 플래그로 지정할 수 있다.
@@ -106,7 +106,7 @@ go test ./conformance -run TestConformance -args \
     --supported-features=Gateway,HTTPRoute
 ```
 
-다른 유용한 플래그는 [적합성 플래그][cflags]에서 찾을 수 있다.
+다른 유용한 플래그는 [호환성 플래그][cflags]에서 찾을 수 있다.
 
 [cflags]:https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/utils/flags/flags.go
 
@@ -174,7 +174,7 @@ go test ./conformance -run TestConformance -args \
 
 [Container Network Interface (CNI) 플러그인][network_plugins]을 사용하여
 네트워크 정책을 시행하는 클러스터에서는
-일부 적합성 테스트가 트래픽이 필요한 목적지에 도달할 수 있도록
+일부 호환성 테스트가 트래픽이 필요한 목적지에 도달할 수 있도록
 사용자 정의 [`NetworkPolicy`][netpol] 리소스를 클러스터에 추가해야 할 수 있다.
 
 사용자는 구현이 해당 테스트를 통과할 수 있도록
@@ -183,17 +183,17 @@ go test ./conformance -run TestConformance -args \
 [network_plugins]: https://kubernetes.io/ko/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
 [netpol]: https://kubernetes.io/ko/docs/concepts/services-networking/network-policies/
 
-### 적합성 프로필
+### 호환성 프로필
 
-적합성 프로필은 여러 지원 기능을 그룹화하여, 적합성 보고서를 통해
+호환성 프로필은 여러 지원 기능을 그룹화하여, 호환성 보고서를 통해
 지원을 인증하는 것을 목표로 하는 도구이다.
 지원되는 프로필은
 `--conformance-profiles=PROFILE1,PROFILE2` 플래그를 사용하여 구성할 수 있다.
 
-## 적합성 보고서
+## 호환성 보고서
 
-스위트가 적합성 프로필 세트를 실행하도록 구성되고 모든 적합성 보고서 필드가
-[이 가이드][conformance-guide]에 따라 적절히 설정된 경우, 적합성 보고서는
+스위트가 호환성 프로필 세트를 실행하도록 구성되고 모든 호환성 보고서 필드가
+[이 가이드][conformance-guide]에 따라 적절히 설정된 경우, 호환성 보고서는
 PR을 통해 [이 폴더][reports-folder]에 업로드할 수 있다. 특정 구현에 대한
 보고서를 구성하고 제출하는 방법에 대한 모든 세부 사항은 [가이드][conformance-guide]를
 따르자.
@@ -201,20 +201,20 @@ PR을 통해 [이 폴더][reports-folder]에 업로드할 수 있다. 특정 구
 [reports-folder]: https://github.com/kubernetes-sigs/gateway-api/tree/main/conformance/reports/
 [conformance-guide]: https://github.com/kubernetes-sigs/gateway-api/tree/main/conformance/reports/README.md
 
-## 적합성에 기여하기
+## 호환성에 기여하기
 
-많은 구현체는 전체 e2e 테스트 스위트의 일부로 적합성 테스트를 실행한다.
-적합성 테스트에 기여한다는 것은 구현이 테스트 개발에 대한 투자를 공유하고
+많은 구현체는 전체 e2e 테스트 스위트의 일부로 호환성 테스트를 실행한다.
+호환성 테스트에 기여한다는 것은 구현이 테스트 개발에 대한 투자를 공유하고
 일관된 경험을 제공하고 있음을 보장할 수 있다는 것을
 의미한다.
 
-적합성과 관련된 모든 코드는 프로젝트의 "/conformance" 디렉터리에 있다.
+호환성과 관련된 모든 코드는 프로젝트의 "/conformance" 디렉터리에 있다.
 테스트 정의는 "/conformance/tests"에 있으며 각 테스트는 두 개의 파일로 구성된다.
 YAML 파일에는 테스트 실행 시 적용할 매니페스트가 포함되어 있다.
 Go 파일에는 구현체가 해당 매니페스트를 적절히 처리하는지 확인하는 코드가
 포함되어 있다.
 
-적합성과 관련된 이슈는
+호환성과 관련된 이슈는
 ["area/conformance"로 레이블이 지정](https://github.com/kubernetes-sigs/gateway-api/issues?q=is%3Aissue+is%3Aopen+label%3Aarea%2Fconformance)
 되어 있다. 이는 종종 테스트 커버리지를 개선하기 위한 새로운 테스트 추가나 기존 테스트의
 결함이나 제한 사항 수정을 다룬다.

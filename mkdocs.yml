@@ -201,7 +201,7 @@ nav:
     - 소개: ko/index.md
     - 개념:
       - API 개요: ko/concepts/api-overview.md
-      - 적합성: ko/concepts/conformance.md
+      - 호환성: ko/concepts/conformance.md
       - 역할과 페르소나: ko/concepts/roles-and-personas.md
       - 보안 모델: ko/concepts/security-model.md
       - 도구: ko/concepts/tooling.md

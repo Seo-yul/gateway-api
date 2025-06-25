@@ -1,18 +1,18 @@
-# Implementations
+# 구현체
 
-This document tracks downstream implementations and integrations of Gateway API
-and provides status and resource references for them.
+이 문서는 게이트웨이 API의 다운스트림 구현 및 통합을 추적하고
+이들에 대한 상태 및 리소스 참조를 제공한다.
 
-Implementors and integrators of Gateway API are encouraged to update this
-document with status information about their implementations, the versions they
-cover, and documentation to help users get started.
+게이트웨이 API의 구현자와 통합자들은 자신들의 구현체에 대한 상태 정보, 지원하는 버전, 그리고
+사용자가 시작하는 데 도움이 되는 문서를, 이 문서에 업데이트하는 것이
+권장된다.
 
 
-!!! info "Compare extended supported features across implementations"
+!!! info "구현체 간 확장 지원 기능 비교"
 
-    [View a table to quickly compare supported features of projects](implementations/v1.2.md). These outline Gateway controller implementations that have passed core conformance tests, and focus on extended conformance features that they have implemented.
+    [프로젝트의 지원 기능을 빠르게 비교할 수 있는 표 확인](implementations/v1.3.md). 표는 코어 호환성 테스트를 통과한 게이트웨이 컨트롤러 구현체를 개요로 제시하며,  구현한 확장 호환성 기능에 초점을 맞춘다.
 
-## Gateway Controller Implementation Status <a name="gateways"></a>
+## 게이트웨이 컨트롤러 구현 상태 <a name="gateways"></a>
 
 - [Acnodal EPIC][1]
 - [Airlock Microgateway][34]
@@ -35,7 +35,7 @@ cover, and documentation to help users get started.
 - [kgateway][37] (GA)
 - [Kong Ingress Controller][10] (GA)
 - [Kong Gateway Operator][35] (GA)
-* [Kubvernor][39](work in progress)
+* [Kubvernor][39](진행 중)
 - [Kuma][11] (GA)
 - [LiteSpeed Ingress Controller][19]
 - [LoxiLB][36] (beta)
@@ -43,17 +43,17 @@ cover, and documentation to help users get started.
 - [ngrok][33] (preview)
 - [STUNner][21] (beta)
 - [Traefik Proxy][13] (GA)
-- [Tyk][29] (work in progress)
+- [Tyk][29] (진행 중)
 - [WSO2 APK][25] (GA)
 
-## Service Mesh Implementation Status <a name="meshes"></a>
+## 서비스 메시 구현 상태 <a name="meshes"></a>
 
 - [Google Cloud Service Mesh][38] (GA)
 - [Istio][9] (GA)
 - [Kuma][11] (GA)
 - [Linkerd][28] (GA)
 
-## Integrations <a name="integrations"></a>
+## 통합 <a name="integrations"></a>
 
 - [Flagger][14] (public preview)
 - [cert-manager][15] (alpha)
@@ -105,15 +105,15 @@ cover, and documentation to help users get started.
 
 
 
-## Implementations
+## 구현체
 
-In this section you will find specific links to blog posts, documentation and other Gateway API references for specific implementations.
+이 섹션에서는 특정 구현체들에 대한 블로그 게시글, 문서 및 기타 게이트웨이 API 참조에 대한 구체적인 링크를 찾을 수 있다.
 
 ### Acnodal EPIC
-[EPIC][epicdocs] is an Open Source External Gateway platform designed and built with Kubernetes.  It consists of the Gateway Cluster, k8s Gateway controller, a stand alone Linux Gateway controller and the Gateway Service Manager.  Together they create a platform for providing Gateway services to cluster users.   Each gateway consists of multiple Envoy instances running on the gateway cluster not the workload clusters. The Gateway Service Manager is a simple user management and UI that can be used to implement Gateway-as-a-Service infrastructure for public and private clusters, and integrate non-k8s endpoints.
+[EPIC][epicdocs]는 쿠버네티스와 함께 설계되고 구축된 오픈 소스 외부 게이트웨이 플랫폼이다. 게이트웨이 클러스터, k8s 게이트웨이 컨트롤러, 독립형 리눅스 게이트웨이 컨트롤러 및 게이트웨이 서비스 매니저로 구성된다. 이들은 함께 클러스터 사용자에게 게이트웨이 서비스를 제공하는 플랫폼을 만든다. 각 게이트웨이는 워크로드 클러스터가 아닌 게이트웨이 클러스터에서 실행되는 여러 Envoy 인스턴스로 구성된다. 게이트웨이 서비스 매니저는 공용 및 사설 클러스터를 위한 Gateway-as-a-Service 인프라를 구현하고 비-k8s 엔드포인트를 통합하는 데 사용할 수 있는 간단한 사용자 관리 및 UI이다.
 
-- [Documentation][epicdocs]
-- [Source Repo][epicsource]
+- [문서][epicdocs]
+- [소스 저장소][epicsource]
 
 [epicdocs]:https://www.epic-gateway.org/
 [epicsource]:https://github.com/epic-gateway
@@ -121,20 +121,20 @@ In this section you will find specific links to blog posts, documentation and ot
 ### Airlock Microgateway
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.3.0-Airlock%20Microgateway-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.3.0/airlock-microgateway)
 
-[Airlock Microgateway][airlock-microgateway] is a Kubernetes native WAAP (Web Application and API Protection, formerly known as WAF) solution optimized for Kubernetes environments and certified for RedHat OpenShift.
-Modern application security is embedded in the development workflow and follows DevSecOps paradigms.
-Airlock Microgateway protects your applications and microservices with the tried-and-tested Airlock security features against attacks, while also providing a high degree of scalability.
+[Airlock Microgateway][airlock-microgateway]는 쿠버네티스 환경에 최적화되고 RedHat OpenShift 인증을 받은 쿠버네티스 네이티브 WAAP(Web Application and API Protection, 이전 WAF) 솔루션이다.
+현대적인 애플리케이션 보안이 개발 워크플로에 내장되어 DevSecOps 패러다임을 따른다.
+Airlock Microgateway는 검증된 Airlock 보안 기능으로 애플리케이션과 마이크로서비스를 공격으로부터 보호하며, 높은 확장성도 제공한다.
 
-#### Features
-- Comprehensive WAAP (formerly known as WAF) with security features like Deny Rules to protect against known attacks (OWASP Top 10), header filtering, JSON parsing, OpenAPI specification enforcement, and GraphQL schema validation
-- Identity aware proxy which makes it possible to enforce authentication using JWT authentication or OIDC
-- Reverse proxy functionality with request routing rules, TLS termination and remote IP extraction
-- Easy-to-use Grafana dashboards which provide valuable insights in allowed and blocked traffic and other metrics
+#### 기능
+- 알려진 공격(OWASP Top 10)으로부터 보호하는 거부 규칙, 헤더 필터링, JSON 파싱, OpenAPI 명세 강제 적용, GraphQL 스키마 검증과 같은 보안 기능을 갖춘 포괄적인 WAAP(이전 WAF)
+- JWT 인증 또는 OIDC를 사용한 인증 강제를 가능하게 하는 ID 인식 프록시
+- 요청 라우팅 규칙, TLS 종료 및 원격 IP 추출을 포함한 리버스 프록시 기능
+- 허용 및 차단된 트래픽과 기타 메트릭에 대한 유용한 인사이트를 제공하는 사용하기 쉬운 Grafana 대시보드
 
-#### Documentation and links
-- [Product documentation][airlock-microgateway-documentation]
-- [Gateway specific documentation][airlock-microgateway-guide]
-- Check our [Airlock community forum][airlock-microgateway-community-support] and [support process][airlock-microgateway-premium-support] for support.
+#### 문서 및 링크
+- [제품 문서][airlock-microgateway-documentation]
+- [게이트웨이 상세 문서][airlock-microgateway-guide]
+- 도움을 위해 [Airlock 커뮤니티 포럼][airlock-microgateway-community-support]과 [지원 프로세스][airlock-microgateway-premium-support]를 확인하자.
 
 [airlock-microgateway]:https://www.airlock.com/en/secure-access-hub/components/microgateway
 [airlock-microgateway-documentation]:https://docs.airlock.com/microgateway/latest
@@ -144,7 +144,7 @@ Airlock Microgateway protects your applications and microservices with the tried
 
 ### Amazon Elastic Kubernetes Service
 
-[Amazon Elastic Kubernetes Service (EKS)][eks] is a managed service that you can use to run Kubernetes on AWS without needing to install, operate, and maintain your own Kubernetes control plane or nodes. EKS's implementation of the Gateway API is through [AWS Gateway API Controller][eks-gateway] which provisions [Amazon VPC Lattice][vpc-lattice] Resources for gateway(s), HTTPRoute(s) in EKS clusters.
+[Amazon Elastic Kubernetes Service (EKS)][eks]는 자체 쿠버네티스 컨트롤 플레인이나 노드를 설치, 운영, 유지 관리할 필요 없이 AWS에서 쿠버네티스를 실행하는 데 사용할 수 있는 관리형 서비스이다. EKS는 [AWS 게이트웨이 API 컨트롤러][eks-gateway]를 통해 게이트웨이 API를 구현하며, 이 컨트롤러는 EKS 클러스터 내 게이트웨이 및 HTTPRoute를 위해 [Amazon VPC Lattice][vpc-lattice] 리소스를 프로비저닝한다.
 
 [eks]:https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html
 [eks-gateway]:https://github.com/aws/aws-application-networking-k8s
@@ -152,20 +152,20 @@ Airlock Microgateway protects your applications and microservices with the tried
 
 ### APISIX
 
-[Apache APISIX][apisix] is a dynamic, real-time, high-performance API Gateway. APISIX provides rich traffic management features such as load balancing, dynamic upstream, canary release, circuit breaking, authentication, observability, and more.
+[Apache APISIX][apisix]는 동적이고 실시간이며 고성능인 API 게이트웨이이다. APISIX는 로드 밸런싱, 동적 업스트림, 카나리 릴리스, 서킷 브레이킹, 인증, 관찰 가능성 등과 같은 풍부한 트래픽 관리 기능을 제공한다.
 
-APISIX currently supports Gateway API `v1beta1` version of the specification for its [Apache APISIX Ingress Controller][apisix-1].
+APISIX는 현재 [Apache APISIX 인그레스 컨트롤러][apisix-1]에 대해 게이트웨이 API `v1beta1` 버전의 명세를 지원한다.
 
 [apisix]:https://apisix.apache.org/
 [apisix-1]:https://github.com/apache/apisix-ingress-controller
 
 ### Avi Kubernetes Operator
 
-[Avi Kubernetes Operator (AKO)][ako] provides L4-L7 load-balancing using VMware AVI Advanced Load Balancer.
+[Avi Kubernetes Operator (AKO)][ako]는 VMware AVI Advanced Load Balancer를 사용하여 L4-L7 로드 밸런싱을 제공한다.
 
-Starting with AKO version [v1.13.1], Gateway API version v1.0.0 is supported. It implements v1 version of Gateway API specification supporting GatewayClass, Gateway and HTTPRoute objects.
+AKO 버전 [v1.13.1]부터 게이트웨이 API 버전 v1.0.0이 지원된다. 게이트웨이 클래스, 게이트웨이 및 HTTPRoute 객체를 지원하는 게이트웨이 API 명세의 v1 버전을 구현한다.
 
-Documentation to deploy and use AKO Gateway API can be found at [Avi Kubernetes Operator Gateway API][ako-gw].
+AKO 게이트웨이 API를 배포하고 사용하는 문서는 [Avi 쿠버네티스 오퍼레이터 게이트웨이 API][ako-gw]에서 찾을 수 있다.
 
 [ako]:https://techdocs.broadcom.com/us/en/vmware-security-load-balancing/avi-load-balancer/avi-kubernetes-operator/AKO/avi-kubernetes-operator-1-13/avi-kubernetes-operator.html
 [ako-gw]:https://techdocs.broadcom.com/us/en/vmware-security-load-balancing/avi-load-balancer/avi-kubernetes-operator/AKO/avi-kubernetes-operator-1-13/gateway-api/gateway-api-v1.html
@@ -175,7 +175,7 @@ Documentation to deploy and use AKO Gateway API can be found at [Avi Kubernetes 
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Partial%20Conformance%20v1.1.1-Azure%20Application%20Gateway%20for%20Containers-orange)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.1.0/azure-application-gateway-for-containers)
 
-[Application Gateway for Containers][azure-application-gateway-for-containers] is a managed application (layer 7) load balancing solution, providing dynamic traffic management capabilities for workloads running in a Kubernetes cluster in Azure. Follow the [quickstart guide][azure-application-gateway-for-containers-quickstart-controller] to deploy the ALB controller and get started with Gateway API.
+[Application Gateway for Containers][azure-application-gateway-for-containers]는 Azure의 쿠버네티스 클러스터에서 실행되는 워크로드에 대한 동적 트래픽 관리 기능을 제공하는 관리형 애플리케이션(레이어 7) 로드 밸런싱 솔루션이다. ALB 컨트롤러를 배포하고 게이트웨이 API를 시작하려면 [빠른 시작 가이드][azure-application-gateway-for-containers-quickstart-controller]를 따른다.
 
 
 [azure-application-gateway-for-containers]:https://aka.ms/appgwcontainers/docs
@@ -185,19 +185,19 @@ Documentation to deploy and use AKO Gateway API can be found at [Avi Kubernetes 
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.0.0-Cilium-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.0.0/cilium)
 
-[Cilium][cilium] is an eBPF-based networking, observability and security
-solution for Kubernetes and other networking environments. It includes [Cilium
-Service Mesh][cilium-service-mesh], a highly efficient mesh data plane that can
-be run in [sidecarless mode][cilium-sidecarless] to dramatically improve
-performance, and avoid the operational complexity of sidecars. Cilium also
-supports the sidecar proxy model, offering choice to users. As of [Cilium 1.14][cilium114blog],
-Cilium supports Gateway API, passing conformance for v0.7.1.
+[Cilium][cilium]은 쿠버네티스 및 기타 네트워킹 환경을 위한 eBPF 기반 네트워킹, 관찰 가능성 및 보안 솔루션이다.
+여기에는 [Cilium Service Mesh][cilium-service-mesh]가 포함되어 있으며,
+이는 높은 효율을 가진 메시 데이터 플레인으로 [사이드카 없는 모드][cilium-sidecarless]에서 실행될 수 있어 성능을 크게 향상시키고,
+사이드카로 인한 운영 복잡성을 피할 수 있다.
+Cilium은 또한 사이드카 프록시 모델도 지원하여 사용자에게 선택권을 제공한다.
+[Cilium 1.14][cilium114blog]부터 Cilium은 게이트웨이 API를 지원하며 v0.7.1에 대한 호환성을
+통과한다.
 
-Cilium is open source and is a CNCF Graduates project.
+Cilium은 오픈 소스이며 CNCF 졸업 프로젝트이다.
 
-If you have questions about Cilium Service Mesh the #service-mesh channel on
-[Cilium Slack][cilium-slack] is a good place to start. For contributing to the development
-effort, check out the #development channel or join our [weekly developer meeting][cilium-meeting].
+Cilium 서비스 메시에 대한 질문이 있다면 [Cilium Slack][cilium-slack]의 #service-mesh 채널에서 시작하는 것이 좋다.
+개발 노력에 기여하려면 #development 채널을 확인하거나,
+[주간 개발자 회의][cilium-meeting]에 참여하자.
 
 [cilium]:https://cilium.io
 [cilium-service-mesh]:https://docs.cilium.io/en/stable/gettingstarted/#service-mesh
@@ -210,15 +210,15 @@ effort, check out the #development channel or join our [weekly developer meeting
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.1-Contour-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.1/projectcontour-contour)
 
-[Contour][contour] is a CNCF open source Envoy-based ingress controller for Kubernetes.
+[Contour][contour]는 쿠버네티스를 위한 CNCF 오픈 소스로 Envoy 기반 인그레스 컨트롤러이다.
 
-Contour [v1.31.0][contour-release] implements Gateway API v1.2.1.
-All [Standard channel][contour-standard] v1 API group resources (GatewayClass, Gateway, HTTPRoute, ReferenceGrant), plus most v1alpha2 API group resources (TLSRoute, TCPRoute, GRPCRoute, ReferenceGrant, and BackendTLSPolicy) are supported.
-Contour's implementation passes most core extended Gateway API conformance tests included in the v1.2.1 release.
+Contour [v1.31.0][contour-release]은 게이트웨이 API v1.2.1을 구현한다.
+모든 [표준 채널][contour-standard] v1 API 그룹 리소스(게이트웨이 클래스, 게이트웨이, HTTPRoute, 레퍼런스그랜트)와 대부분의 v1alpha2 API 그룹 리소스(TLSRoute, TCPRoute, GRPCRoute, 레퍼런스그랜트, BackendTLSPolicy)가 지원된다.
+Contour의 구현은 v1.2.1 릴리스에 포함된 대부분의 코어 확장 게이트웨이 API 호환성 테스트를 통과한다.
 
-See the [Contour Gateway API Guide][contour-guide] for information on how to deploy and use Contour's Gateway API implementation.
+Contour의 게이트웨이 API 구현을 배포하고 사용하는 방법에 대한 정보는 [Contour Gateway API Guide][contour-guide]를 확인하자.
 
-For help and support with Contour's implementation, [create an issue][contour-issue-new] or ask for help in the [#contour channel on Kubernetes slack][contour-slack].
+Contour의 구현에 대한 도움과 지원을 받으려면, [이슈를 생성][contour-issue-new]하거나 [쿠버네티스 slack의 #contour 채널][contour-slack]에서 도움을 요청하자.
 
 [contour]:https://projectcontour.io
 [contour-release]:https://github.com/projectcontour/contour/releases/tag/v1.30.0
@@ -229,20 +229,20 @@ For help and support with Contour's implementation, [create an issue][contour-is
 
 ### Easegress
 
-[Easegress][easegress] is a Cloud Native traffic orchestration system.
+[Easegress][easegress]는 클라우드 네이티브 트래픽 오케스트레이션 시스템이다.
 
-It can function as a sophisticated modern gateway, a robust distributed cluster, a flexible traffic orchestrator, or even an accessible service mesh.
+이 시스템은 현대적인 고급 게이트웨이, 견고한 분산 클러스터, 유연한 트래픽 오케스트레이터, 또는 접근 가능한 서비스 메시로 기능할 수 있다.
 
-Easegress currently supports Gateway API `v1beta1` version of the specification by [GatewayController][easegress-gatewaycontroller].
+Easegress는 현재 [게이트웨이 컨트롤러][easegress-gatewaycontroller]를 통해 게이트웨이 API `v1beta1` 버전의 명세를 지원한다.
 
 [easegress]:https://megaease.com/easegress/
 [easegress-gatewaycontroller]:https://github.com/megaease/easegress/blob/main/docs/04.Cloud-Native/4.2.Gateway-API.md
 
 ### Emissary-Ingress (Ambassador API Gateway)
 
-[Emissary-Ingress][emissary] (formerly known as Ambassador API Gateway) is an open source CNCF project that
-provides an ingress controller and API gateway for Kubernetes built on top of [Envoy Proxy][envoy].
-See [here][emissary-gateway-api] for more details on using the Gateway API with Emissary.
+[Emissary-Ingress][emissary] (이전 Ambassador API Gateway)는 [Envoy Proxy][envoy] 위에 구축된
+쿠버네티스용 인그레스 컨트롤러와 API 게이트웨이를 제공하는 오픈 소스 CNCF 프로젝트이다.
+Emissary와 함께 게이트웨이 API를 사용하는 자세한 내용은 [여기][emissary-gateway-api]를 참조하자.
 
 [emissary]:https://www.getambassador.io/docs/edge-stack
 [envoy]:https://envoyproxy.io
@@ -252,10 +252,10 @@ See [here][emissary-gateway-api] for more details on using the Gateway API with 
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.0.0-EnvoyGateway-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.0.0/envoy-gateway)
 
-[Envoy Gateway][eg-home] is an [Envoy][envoy-org] subproject for managing Envoy-based application gateways. The supported
-APIs and fields of the Gateway API are outlined [here][eg-supported].
-Use the [quickstart][eg-quickstart] to get Envoy Gateway running with Gateway API in a
-few simple steps.
+[Envoy Gateway][eg-home]는 Envoy 기반 애플리케이션 게이트웨이를 관리하기 위한 [Envoy][envoy-org] 하위 프로젝트이다.
+지원되는 게이트웨이 API의 API와 필드는 [여기][eg-supported]에 설명되어 있다.
+몇 가지 간단한 단계로 게이트웨이 API와 함께 Envoy Gateway를 실행하려면 [빠른 시작][eg-quickstart]을
+사용하자.
 
 [eg-home]:https://gateway.envoyproxy.io/
 [envoy-org]:https://github.com/envoyproxy
@@ -264,12 +264,12 @@ few simple steps.
 
 ### Flomesh Service Mesh (FSM)
 
-[Flomesh Service Mesh][fsm] is a community driven lightweight service mesh for Kubernetes East-West and North-South traffic management. Flomesh uses [ebpf](https://www.kernel.org/doc/html/latest/bpf/index.html) for layer4 and [pipy](https://flomesh.io/pipy) proxy for layer7 traffic management. Flomesh comes bundled with a load balancer, cross-cluster service registration/discovery and it supports multi-cluster networking. It supports `Ingress` (and as such is an "Ingress controller") and Gateway API.
+[Flomesh Service Mesh][fsm]는 쿠버네티스 동/서 및 북/남 트래픽 관리를 위한 커뮤니티 주도의 경량 서비스 메시이다. Flomesh는 레이어4 트래픽 관리를 위해 [ebpf](https://www.kernel.org/doc/html/latest/bpf/index.html)를, 레이어7 트래픽 관리에 [pipy](https://flomesh.io/pipy) 프록시를 사용한다. Flomesh는 로드 밸런서, 크로스 클러스터 서비스 등록/발견을 내장으로 제공하며, 멀티 클러스터 네트워킹을 지원한다. `Ingress`("인그레스 컨트롤러"로서)와 게이트웨이 API를 지원한다.
 
-FSM support of Gateway API is built on top [Flomesh Gateway API][fgw] and it currently supports Kubernetes Gateway API version [v0.7.1](https://github.com/kubernetes-sigs/gateway-api/releases/tag/v0.7.1) with support for `v0.8.0` currently in progress.
+FSM의 게이트웨이 API 지원은 [Flomesh 게이트웨이 API][fgw] 위에 구축되며 현재 쿠버네티스 게이트웨이 API 버전 [v0.7.1](https://github.com/kubernetes-sigs/gateway-api/releases/tag/v0.7.1)을 지원하고 `v0.8.0` 지원이 현재 진행 중이다.
 
-- [FSM Kubernetes Gateway API compatibility matrix](https://github.com/flomesh-io/fsm/blob/main/docs/gateway-api-compatibility.md)
-- [How to use Gateway API support in FSM](https://github.com/flomesh-io/fsm/blob/main/docs/tests/gateway-api/README.md)
+- [FSM 쿠버네티스 게이트웨이 API 호환성 매트릭스](https://github.com/flomesh-io/fsm/blob/main/docs/gateway-api-compatibility.md)
+- [FSM에서 게이트웨이 API 지원을 사용하는 방법](https://github.com/flomesh-io/fsm/blob/main/docs/tests/gateway-api/README.md)
 
 [fsm]:https://github.com/flomesh-io/fsm
 [flomesh]:https://flomesh.io
@@ -280,11 +280,11 @@ FSM support of Gateway API is built on top [Flomesh Gateway API][fgw] and it cur
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.0.0-GlooGateway-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.0.0/gloo-gateway)
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Partial%20Conformance%20v1.1.0-GlooGateway-orange)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.1.0/gloo-gateway)
 
-[Gloo Gateway][gloogateway] by [Solo.io][solo] is a feature-rich, Kubernetes-native ingress controller and next-generation API gateway.
-Gloo Gateway brings the full power and community support of Gateway API to its existing control-plane implementation.
+[Solo.io][solo]의 [Gloo 게이트웨이][gloogateway]는 기능이 풍부한 쿠버네티스 네이티브 인그레스 컨트롤러이자 차세대 API 게이트웨이이다.
+Gloo 게이트웨이는 기존 컨트롤 플레인 구현에 게이트웨이 API의 완전한 기능과 커뮤니티 지원을 제공한다.
 
-The Gloo Gateway ingress controller passes all the core Gateway API conformance tests in the v1.1.0 release for the GATEWAY_HTTP conformance
-profile except `HTTPRouteServiceTypes`.
+Gloo 게이트웨이 인그레스 컨트롤러는 `HTTPRouteServiceTypes`를 제외하고
+v1.1.0 릴리스의 GATEWAY_HTTP 호환성 프로필에 대한 모든 코어 게이트웨이 API 호환성 테스트를 통과한다.
 
 [gloogateway]:https://docs.solo.io/gateway/latest/
 [solo]:https://www.solo.io
@@ -292,13 +292,13 @@ profile except `HTTPRouteServiceTypes`.
 ### Google Cloud Service Mesh
 
 
-[Google Kubernetes Engine (GKE)][gke] is a managed Kubernetes platform offered
-by Google Cloud.
+[Google Kubernetes Engine (GKE)][gke]는 구글 클라우드에서 제공하는
+관리형 쿠버네티스 플랫폼이다.
 
-GKE's implementation of Gateway For Mesh (GAMMA) is through the [Cloud Service Mesh][cloud-service-mesh].
+GKE의 메시를 위한 게이트웨이 (GAMMA) 구현은 [클라우드 서비스 메시][cloud-service-mesh]를 통해 이루어진다.
 
 
-Google Cloud Service Mesh supports [Envoy-based sidecar mesh][envoy-sidecar-mesh] and [Proxyless-GRPC][proxyless-grpc-mesh] (using GRPCRoute).
+구글 클라우드 서비스 메시는 [Envoy 기반 사이드카 메시][envoy-sidecar-mesh]와 [Proxyless-GRPC][proxyless-grpc-mesh] (GRPCRoute 사용)를 지원한다.
 
 
 [gke]:https://cloud.google.com/kubernetes-engine
@@ -310,18 +310,18 @@ Google Cloud Service Mesh supports [Envoy-based sidecar mesh][envoy-sidecar-mesh
 
 [![Conformance](https://img.shields.io/badge/Gateway_API_Partial_Conformance_v1.1.0-Google_Kubernetes_Engine-orange)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.1.0/gke-gateway)
 
-[Google Kubernetes Engine (GKE)][gke] is a managed Kubernetes platform offered
-by Google Cloud. GKE's implementation of the Gateway API is through the [GKE
-Gateway controller][gke-gateway] which provisions Google Cloud Load Balancers
-for Pods in GKE clusters.
+[Google 쿠버네티스 엔진 (GKE)][gke]은 구글 클라우드에서 제공하는
+관리형 쿠버네티스 플랫폼이다.
+GKE의 게이트웨이 API 구현은 GKE 클러스터의 파드를 위한 구글 클라우드 로드 밸런서를 프로비저닝하는
+[GKE 게이트웨이 컨트롤러][gke-gateway]를 통해 이루어진다.
 
-The GKE Gateway controller supports weighted traffic splitting, mirroring,
-advanced routing, multi-cluster load balancing and more. See the docs to deploy
-[private or public Gateways][gke-gateway-deploy] and also [multi-cluster
-Gateways][gke-multi-cluster-gateway].
+GKE 게이트웨이 컨트롤러는 가중치 트래픽 분할, 미러링, 고급 라우팅, 멀티 클러스터 로드 밸런싱 등을
+지원한다.
+[사설 또는 공용 게이트웨이][gke-gateway-deploy] 및 [멀티 클러스터 게이트웨이][gke-multi-cluster-gateway]를
+배포하는 방법은 문서를 참조한다.
 
-The GKE Gateway controller passes all the core Gateway API conformance tests in the
-v1.1.0 release for the GATEWAY_HTTP conformance profile except `HTTPRouteHostnameIntersection`.
+GKE 게이트웨이 컨트롤러는 `HTTPRouteHostnameIntersection`을 제외하고
+v1.1.0 릴리스의 GATEWAY_HTTP 호환성 프로필에 대한 모든 코어 게이트웨이 API 호환성 테스트를 통과한다.
 
 [gke]:https://cloud.google.com/kubernetes-engine
 [gke-gateway]:https://cloud.google.com/kubernetes-engine/docs/concepts/gateway-api
@@ -330,27 +330,27 @@ v1.1.0 release for the GATEWAY_HTTP conformance profile except `HTTPRouteHostnam
 
 ### HAProxy Ingress
 
-[HAProxy Ingress][h1] is a community driven ingress controller implementation for HAProxy.
+[HAProxy 인그레스][h1]는 HAProxy를 위한 커뮤니티 주도 인그레스 컨트롤러 구현이다.
 
-HAProxy Ingress v0.13 partially supports the Gateway API's v1alpha1 specification. See the [controller's Gateway API documentation][h2] to get informed about conformance and roadmap.
+HAProxy 인그레스 v0.13은 게이트웨이 API의 v1alpha1 명세를 부분적으로 지원한다. 호환성과 로드맵에 대한 정보는 [컨트롤러의 게이트웨이 API 문서][h2]를 참조한다.
 
 [h1]:https://haproxy-ingress.github.io/
 [h2]:https://haproxy-ingress.github.io/docs/configuration/gateway-api/
 
 ### HAProxy Kubernetes Ingress Controller
 
-HAProxy Kubernetes Ingress Controller is an open-source project maintained by HAProxy Technologies that provides fast and efficient traffic management, routing, and observability for Kubernetes. It has built-in support for the Gateway API since version 1.10. The same deployment of the ingress controller will allow you to use both the Ingress API and Gateway API. See the [documentation][haproxytech-docs-gw] for more details. In the [GitHub repository][haproxytech-github-gw], you will also find additional information about supported API resources.
+HAProxy 쿠버네티스 인그레스 컨트롤러는 HAProxy Technologies에서 유지 관리하는 오픈 소스 프로젝트로, 쿠버네티스를 위한 빠르고 효율적인 트래픽 관리, 라우팅 및 관찰 가능성을 제공한다. 버전 1.10부터 게이트웨이 API에 대한 내장 지원을 제공한다. 동일한 인그레스 컨트롤러 배포로 인그레스 API와 게이트웨이 API를 모두 사용할 수 있다. 자세한 내용은 [문서][haproxytech-docs-gw]를 참조하자. [GitHub 저장소][haproxytech-github-gw]에서 지원되는 API 리소스에 대한 추가 정보도 찾을 수 있다.
 
 [haproxytech-docs-gw]:https://www.haproxy.com/documentation/kubernetes-ingress/gateway-api/enable-gateway-api/
 [haproxytech-github-gw]:https://github.com/haproxytech/kubernetes-ingress/blob/master/documentation/gateway-api.md
 
 ### HashiCorp Consul
 
-[Consul][consul], by [HashiCorp][hashicorp], is an open source control plane for multi-cloud networking. A single Consul deployment can span bare metal, VM and container environments.
+[HashiCorp][hashicorp]의 [Consul][consul]은 멀티 클라우드 네트워킹을 위한 오픈 소스 컨트롤 플레인이다. 단일 Consul 배포로 베어 메탈, VM 및 컨테이너 환경에 걸쳐 확장될 수 있다.
 
-Consul service mesh works on any Kubernetes distribution, connects multiple clusters, and Consul CRDs provide a Kubernetes native workflow to manage traffic patterns and permissions in the mesh. [Consul API Gateway][consul-api-gw-docs] supports Gateway API for managing North-South traffic.
+Consul 서비스 메시는 모든 쿠버네티스 배포판에서 작동하고, 다중 클러스터를 연결을 지원하며, Consul CRD는 메시에서 트래픽 패턴과 권한을 관리하는 쿠버네티스 네이티브 워크플로를 제공한다. [Consul API 게이트웨이][consul-api-gw-docs]는 북/남 트래픽 관리를 위한 게이트웨이 API를 지원한다.
 
-Please see the [Consul API Gateway documentation][consul-api-gw-docs] for current information on the supported version and features of the Gateway API.
+게이트웨이 API의 지원되는 버전과 기능에 대한 최신 정보는 [Consul API 게이트웨이 문서][consul-api-gw-docs]를 확인하길 바란다.
 
 [consul]:https://consul.io
 [consul-api-gw-docs]:https://www.consul.io/docs/api-gateway
@@ -360,17 +360,17 @@ Please see the [Consul API Gateway documentation][consul-api-gw-docs] for curren
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.1-Istio-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.1/istio-istio)
 
-[Istio][istio] is an open source [service mesh][istio-mesh] and gateway implementation.
+[Istio][istio]는 오픈 소스 [서비스 메시][istio-mesh] 및 게이트웨이 구현체이다.
 
-A minimal install of Istio can be used to provide a fully compliant
-implementation of the Kubernetes Gateway API for cluster ingress traffic
-control. For service mesh users, Istio also fully supports the [GAMMA
-initiative's][gamma] Gateway API [support for east-west traffic
-management][gamma] within the mesh.
+Istio의 최소 설치만으로 클러스터 인그레스 트래픽 제어를 위한
+쿠버네티스 게이트웨이 API 완전한 적합 구현을 사용할 수 있다.
+서비스 메시 사용자를 위해,
+Istio는 메시 내에서 [GAMMA 이니셔티브의][gamma] 게이트웨이 API
+[동/서 트래픽 관리 지원][gamma]도 완전히 지원한다.
 
-Much of Istio's documentation, including all of the [ingress tasks][istio-1] and several mesh-internal traffic management tasks, already includes parallel instructions for
-configuring traffic using either the Gateway API or the Istio configuration API.
-Check out the [Gateway API task][istio-2] for more information about the Gateway API implementation in Istio.
+모든 [인그레스 작업][istio-1]과 여러 메시 내부 트래픽 관리 작업을 포함한 Istio 문서의 대부분은 이미 게이트웨이 API 또는 Istio 구성 API를 사용하여 트래픽을 구성하는 병렬 지침을 포함한다.
+게이트웨이 API 또는 Istio 구성 API를 사용하여 트래픽을 구성한다.
+Istio의 게이트웨이 API 구현에 대한 자세한 정보는 [게이트웨이 API task][istio-2]를 확인하자.
 
 [istio]:https://istio.io
 [istio-mesh]:https://istio.io/latest/docs/concepts/what-is-istio/#what-is-a-service-mesh
@@ -380,11 +380,11 @@ Check out the [Gateway API task][istio-2] for more information about the Gateway
 ### kgateway
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.1-kgateway-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.1/kgateway)
 
-The [kgateway] project is a feature-rich, Kubernetes-native ingress controller and next-generation API gateway.
-It is focused on maintaining a great HTTP experience, extending features for advanced routing in scenarios such as AI and MCP gateways, and interoperating with a service mesh such as Istio in both ambient and sidecar modes.
-This focus means that you can easily configure a set of Envoy instances that are reasonably distributed in a performant way across many north-south and east-west use cases.
+[kgateway] 프로젝트는 기능이 풍부한 쿠버네티스 네이티브 인그레스 컨트롤러이자 차세대 API 게이트웨이이다.
+우수한 HTTP 경험을 유지하는 데 중점을 두고 있으며, AI 및 MCP 게이트웨이와 같은 시나리오에서 고급 라우팅 기능을 확장하고, Istio와 같은 서비스 메쉬와 엠비언트 모드 및 사이드카 모드에서 상호 운용성을 지원한다.
+이러한 초점은 많은 북/남 및 동/서 사용 사례에서 성능 효율적 방식인 합리적으로 분산된 Envoy 인스턴스 세트를 쉽게 구성할 수 있음을 의미한다.
 
-Kgateway is generally available with its 2.0 release.
+Kgateway는 2.0 릴리스와 함께 일반적으로 사용 가능하다.
 
 [kgateway]:https://kgateway.dev/docs
 
@@ -393,11 +393,11 @@ Kgateway is generally available with its 2.0 release.
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.1-Kong%20Ingress%20Controller-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.1/kong-kubernetes-ingress-controller)
 
-[Kong][kong] is an open source API Gateway built for hybrid and multi-cloud environments.
+[Kong][kong]은 하이브리드 및 멀티 클라우드 환경을 위해 구축된 오픈 소스 API 게이트웨이이다.
 
-The [Kong Kubernetes Ingress Controller (KIC)][kic] can be used to configure unmanaged Gateways. See the [Gateway API Guide][kong-gw-guide] for usage information.. See the [Gateway API Guide][kong-gw-guide] for usage information.
+[Kong 쿠버네티스 인그레스 게이트웨이 (KIC)][kic]는 비관리형 게이트웨이를 구성하는 데 사용할 수 있다. 사용 정보는 [Gateway API Guide][kong-gw-guide]를 확인하자.
 
-For help and support with Kong Kubernetes Ingress Controller please feel free to [create an issue][kic-issue-new] or a [discussion][kic-disc-new]. You can also ask for help in the [#kong channel on Kubernetes slack][kong-slack].
+Kong 쿠버네티스 인그레스 컨트롤러에 대한 도움과 지원을 받으려면 [이슈를 생성][kic-issue-new]하거나 [토론][kic-disc-new]을 만들자. [쿠버네티스 slack의 #kong 채널][kong-slack]에서도 도움을 요청할 수 있다.
 
 [kong]:https://konghq.com
 [kic]:https://github.com/kong/kubernetes-ingress-controller
@@ -410,11 +410,11 @@ For help and support with Kong Kubernetes Ingress Controller please feel free to
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.0-Kong%20Gateway%20Operator-orange)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.0/kong-gateway-operator)
 
-[Kong][kong] is an open source API Gateway built for hybrid and multi-cloud environments.
+[Kong][kong]은 하이브리드 및 멀티 클라우드 환경을 위해 구축된 오픈 소스 API 게이트웨이이다.
 
-The [Kong Gateway operator (KGO)][kgo] can be used to configure managed Gateways and orchestrate instances of [Kong Kubernetes Ingress Controllers](#kong-kubernetes-ingress-controller).
+[Kong 게이트웨이 오퍼레이터 (KGO)][kgo]는 관리형 게이트웨이를 구성하고, [Kong 쿠버네티스 인그레스 컨트롤러](#kong-kubernetes-ingress-controller)의 인스턴스를 오케스트레이션하는 데 사용할 수 있다.
 
-For help and support with Kong Gateway operator please feel free to [create an issue][kgo-issue-new] or a [discussion][kgo-disc-new]. You can also ask for help in the [#kong channel on Kubernetes slack][kong-slack].
+Kong 쿠버네티스 인그레스 컨트롤러에 대한 도움과 지원을 받으려면 [이슈를 생성][kgo-issue-new]하거나 [토론][kgo-disc-new]을 만들자. [쿠버네티스 slack의 #kong 채널][kong-slack]에서도 도움을 요청할 수 있다.
 
 [kgo]:https://docs.konghq.com/gateway-operator/latest/
 [kgo-issue-new]:https://github.com/Kong/gateway-operator/issues/new
@@ -422,7 +422,7 @@ For help and support with Kong Gateway operator please feel free to [create an i
 
 
 ### Kubvernor
-[Kubvernor][kubvernor] is an open-source, highly experimental implementation of API controller in Rust programming language. Currently, Kubernor supports Envoy Proxy. The project aims to be as generic as possible so Kubvernor can be used to manage/deploy different gateways (Envoy, Nginx, HAProxy, etc.).
+[Kubvernor][kubvernor]는 Rust 프로그래밍 언어로 구현된 오픈소스이자 고도로 실험적인 API 컨트롤러이다. 현재 Kubvernor는 Envoy Proxy를 지원하며, 다양한 게이트웨이(Envoy, Nginx, HAProxy 등)를 관리/배포할 수 있도록 가능한 한 일반적인 구조를 목표로 한다.
 
 [kubvernor]:https://github.com/kubvernor/kubvernor
 
@@ -430,42 +430,42 @@ For help and support with Kong Gateway operator please feel free to [create an i
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.0.0-Kuma-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.0.0/kumahq-kuma)
 
-[Kuma][kuma] is an open source service mesh.
+[Kuma][kuma]는 오픈 소스 서비스 메시이다.
 
-Kuma implements the Gateway API specification for the Kuma built-in, Envoy-based Gateway with a beta stability guarantee. Check the [Gateway API Documentation][kuma-1] for information on how to setup a Kuma built-in gateway using the Gateway API.
+Kuma는 베타 안정성을 보장하며 Kuma 내장형, Envoy 기반 게이트웨이에 대한 게이트웨이 API 명세를 구현한다. 게이트웨이 API를 사용하여 Kuma 내장 게이트웨이를 설정하는 방법에 대한 정보는 [게이트웨이 API 문서][kuma-1]을 확인한다.
 
-Kuma 2.3 and later support the [GAMMA initiative's][gamma]
-Gateway API [support for east-west traffic management][gamma] within the mesh.
+Kuma 2.3 이상은 메시 내에서 [GAMMA 이니셔티브의][gamma] 
+게이트웨이 API [동/서 트래픽 관리 지원][gamma]을 지원한다.
 
 [kuma]:https://kuma.io
 [kuma-1]:https://kuma.io/docs/latest/using-mesh/managing-ingress-traffic/gateway-api/
 
 ### Linkerd
 
-[Linkerd][linkerd] is the first CNCF graduated [service mesh][linkerd-mesh].
-It is the only major mesh not based on Envoy, instead relying on a
-purpose-built Rust micro-proxy to bring security, observability, and
-reliability to Kubernetes, without the complexity.
+[Linkerd][linkerd]는 최초의 CNCF 졸업 [서비스 메시][linkerd-mesh]이다.
+Envoy를 기반으로 하지 않은 유일한 주요 메쉬로,
+대신 Rust로 특별히 설계된 마이크로 프록시를 활용해
+Kubernetes에 보안, 가시성, 신뢰성을 제공하며 복잡성을 제거한다.
 
-Linkerd 2.14 and later support the [GAMMA initiative's][gamma]
-Gateway API [support for east-west traffic management][gamma] within the mesh.
+Linkerd 2.14 이상은 메시 내에서 [GAMMA 이니셔티브의][gamma]
+게이트웨이 API [동/서 트래픽 관리 지원][gamma]을 지원한다.
 
 [linkerd]:https://linkerd.io/
 [linkerd-mesh]:https://buoyant.io/service-mesh-manifesto
 
 ### LiteSpeed Ingress Controller
 
-The [LiteSpeed Ingress Controller](https://litespeedtech.com/products/litespeed-web-adc/features/litespeed-ingress-controller) uses the LiteSpeed WebADC controller to operate as an Ingress Controller and Load Balancer to manage your traffic on your Kubernetes cluster.  It implements the full core Gateway API including Gateway, GatewayClass, HTTPRoute and ReferenceGrant and the Gateway functions of cert-manager.  Gateway is fully integrated into the LiteSpeed Ingress Controller.
+[LiteSpeed 인그레스 컨트롤러](https://litespeedtech.com/products/litespeed-web-adc/features/litespeed-ingress-controller)는 LiteSpeed WebADC 컨트롤러를 사용하여 인그레스 컨트롤러 및 로드 밸런서로 동작하며, 쿠버네티스 클러스터 내의 트래픽을 관리한다. 이 컨틀로러는 게이트웨이, 게이트웨이 클래스, HTTPRoute, 레퍼런스그랜트를 포함한 게이트웨이 API의 코어 기능 전체와 cert-manager의 게이트웨이 기능을 구현하고 있다. 게이트웨이는 LiteSpeed Ingress Controller에 완전히 통합되어 있다.
 
-- [Product documentation](https://docs.litespeedtech.com/cloud/kubernetes/).
-- [Gateway specific documentation](https://docs.litespeedtech.com/cloud/kubernetes/gateway).
-- Full support is available on the [LiteSpeed support web site](https://www.litespeedtech.com/support).
+- [제품 문서](https://docs.litespeedtech.com/cloud/kubernetes/).
+- [게이트웨이 상세 문서](https://docs.litespeedtech.com/cloud/kubernetes/gateway).
+- 전체 지원은 [LiteSpeed support 웹사이트](https://www.litespeedtech.com/support)에서 제공한다.
 
 ### LoxiLB
 
-[kube-loxilb][kube-loxilb-gh] is [LoxiLB's][loxilb-org] implementation of Gateway API and kubernetes service load-balancer spec which includes support for load-balancer class, advanced IPAM (shared or exclusive) etc. kube-loxilb manages Gateway API resources with [LoxiLB][loxilb-gh] as L4 service LB and [loxilb-ingress][loxilb-ingress-gh] for Ingress(L7) resources.
+[kube-loxilb][kube-loxilb-gh]는 [LoxiLB's][loxilb-org]가 구현한 게이트웨이 API 및 쿠버네티스 서비스 로드 밸런서 명세 구현체로, 로드 밸런서 클래스, 고급 IPAM(공유 또는 전용) 등을 지원한다. kube-loxilb는 L4 서비스 로드 밸런서로서 [LoxiLB][loxilb-gh]를 인그레스(L7) 리소스를 위해 [loxilb-ingress][loxilb-ingress-gh]를 사용하여 게이트웨이 API 리소스를 관리한다.
 
-Follow the [quickstart guide][loxigw-guide] to get LoxiLB running with Gateway API in a few simple steps.
+간단한 단계로 게이트웨이 API와 함께 LoxiLB를 실행하려면 [빠른 시작 가이드][loxigw-guide]를 참고하자.
 
 [loxilb-home]:https://loxilb.io/
 [loxilb-org]:https://github.com/loxilb-io
@@ -478,11 +478,11 @@ Follow the [quickstart guide][loxigw-guide] to get LoxiLB running with Gateway A
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.1-NGINX Gateway Fabric-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.1/nginx-nginx-gateway-fabric)
 
-[NGINX Gateway Fabric][nginx-gateway-fabric] is an open-source project that provides an implementation of the Gateway API using [NGINX][nginx] as the data plane. The goal of this project is to implement the core Gateway API to configure an HTTP or TCP/UDP load balancer, reverse-proxy, or API gateway for applications running on Kubernetes. You can find the comprehensive NGINX Gateway Fabric user documentation on the [NGINX Documentation][nginx-docs] website.
+[NGINX 게이트웨이 패브릭][nginx-gateway-fabric]은 [NGINX][nginx]를 데이터 플레인으로 사용하는 게이트웨이 API의 구현체를 제공하는 오픈소스 프로젝트이다. 이 프로젝트의 목표는 쿠버네티스에서 실행되는 애플리케이션을 위한 HTTP 또는 TCP/UDP 로드 밸런서, 리버스 프록시 또는 API 게이트웨이를 구성하기 위해 코어 게이트웨이 API를 구현하는 것이다. [NGINX 문서][nginx-docs] 웹사이트에서 종합적인 NGINX 게이트웨이 패브릭 사용자 문서를 찾을 수 있다.
 
-For a list of supported Gateway API resources and features, see the [Gateway API Compatibility][nginx-compat] doc.
+지원되는 게이트웨이 API 리소스 및 기능 목록은 [게이트웨이 API 호환성][nginx-compat] 문서를 확인하자.
 
-If you have any suggestions or experience issues with NGINX Gateway Fabric, please [create an issue][nginx-issue-new] or a [discussion][nginx-disc-new] on GitHub. You can also ask for help in the [NGINX Community Forum][nginx-forum].
+NGINX 게이트웨이 패브릭에 대한 제안이 있거나 문제를 경험했다면 GitHub에서 [이슈를 생성][nginx-issue-new]하거나 [토론][nginx-disc-new]을 부탁한다. 또한 [NGINX 커뮤니티 포럼][nginx-forum]에서 도움도 요청할 수 있다.
 
 [nginx-gateway-fabric]:https://github.com/nginx/nginx-gateway-fabric
 [nginx]:https://nginx.org/
@@ -495,15 +495,15 @@ If you have any suggestions or experience issues with NGINX Gateway Fabric, plea
 
 ### ngrok Kubernetes Operator
 
-[ngrok Kubernetes Operator][ngrok-k8s-operator] After adding preliminary support last year, the [ngrok Kubernetes Operator][ngrok-k8s-operator] supports the entire core Gateway API. This includes:
+[ngrok 쿠버네티스 오퍼레이터][ngrok-k8s-operator]는 작년에 초기 지원을 추가한 이후로 게이트웨이 API의 전체 코어를 지원한다. 이것은 다음을 포함한다.
 
-- Routes (HTTPRoute, TCPRoute, TLSRoute) + RouteMatches (Header, Path, +more)
-- Filters: Header, Redirect, Rewrite + more
-- Backends: Backend Filters + Weighted balancing
-- ReferenceGrant: RBAC for multi-tenant clusters handling
-- Traffic Policy as an extensionRef or annotation when the Gateway API isn’t flexible enough
+- 라우트: (HTTPRoute, TCPRoute, TLSRoute) 및 RouteMatches (Header, Path, 등)
+- 필터: Header, Redirect, Rewrite 등
+- 백엔드: 백엔드 Filters 및 가중치 기반 밸런싱
+- 레퍼런스그랜트: 멀티 테넌트 클러스터 처리를 위한 RBAC
+- 게이트웨이 API가 충분히 유연하지 않은 경우, extensionRef 또는 어노테이션으로 트래픽 정책 설정
 
-You can read our [docs][ngrok-k8s-gwapi-docs] for more information. If you have any feature requests or bug reports, please [create an issue][ngrok-issue-new]. You can also reach out for help on [Slack][ngrok-slack]
+자세한 내용은[docs][ngrok-k8s-gwapi-docs]를 참고하자. 기능 요청이나 버그 리포트는 [create an issue][ngrok-issue-new]을 통해 제출을 부탁한다. 또한 [Slack][ngrok-slack]에서 도움을 받을 수 있다.
 
 [ngrok-k8s-operator]:https://github.com/ngrok/ngrok-operator
 [ngrok]:https://ngrok.com
@@ -513,9 +513,9 @@ You can read our [docs][ngrok-k8s-gwapi-docs] for more information. If you have 
 
 ### STUNner
 
-[STUNner][stunner] is an open source cloud-native WebRTC media gateway for Kubernetes. STUNner is purposed specifically to facilitate the seamless ingestion of WebRTC media streams into a Kubernetes cluster, with simplified NAT traversal and dynamic media routing. Meanwhile, STUNner provides improved security and monitoring for large-scale real-time communications services. The STUNner dataplane exposes a standards compliant TURN service to WebRTC clients, while the control plane supports a subset of the Gateway API.
+[STUNner][stunner]는 쿠버네티스용 오픈소스 클라우드 네이티브 WebRTC 미디어 게이트웨이이다. STUNner는 WebRTC 미디어 스트림을 쿠버네티스 클러스터로 원활하게 수신하기 위한 목적으로 설계되었으며, 간소화된 NAT 트래버설과 동적 미디어 라우팅을 제공한다. 동시에 STUNner는 대규모 실시간 통신 서비스에 대해 보안성과 모니터링 기능을 향상시킨다. STUNner의 데이터 플레인은 WebRTC 클라이언트를 위한 표준 규격의 TURN 서비스를 제공하며, 컨트롤 플레인은 게이트웨이 API의 일부를 지원한다.
 
-STUNner currently supports version `v1alpha2` of the Gateway API specification. Check the [install guide][stunner-1] for information on how to deploy and use STUNner for WebRTC media ingestion. Please direct all questions, comments and bug-reports related to STUNner to the [STUNner project][stunner].
+현재 STUNner는 게이트웨이 API 명세의 `v1alpha2` 버전을 지원한다. WebRTC 미디어 수신을 위해 STUNner를 배포하고 사용하는 방법은 [설치 가이드][stunner-1]를 확인하자. STUNner와 관련된 모든 질문, 의견 및 버그 리포트는 [STUNner 프로젝트][stunner]로 보내주시기 바란다.
 
 [stunner]:https://github.com/l7mp/stunner
 [stunner-1]:https://github.com/l7mp/stunner/blob/main/doc/INSTALL.md
@@ -524,12 +524,12 @@ STUNner currently supports version `v1alpha2` of the Gateway API specification. 
 
 [![Conformance](https://img.shields.io/badge/Gateway%20API%20Conformance%20v1.2.1-Traefik Proxy-green)](https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.2.1/traefik-traefik)
 
-[Traefik Proxy][traefik-proxy] is an open source cloud-native application proxy.
+[Traefik Proxy][traefik-proxy]는 오픈 소스 클라우드 네이티브 애플리케이션 프록시이다.
 
-Traefik Proxy currently supports version `v1.2.1` of the Gateway API specification, check the [Kubernetes Gateway Provider Documentation][traefik-proxy-gateway-api-doc] for more information on how to deploy and use it.
-Traefik Proxy's implementation passes all HTTP core and some extended conformance tests, like GRPCRoute, but also supports TCPRoute and TLSRoute features from the Experimental channel.
+Traefik 프록시는 현재 게이트웨이 API 명세의 `v1.2.1` 버전을 지원한다. 배포 및 사용 방법에 대한 자세한 정보는 [쿠버네티스 제공자 문서][traefik-proxy-gateway-api-doc]를 확인하자.
+Traefik 프록시의 구현은 GRPCRoute와 같은 모든 HTTP 코어 및 일부 확장 호환성 테스트를 통과하며, 실험적 채널의 TCPRoute 및 TLSRoute 기능도 지원한다.
 
-For help and support with Traefik Proxy, [create an issue][traefik-proxy-issue-new] or ask for help in the [Traefik Labs Community Forum][traefiklabs-community-forum].
+Traefik 프록시에 대한 도움과 지원을 받으려면, [이슈를 생성][traefik-proxy-issue-new]하거나 [Traefik Labs 커뮤니티 포럼][traefiklabs-community-forum]에서 도움을 요청하자.
 
 [traefik-proxy]:https://traefik.io
 [traefik-proxy-gateway-api-doc]:https://doc.traefik.io/traefik/v3.2/routing/providers/kubernetes-gateway/
@@ -538,9 +538,9 @@ For help and support with Traefik Proxy, [create an issue][traefik-proxy-issue-n
 
 ### Tyk
 
-[Tyk Gateway][tyk-gateway] is a cloud-native, open source, API Gateway.
+[Tyk 게이트웨이][tyk-gateway]는 클라우드 네이티브 오픈소스 API 게이트웨이이다.
 
-The [Tyk.io][tyk] team is working towards an implementation of the Gateway API. You can track progress of this project [here][tyk-operator].
+[Tyk.io][tyk] 팀은 게이트웨이 API 구현을 목표로 작업 중이며, 이 프로젝트의 진행 상황은 [여기][tyk-operator]에서 확인할 수 있다.
 
 [tyk]:https://tyk.io
 [tyk-gateway]:https://github.com/TykTechnologies/tyk
@@ -548,62 +548,62 @@ The [Tyk.io][tyk] team is working towards an implementation of the Gateway API. 
 
 ### WSO2 APK
 
-[WSO2 APK][wso2-apk] is a purpose-built API management solution tailored for Kubernetes environments, delivering seamless integration, flexibility, and scalability to organizations in managing their APIs.
+[WSO2 APK][wso2-apk]는 쿠버네티스 환경을 위해 특별히 설계된 API 관리 솔루션으로, API 관리를 위한 통합성, 유연성, 확장성을 조직에 제공한다.
 
-WSO2 APK implements the Gateway API, encompassing Gateway and HTTPRoute functionalities. Additionally, it provides support for rate limiting, authentication/authorization, and analytics/observability through the use of Custom Resources (CRs).
+WSO2 APK는 게이트웨이 API를 구현하며, 게이트웨이 및 HTTPRoute 기능을 포함한다. 또한, 사용자 정의 리소스(CR)를 통해 레이트 리밋팅, 인증/인가, 분석/관찰 가능성을 지원한다.
 
-For up-to-date information on the supported version and features of the Gateway API, please refer to the [APK Gateway documentation][apk-doc]. If you have any questions or would like to contribute, feel free to create [issues or pull requests][repo]. Join our [Discord channel][discord] to connect with us and engage in discussions.
+게이트웨이 API의 지원 버전과 기능에 대한 최신 정보는 [APK 게이트웨이 문서][apk-doc]를 참고하자. 질문이 있거나 기여하고 싶다면 자유롭게 [이슈 또는 풀 리퀘스트][repo]를 생성할 수 있다. 또한 [Discord 채널][discord]에서 우리와 소통하고 토론에 참여할 수 있다.
 
 [wso2-apk]:https://apk.docs.wso2.com/en/latest/
 [apk-doc]:https://apk.docs.wso2.com/en/latest/catalogs/kubernetes-crds/
 [repo]:https://github.com/wso2/apk
 [discord]:https://discord.com/channels/955510916064092180/1113056079501332541
 
-## Integrations
+## 통합
 
-In this section you will find specific links to blog posts, documentation and other Gateway API references for specific integrations.
+이 섹션에서는 특정 통합을 위한 블로그 포스트, 문서 및 기타 게이트웨이 API 참조에 대한 구체적인 링크를 찾을 수 있다.
 
 ### Flagger
 
-[Flagger][flagger] is a progressive delivery tool that automates the release process for applications running on Kubernetes.
+[Flagger][flagger]는 쿠버네티스에서 실행되는 애플리케이션의 릴리스 프로세스를 자동화하는 점진적 배포 도구이다.
 
-Flagger can be used to automate canary deployments and A/B testing using Gateway API. It supports both the `v1alpha2` and `v1beta1` spec of Gateway API. You can refer to [this tutorial][flagger-tutorial] to use Flagger with any implementation of Gateway API.
+Flagger는 게이트웨이 API를 사용하여 카나리 배포와 A/B 테스트를 자동화하는 데 사용할 수 있다. 게이트웨이 API의 `v1alpha2`와 `v1beta1` 명세를 모두 지원한다. 게이트웨이 API의 모든 구현과 함께 Flagger를 사용하려면 [이 튜토리얼][flagger-tutorial]을 참조한다.
 
 [flagger]:https://flagger.app
 [flagger-tutorial]:https://docs.flagger.app/tutorials/gatewayapi-progressive-delivery
 
 ### cert-manager
 
-[cert-manager][cert-manager] is a tool to automate certificate management in cloud native environments.
+[cert-manager][cert-manager]는 클라우드 네이티브 환경에서 인증서 관리를 자동화하기 위한 도구이다.
 
-cert-manager can generate TLS certificates for Gateway resources. This is configured by adding annotations to a Gateway. It currently supports the `v1alpha2` spec of Gateway API. You can refer to the [cert-manager docs][cert-manager-docs] to try it out.
+cert-manager는 게이트웨이 리소스를 위한 TLS 인증서를 생성할 수 있다. 이는 게이트웨이에 어노테이션을 추가하여 구성된다. 현재 게이트웨이 API의 `v1alpha2` 명세를 지원한다. 사용해보려면 [cert-manager 문서][cert-manager-docs]를 참조한다.
 
 [cert-manager]:https://cert-manager.io/
 [cert-manager-docs]:https://cert-manager.io/docs/usage/gateway/
 
 ### Argo rollouts
 
-[Argo Rollouts][argo-rollouts] is a progressive delivery controller for Kubernetes. It supports several advanced deployment methods such as blue/green and canaries. Argo Rollouts supports the Gateway API via [a plugin][argo-rollouts-plugin].
+[Argo Rollouts][argo-rollouts]는 쿠버네티스를 위한 점진적 배포 컨트롤러이다. 블루/그린 및 카나리와 같은 여러 고급 배포 방법을 지원한다. Argo Rollouts는 [플러그인][argo-rollouts-plugin]을 통해 게이트웨이 API를 지원한다.
 
 [argo-rollouts]:https://argo-rollouts.readthedocs.io/en/stable/
 [argo-rollouts-plugin]:https://github.com/argoproj-labs/rollouts-gatewayapi-trafficrouter-plugin/
 
 ### Knative
 
-[Knative][knative] is a serverless platform built on Kubernetes.  Knative Serving provides a simple API for running stateless containers with automatic management of URLs, traffic splitting between revisions, request-based autoscaling (including scale to zero), and automatic TLS provisioning.  Knative Serving supports multiple HTTP routers through a plugin architecture, including a [gateway API plugin][knative-net-gateway-api] which is currently in alpha as not all Knative features are supported.
+[Knative][knative]는 쿠버네티스 위에 구축된 서버리스 플랫폼이다. Knative Serving은 URL의 자동 관리, 리비전 간 트래픽 분할, 요청 기반 자동 스케일링(제로 스케일 포함), 자동 TLS 프로비저닝과 함께 상태 비저장 컨테이너를 실행하기 위한 간단한 API를 제공한다. Knative Serving은 플러그인 아키텍처를 통해 다중 HTTP 라우터를 지원하며, 이는 모든 Knative 기능이 지원되지 않아 현재 알파 단계에 있는 [게이트웨이 API 플러그인][knative-net-gateway-api]을 포함한다.
 
 [knative]:https://knative.dev/
 [knative-net-gateway-api]:https://github.com/knative-sandbox/net-gateway-api
 
 ### Kuadrant
 
-[Kuadrant][kuadrant] is an open source multi cluster Gateway API controller that integrates with and provides policies via policy attachment to other Gateway API providers.
+[Kuadrant][kuadrant]는 다른 게이트웨이 API 제공자와 통합되고 정책 연결을 통해 정책을 제공하는 오픈 소스 멀티 클러스터 게이트웨이 API 컨트롤러이다.
 
-Kuadrant supports Gateway API for defining gateways centrally and attaching policies such as DNS, TLS, Auth and Rate Limiting that apply to all of your Gateways.
+Kuadrant는 게이트웨이를 중앙에서 정의하고 모든 게이트웨이에 적용되는 DNS, TLS, 인증 및 레이트 리밋팅과 같은 정책을 연결하기 위한 게이트웨이 API를 지원한다.
 
-Kuadrant works with both Istio and Envoy Gateway as underlying Gateway API providers, with plans to work with other gateway providers in future.
+Kuadrant는 Istio와 Envoy Gateway를 기본 게이트웨이 API 제공자로 지원하며, 향후 다른 게이트웨이 제공자와도 작동할 계획이다.
 
-For help and support with Kuadrant's implementation please feel free to [create an issue][kuadrant-issue-new] or ask for help in the [#kuadrant channel on Kubernetes slack][kuadrant-slack].
+Kuadrant의 구현에 대한 도움과 지원을 받으려면, 자유롭게 [이슈를 생성][kuadrant-issue-new]하거나 [쿠버네티스 slack의 #kuadrant 채널][kuadrant-slack]에서 도움을 요청하자.
 
 [kuadrant]:https://kuadrant.io/
 [kuadrant-issue-new]:https://github.com/Kuadrant/kuadrant-operator/issues/new

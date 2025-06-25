@@ -18,7 +18,7 @@
 인그레스와 메시 모두에 대해 고급 라우팅 기능을 제공한다.
 
 게이트웨이 API 로고는 API의 이중 목적을 시각적으로 설명하며,
-북-남 (인그레스) 및 동-서 (메시) 트래픽이
+북/남 (인그레스) 및 동/서 (메시) 트래픽이
 동일한 구성 설정을 공유하며 라우팅을 가능하게 한다.
 
 <img src="/images/logo/logo-text-horizontal.png" alt="Gateway API Logo" class="center" />

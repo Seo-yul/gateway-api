@@ -163,18 +163,18 @@ nav:
           - TLSRoute: ko/api-types/tlsroute.md
           - ListenerSet: ko/api-types/listenerset.md
       - API 명세:
-          - 개발:
-              - 표준: reference/spec.md
-              - 실험적: reference/specx.md
+          - Development:
+              - Standard: reference/spec.md
+              - Experimental: reference/specx.md
           - v1.5:
-              - 표준: reference/1.5/spec.md
-              - 실험적: reference/1.5/specx.md
+              - Standard: reference/1.5/spec.md
+              - Experimental: reference/1.5/specx.md
           - v1.4:
-              - 표준: reference/1.4/spec.md
-              - 실험적: reference/1.4/specx.md
+              - Standard: reference/1.4/spec.md
+              - Experimental: reference/1.4/specx.md
           - v1.3:
-              - 표준: reference/1.3/spec.md
-              - 실험적: reference/1.3/specx.md
+              - Standard: reference/1.3/spec.md
+              - Experimental: reference/1.3/specx.md
       - 정책 연결: ko/reference/policy-attachment.md
   - 개선 사항:
       - 개요: ko/geps/overview.md

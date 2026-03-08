@@ -8,7 +8,7 @@
 * API 타입(리소스에 대한 Go 바인딩)
 * CRD(리소스에 대한 쿠버네티스 정의)
 
-### 릴리스 채널
+### 릴리스 채널 <a name="release-channels"></a>
 릴리스 채널은 게이트웨이 API 내에서 기능의 안정성을 나타내는 데 사용된다.
 모든 새로운 기능과 리소스는 실험적 릴리스 채널에서 시작된다.
 그 후,
@@ -20,17 +20,21 @@
 
 ```mermaid
 flowchart TD
-    0([Implementable GEP]) --> A
+    0([Provisional GEP]) --> 1([Sponsors Committed])
+    1 --> 2([Implementable GEP])
+    2 --> A
     A>Experimental Channel] --> B([Widely used and working well?])
     B -->|Yes| C>Standard Channel]
     B -->|No| D([Could Changes Help?])
     D -->|Yes| E([Adjust and try again])
     D -->|No| F>Remove From API]
     E -->A
+    A -- No progress in 6 months --> G(["Auto-dropped"])
 
 style A fill:#eeb
 style C fill:#beb
 style F fill:#ebb
+style G fill:#ebb
 ```
 
 표준 릴리스 채널에는 다음이 포함된다.
@@ -48,11 +52,19 @@ style F fill:#ebb
 ![릴리스 채널 오버랩](../images/release-channel-overlap.svg)
 <!-- Source: https://docs.google.com/presentation/d/1sfZTV-vlisDUIie_iK_B2HqKia_querT6m6T2_vbAk0/edit -->
 
-기본적으로 안정적인 사용 경험을 제공하므로 표준 채너을 사용하는 것을 권장한다.
-많은 구현체드이 실험적 채널도 지원하며, 이를 통해 새로운 기능을 빠르게 반복 개발할 수 있다.
+기본적으로 안정적인 사용 경험을 제공하므로 표준 채널을 사용하는 것을 권장한다.
+많은 구현체들이 실험적 채널도 지원하며, 이를 통해 새로운 기능을 빠르게 반복 개발할 수 있다.
 이 채널은 이전 버전과의 호환성에 대한 보장을 제공하지 않으며,
 언제든지 호환되지 않는 변경 사항이
 릴리스될 수 있다는 점에 유의해야 한다.
+
+#### VAP(Validating Admission Policy, 검증 승인 정책)
+게이트웨이 API는 VAP(Validating Admission Policy, 검증 승인 정책)를 사용하여 채널 경계를 보호한다.
+
+* **업그레이드 VAP**: 표준 채널 CRD 위에 실험적 채널 CRD를 적용하는 것을 방지한다.
+이를 수행해야 하는 경우, 해당 VAP를 먼저 제거해야 한다.
+* **가드레일 VAP**: 어노테이션이 함께 존재하지 않으면 리소스의 실험적 필드를 설정하는 것을
+방지한다. 어노테이션 없이는 표준 채널 기능만 사용할 수 있다.
 
 ### API 버전
 업스트림 쿠버네티스 API는 안정성 수준을 alpha, beta, GA API 버전의 세 가지로 구분한다.
@@ -99,6 +111,40 @@ v1.0 릴리스에서 HTTPRoute, 게이트웨이, 게이트웨이 클래스는 �
 레퍼런스그랜트가 내장 쿠버네티스 API로 널리 제공되면,
 게이트웨이 API의 표준 채널에서 제거할 예정이다.
 
+## 릴리스 프로세스
+
+### 표준 채널 릴리스
+표준 채널 릴리스는 4개월 주기를 목표로 한다. 릴리스 날짜는
+미리 정해지며 연기되지 않는다. 다만, 포함되는 내용은 유동적이다. 릴리스 날짜 시점에
+준비된 내용이 릴리스되며, 준비되지 않은 내용은 다음 릴리스에서 진행된다.
+릴리스 번호는 포함되는 내용이 확정되는 시점에 결정하는 것이 이상적이다.
+
+### 월별 실험적 릴리스
+게이트웨이 API는 실험적 채널의 월별 릴리스를 `monthly-$year-$month`
+(예: `monthly-2025-11`) 형식의 태그로 발행한다. 이 릴리스는 다음과 같은 특징이 있다.
+
+* `experimental-install.yaml`만 포함
+* 표준 채널을 변경할 수 없음
+* main 브랜치의 스냅샷
+* 버그 수정 백포트를 받지 않음(대신 새로운 월별 릴리스로 업그레이드)
+* SemVer 릴리스 번호를 사용하지 않음. 실험적 리소스와 필드에 대한 호환되지 않는 변경은
+월별 릴리스 간에 항상 허용됨
+
+월별 릴리스의 목적은 실험적 채널에서의 빠른 반복 개발을 가능하게 하는 것이다.
+
+### SemVer 릴리스
+게이트웨이 API는 정기적인 주기로 SemVer 릴리스(예: `1.5.0`, `1.6.0`)를 발행한다.
+릴리스 번호 구성에 시맨틱 버전 관리를 사용하지만,
+릴리스 채널로 인해 엄격한 SemVer와는 다른 버전 관리 체계를 갖는다.
+실험적 채널에서 마이너 릴리스 시 발생할 수 있는 호환되지 않는 변경에 대한 자세한 내용은
+[변경 가능한 것](#what-can-change)을 참고하자.
+
+SemVer 릴리스의 특징은 다음과 같다.
+
+* `experimental-install.yaml`과 `standard-install.yaml` 모두 포함
+* 버그 수정 백포트를 위한 릴리스 브랜치 사용
+* 대부분의 경우 `experimental-install.yaml`이 직전 월별 릴리스와 동일하지만, 필수 사항은 아님
+
 ## 버전 표시
 각 CRD는 번들 버전과 채널을 나타내는 어노테이션과 함께
 배포된다.
@@ -108,7 +154,7 @@ gateway.networking.k8s.io/bundle-version: v0.4.0
 gateway.networking.k8s.io/channel: standard|experimental
 ```
 
-## 변경 가능한 것
+## 변경 가능한 것 {#what-can-change}
 이 API를 사용하거나 구현할 때,
 번들 버전 간에 무엇이 변경될 수 있는지 이해하는 것이 중요하다.
 
@@ -144,7 +190,7 @@ gateway.networking.k8s.io/channel: standard|experimental
 ### 메이저 버전(예: v0.x -> v1.0)
 * 메이저 버전이 변경될 때는 API 호환성 보장을 하지 않는다.
 
-## 승격 기준
+## 승격 기준 <a name="graduation-criteria"></a>
 리소스, 필드, 기능이 실험적에서 표준으로 승격되기 위해서는
 다음 기준을 충족해야 한다.
 
@@ -155,7 +201,7 @@ gateway.networking.k8s.io/channel: standard|experimental
 * 최소 1회 마이너 릴리스 및 3개월간 주요 변경 없음
 * 서브프로젝트 오너 및 KEP 리뷰어 승인
 
-## 지원 버전
+## 지원 버전 <a name="supported-versions"></a>
 이 프로젝트는 다양한 쿠버네티스 버전에서 일관된 업그레이드 경험을 지원하는 것을 목표로 한다.
 이를 달성하기 위해 다음과 같은 사항을 준수한다.
 

@@ -1,89 +1,61 @@
-# Release Cycle
+# 릴리스 주기
 
-In Gateway API 1.2+, we will be following a more structured and predictable
-release cycle that is inspired by the [upstream Kubernetes release
-cycle](https://kubernetes.io/releases/release/).
+Gateway API 1.2 이상에서는 [업스트림 쿠버네티스 릴리스 주기](https://kubernetes.io/releases/release/)에서 영감을 받은, 보다 체계적이고 예측 가능한 릴리스 주기를 따른다.
 
-## Goals
+## 목표
 
-* Ensure a predictable release schedule that enables 2-3 releases a year
-* Minimize the amount of time required from upstream API approvers and make it
-  more predictable
-* Avoid last minute additions to the scope of a release
-* Prevent experimental channel from growing by requiring GEPs to leave or
-  graduate before new ones can be added
-* Ensure that SIG-Network TLs are in the loop throughout the process, and have a
-  meaningful opportunity to review changes before a release
-* Provide more advance notice to everyone (SIG-Network TLs, Docs Reviewers,
-  Implementations, etc)
+* 연간 2-3회 릴리스를 가능하게 하는 예측 가능한 릴리스 일정 보장
+* 업스트림 API 승인자에게 필요한 시간을 최소화하고 더 예측 가능하게 만들기
+* 릴리스 범위에 마지막 순간의 추가를 방지
+* GEP가 탈퇴하거나 졸업해야만 새로운 GEP를 추가할 수 있도록 하여 실험적 채널의 확장 방지
+* SIG-Network TL이 프로세스 전반에 걸쳐 참여하고, 릴리스 전에 변경 사항을 검토할 의미 있는 기회를 보장
+* 모든 관련자(SIG-Network TL, 문서 리뷰어, 구현체 등)에게 더 많은 사전 공지 제공
 
-## Phases
+## 단계
 
-### 1. Scoping
+### 1. 범위 설정
 
-**Timeline:** 4-6 weeks
+**기간:** 4-6주
 
-In this phase, the Gateway API maintainers and community will be responsible
-for determining the set of features we want to include in the release. Although
-we can always lessen scope after this point, we will avoid expanding the scope
-of the release at a later point unless it is absolutely necessary (critical flaw
-in design, security issue, etc).
+이 단계에서 Gateway API 메인테이너와 커뮤니티는 릴리스에 포함하려는 기능 집합을 결정한다. 이 시점 이후에도 항상 범위를 축소할 수 있지만, 절대적으로 필요한 경우(설계의 치명적 결함, 보안 이슈 등)가 아닌 한 이후 시점에서 릴리스 범위를 확장하는 것은 피한다.
 
-A key guideline in this phase is that we want to avoid expanding the size of the
-Experimental release channel. That means that each new experimental feature
-should be accompanied by the graduation or removal of an enhancement that is
-already in the Experimental channel.
+이 단계의 핵심 지침은 실험적 릴리스 채널의 크기를 확장하지 않는 것이다. 이는 각각의 새로운 실험적 기능에 이미 실험적 채널에 있는 향상 제안의 졸업 또는 제거가 동반되어야 함을 의미한다.
 
-Note that in many cases, this scoping work will require some initial work on
-GEPs to determine their viability before committing to including them in a
-release.
+많은 경우, 이 범위 설정 작업은 GEP를 릴리스에 포함하기로 결정하기 전에 그 실현 가능성을 판단하기 위한 초기 작업이 필요하다는 점에 유의하자.
 
-### 2. GEP Iteration and Review
+### 2. GEP 반복 및 리뷰
 
-**Timeline:** 5-7 weeks
+**기간:** 5-7주
 
-In this phase, the Gateway API community will work to update GEPs and meet
-graduation criteria for each feature that has been deemed in scope for the
-release cycle. As we’re working on new features, we will bring these discussions
-to the broader SIG-Network meetings for feedback throughout our development
-process. If a GEP has not merged with the target status by the end of this
-phase, it will be pulled from the scope of the release.
+이 단계에서 Gateway API 커뮤니티는 릴리스 주기 범위 내로 결정된 각 기능에 대해 GEP를 업데이트하고 졸업 기준을 충족시키기 위해 작업한다. 새로운 기능을 작업하면서, 개발 과정 전반에 걸쳐 더 넓은 SIG-Network 미팅에 이러한 논의를 가져간다. GEP가 이 단계가 끝날 때까지 목표 상태로 병합되지 않으면, 릴리스 범위에서 제외된다.
 
-### 3. API Refinement and Documentation
+### 3. API 정제 및 문서화
 
-**Timeline:** 3-5 weeks
+**기간:** 3-5주
 
-This phase is entirely focused on translating the concepts defined in the GEP
-(previous phase) into both API specification and documentation. This offers one
-final chance for the Gateway API community to refine the details that have
-already been agreed to in the GEP, but any modifications at this stage should be
-minor. If either documentation or API Spec have not merged by the end of this
-phase, this enhancement will be pulled from the scope of the release.
+이 단계는 GEP(이전 단계)에서 정의된 개념을 API 명세와 문서로 변환하는 데 전적으로 집중한다. 이는 Gateway API 커뮤니티가 GEP에서 이미 합의된 세부 사항을 정제할 수 있는 마지막 기회를 제공하지만, 이 단계에서의 수정은 사소한 것이어야 한다. 이 단계가 끝날 때까지 문서 또는 API 명세가 병합되지 않으면, 해당 향상 제안은 릴리스 범위에서 제외된다.
 
-### 4. SIG-Network Review and Release Candidates
+### 4. SIG-Network 리뷰 및 릴리스 후보
 
-**Timeline:** 2-4 weeks
+**기간:** 2-4주
 
-This phase officially begins with the review session scheduled with SIG-Network
-TLs several weeks earlier in phase 3. In that review session, Gateway API
-maintainers and SIG-Network TLs should reach an agreement on the following:
+이 단계는 3단계에서 몇 주 전에 예약된 SIG-Network TL과의 리뷰 세션으로 공식적으로 시작된다. 해당 리뷰 세션에서 Gateway API 메인테이너와 SIG-Network TL은 다음 사항에 대해 합의해야 한다:
 
-1. Any blockers for an initial release candidate
-1. How much time, if any, SIG-Network TLs want to review any changes in this
-   release
-1. A time after which we can assume lazy consensus and move on with the final
-   release of the API
+1. 초기 릴리스 후보에 대한 차단 요소
+1. SIG-Network TL이 이 릴리스의 변경 사항을 검토하는 데 필요한 시간(있는 경우)
+1. 묵시적 합의(lazy consensus)를 가정하고 API의 최종 릴리스를 진행할 수 있는 시점
 
-In general, we expect each minor release to be preceded by two release
-candidates. These release candidates will enable implementations to test against
-our release, work out any bugs, and gather early feedback on the viability of
-the release.
+일반적으로 각 마이너 릴리스 전에 두 개의 릴리스 후보가 선행될 것으로 예상한다. 이러한 릴리스 후보를 통해 구현체들이 릴리스에 대해 테스트하고, 버그를 해결하며, 릴리스의 실행 가능성에 대한 초기 피드백을 수집할 수 있다.
 
-## Contributions Welcome in Each Phase
+## GEP가 일정을 충족하지 못하는 경우
 
-The following table illustrates when different kinds of contributions will be
-welcome. There will be some exceptions to this, but it should be useful as an
-overall guideline:
+위 단계와 일정을 GEP가 어떤 이유로든 충족하지 못하는 상황이 발생할 수 있다. 특별한 상황(특히 목표를 달성하기 위해 조금 더 시간이 필요할 것으로 예상되는 경우)에서는 GEP 작성자의 요청에 따라 메인테이너의 재량으로 시간 연장이 허가될 _수도_ 있다.
+
+그러나 일반적인 경우, GEP가 특정 단계의 일정을 놓치면 대역폭을 극대화하고 전체 릴리스 일정에 대한 혼란을 줄이기 위해 릴리스에서 제외된다. 이러한 경우, Gateway API 메인테이너는 진행을 중단하고 GEP의 상태를 중단 상태(`Deferred` 또는 `Declined` 등)로 설정하며, GEP에 해당 상태에 도달한 이유와 이후 반복에서 작업 재승인을 받기 위해 필요한 사항을 설명하는 메모를 남긴다.
+
+## 각 단계에서 환영하는 기여
+
+다음 표는 다양한 종류의 기여가 환영되는 시점을 나타낸다. 일부 예외가 있을 수 있지만, 전반적인 지침으로 유용하다:
 
 | | 1. Scope | 2. GEP | 3. API | 4. Review |
 | - | :-: | :-: | :-:| :-: |
@@ -96,9 +68,6 @@ overall guideline:
 | Documentation | ✅ | ✅ | ✅ | ✅ |
 | Review | ✅ | ✅ | ✅ | ✅ |
 
-## Timeline
+## 일정
 
-Given the above, we expect each release to take 14-22 weeks (4-5 months). At
-least initially, Gateway API maintainers will set end dates for each phase as we
-are beginning the phase. In future releases, we may choose to set all dates for
-the release in advance.
+위 내용을 고려하면, 각 릴리스는 14-22주(4-5개월)가 소요될 것으로 예상한다. 최소한 초기에는 Gateway API 메인테이너가 각 단계를 시작할 때 해당 단계의 종료 날짜를 설정한다. 향후 릴리스에서는 릴리스의 모든 날짜를 미리 설정할 수도 있다.

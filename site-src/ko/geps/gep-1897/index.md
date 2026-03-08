@@ -35,8 +35,8 @@ and CA certificates.
 These are worthy goals, but deserve a different GEP for proper attention.  This GEP is concerned entirely with the
 controlplane, i.e. the hop between gateway and backend.
 
-1. [TCPRoute](../../reference/spec.md#gateway.networking.k8s.io/v1alpha2.TCPRoute) and
-[GRPCRoute](../../reference/spec.md#gateway.networking.k8s.io/v1alpha2.GRPCRoute) use cases
+1. [TCPRoute](../../../reference/spec.md#gateway.networking.k8s.io/v1alpha2.TCPRoute) and
+[GRPCRoute](../../../reference/spec.md#gateway.networking.k8s.io/v1alpha2.GRPCRoute) use cases
 are not addressed here, because at this point in time these two route types are not graduated to beta.
 2. Mutual TLS (mTLS) use cases are intentionally out of scope for this GEP for two reasons.  First, the design of Gateway
 API is backend-attached and does not currently support mutual authentication, and also because this GEP does not

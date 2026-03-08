@@ -1,4 +1,4 @@
-# Gateway infrastructure labels and annotations
+# 게이트웨이 인프라스트럭처 레이블 및 어노테이션
 
 ??? success "Standard Channel since v1.2.0"
 
@@ -6,20 +6,11 @@
     `v1.2.0`. For more information on release channels, refer to our [versioning
     guide](../concepts/versioning.md).
 
-Gateway API implementations are responsible for creating the backing
-infrastructure needed to make each Gateway work. For example, implementations
-running in a Kubernetes cluster often create [Services][service] and
-[Deployments][deployment], while cloud-based implementations may create cloud
-load balancer resources. In many cases, it can be helpful to be able to
-propagate labels or annotations to these generated resources.
+Gateway API 구현체는 각 **Gateway(게이트웨이)**가 작동하는 데 필요한 기반 인프라스트럭처를 생성하는 역할을 담당한다. 예를 들어, 쿠버네티스 클러스터에서 실행되는 구현체는 주로 [Service][service]와 [Deployment][deployment]를 생성하고, 클라우드 기반 구현체는 클라우드 로드 밸런서 리소스를 생성할 수 있다. 많은 경우, 이렇게 생성된 리소스에 레이블이나 어노테이션을 전파할 수 있으면 유용하다.
 
 
-The [`infrastructure` field][infrastructure] on a Gateway allows you to specify
-labels and annotations for the infrastructure created by the Gateway API controller.
-For example, if your Gateway infrastructure is running in-cluster, you can specify
-both Linkerd and Istio injection using the following Gateway configuration, making
-it simpler for the infrastructure to be incorporated into whichever service mesh
-you've installed.
+게이트웨이의 [`infrastructure` 필드][infrastructure]를 사용하면 Gateway API 컨트롤러가 생성하는 인프라스트럭처에 대한 레이블과 어노테이션을 지정할 수 있다.
+예를 들어, 게이트웨이 인프라스트럭처가 클러스터 내에서 실행되는 경우, 다음과 같은 게이트웨이 구성을 사용하여 Linkerd와 Istio 주입을 모두 지정할 수 있으며, 설치된 **서비스 메시(Service Mesh)**에 인프라스트럭처를 더 쉽게 통합할 수 있다.
 
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1
@@ -40,6 +31,6 @@ spec:
       linkerd.io/inject: enabled
 ```
 
-[infrastructure]: ../reference/spec.md#gateway.networking.k8s.io/v1.GatewayInfrastructure
+[infrastructure]: ../../reference/spec.md#gatewayinfrastructure
 [service]: https://kubernetes.io/docs/concepts/services-networking/service/
 [deployment]: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/

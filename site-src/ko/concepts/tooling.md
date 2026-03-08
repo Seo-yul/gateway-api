@@ -14,7 +14,13 @@
 
 [kubernetes-sigs/gwctl: 설치 가이드](https://github.com/kubernetes-sigs/gwctl?tab=readme-ov-file#installation)로 시작하기!
 
-## Third-Party Tooling
+## `Headlamp`
+
+쿠버네티스용 UI로 게이트웨이 API를 기본 지원한다. 게이트웨이 API 리소스를 맵 뷰 또는 데이터 테이블에서 확인할 수 있다. 실시간으로 업데이트되며, 쿠버네티스 리소스 간 링크를 통해 리소스 관계를 쉽게 파악할 수 있다.
+
+[kubernetes-sigs/headlamp: 설치 가이드](https://github.com/kubernetes-sigs/headlamp?tab=readme-ov-file#quickstart)로 시작하기!
+
+## 서드파티 도구
 
 ### `policy-machinery`
 

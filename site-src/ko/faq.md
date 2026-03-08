@@ -15,7 +15,7 @@
 더 많은 인프라 구성 요소를 모델링하여 클러스터 운영자에게
 더 나은 배포 및 관리 옵션을 제공한다.
 
-자세한 정보는 [인그레스에서 마이그레이션](guides/migrating-from-ingress.md)
+자세한 정보는 [인그레스에서 마이그레이션](guides/getting-started/migrating-from-ingress.md)
 가이드를 참조하자.
 
 #### 기본 컨트롤러 구현이 있을 것인가?

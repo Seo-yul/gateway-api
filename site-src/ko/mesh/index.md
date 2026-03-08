@@ -38,7 +38,7 @@ GAMMA는 [서비스 _프론트엔드_ 와 _백엔드_ 측면][service-facets]을
 [service-mesh]:../concepts/glossary.md#service-mesh
 [service-facets]:service-facets.md
 
-## 라우트와 서비스 연결 <a name="gateway-api-for-mesh">
+## 라우트와 서비스 연결 <a name="gateway-api-for-mesh"></a><a name="connecting-routes-and-services">
 
 GAMMA는 개별 라우트 리소스가 서비스에 직접 연결되어
 _해당 서비스로 향하는 모든 트래픽에 적용될 구성_ 을

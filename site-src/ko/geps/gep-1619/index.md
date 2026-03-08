@@ -661,7 +661,7 @@ their preferred form of session persistence if desired.
 
 ### Target Persona
 
-Referring to the [Gateway API Security Model](../../concepts/security-model.md#roles-and-personas),
+Referring to the [Gateway API Security Model](../../concepts/security.md#roles-and-personas),
 the target kubernetes role/persona for session persistence are application developers, as mentioned in the [When does an application require session persistence?](#when-does-an-application-require-session-persistence)
 section. It is the responsibility of the application developers to adjust the persistence configuration to ensure the
 functionality of their applications.
@@ -678,7 +678,7 @@ route in any given implementation.
 
 The new `BackendLBPolicy` metaresource only supports attaching to a backend. A backend can be a Service,
 ServiceImport (see [GEP-1748](../gep-1748/index.md)), or any implementation-specific backends that are a valid
-[`BackendObjectReference`](../../reference/spec.md#gateway.networking.k8s.io%2fv1.BackendObjectReference). Enabling session
+[`BackendObjectReference`](../../../reference/spec.md#gateway.networking.k8s.io%2fv1.BackendObjectReference). Enabling session
 persistence for a backend enables subsequently enables it for any route directing traffic to this backend. To learn more
 about the process of attaching a policy to a backend, please refer to [GEP-713](../gep-713/index.md).
 

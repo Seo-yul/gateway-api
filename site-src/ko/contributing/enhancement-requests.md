@@ -1,75 +1,52 @@
 # Enhancement Requests
 
-Inspired by [Kubernetes enhancements][enhance], Gateway API provides a process for
-introducing new functionality or considerable changes to the project. The
-enhancement process will evolve over time as the project matures.
+[Kubernetes enhancements][enhance]에서 영감을 받아, Gateway API는 프로젝트에 새로운 기능이나 상당한 변경 사항을 도입하기 위한 프로세스를 제공한다. 향상(enhancement) 프로세스는 프로젝트가 성숙해짐에 따라 발전할 것이다.
 
 [enhance]: https://github.com/kubernetes/enhancements
 
-Enhancements provides the basis of a community roadmap. Enhancements may be
-filed by anyone, but require approval from a maintainer to accept the
-enhancement into the project.
+향상 제안은 커뮤니티 로드맵의 기반을 제공한다. 향상 제안은 누구나 제출할 수 있지만, 프로젝트에 향상 제안을 수락하려면 메인테이너의 승인이 필요하다.
 
-## What is Considered an Enhancement?
+## 향상 제안으로 간주되는 것은?
 
-An enhancement is generally anything that:
+향상 제안은 일반적으로 다음에 해당하는 모든 것이다:
 
-- Introduces changes to an API.
-- Needs significant effort to implement.
-- Requires documentation to utilize.
-- Impacts how a system is operated including addition or removal of significant
-  capabilities.
+- API에 변경 사항을 도입하는 것
+- 구현에 상당한 노력이 필요한 것
+- 활용하기 위해 문서화가 필요한 것
+- 중요한 기능의 추가 또는 제거를 포함하여 시스템 운영 방식에 영향을 미치는 것
 
-It is unlikely to require an enhancement if it:
+다음의 경우에는 향상 제안이 필요하지 않을 가능성이 높다:
 
-- Fixes a bug
-- Adds more testing
-- Code refactors
+- 버그 수정
+- 테스트 추가
+- 코드 리팩토링
 
-If you're unsure the proposed work requires an enhancement, file an issue
-and ask.
+제안하는 작업에 향상 제안이 필요한지 확실하지 않다면, 이슈를 제출하고 문의하자.
 
-## New Enhancement Process
+## 새로운 향상 제안 프로세스
 
-The process for creating new enhancement proposals is documented on the
-[GEP Overview][gep] page. Please see that page for all the details about how
-to log a new GEP, and the process it will follow on its journey towards
-Completed status.
+새로운 향상 제안을 생성하는 프로세스는 [GEP 개요][gep] 페이지에 문서화되어 있다. 새로운 GEP를 등록하는 방법과 완료(Completed) 상태를 향한 여정에서 따르게 될 프로세스에 대한 모든 세부 사항은 해당 페이지를 참조하자.
 
-A **documented** discussion of some form **must** exist prior to submitting a
-request for enhancement if that enhancement is non-trivial (which we will define
-as either: _implicates changes to the API specification_
-OR _has some kind of end-user impact_).
+해당 향상 제안이 비자명(non-trivial)한 경우(_API 명세에 대한 변경을 수반하는 경우_ 또는 _최종 사용자에게 어떤 형태로든 영향을 미치는 경우_로 정의), 향상 요청을 제출하기 전에 어떤 형태로든 **문서화된** 논의가 **반드시** 존재해야 한다.
 
-Please use our [GitHub Discussions][discussion] forum as the initial place to
-start, and feel free to bring that discussion up for synchronous conversation in
-one of our [community meetings][meetings]. If the created request doesn't
-include reference to a discussion and/or recordings of discussion in our
-community meetings, please note that it _may_ get closed with a request to
-create an initial discussion first.
+[GitHub Discussions][discussion] 포럼을 시작점으로 사용하고, [커뮤니티 미팅][meetings]에서 해당 논의를 동기적 대화로 자유롭게 진행하자. 생성된 요청에 논의에 대한 참조 및/또는 커뮤니티 미팅에서의 논의 녹화가 포함되지 않은 경우, 먼저 초기 논의를 생성해 달라는 요청과 함께 닫힐 _수_ 있다는 점에 유의하자.
 
 [gep]: ../geps/overview.md
 [discussion]: https://github.com/kubernetes-sigs/gateway-api/discussions/new/choose
 [meetings]: index.md#meetings
 
-## When are Enhancements Accepted?
+## 향상 제안은 언제 수락되는가?
 
-Gateway API has a predictable release cycle that includes multiple phases. New
-enhancements are only considered in the early phases of that release cycle while
-the scope of a release is being determined. For more information, refer to our
-[release cycle documentation](release-cycle.md).
+Gateway API는 여러 단계를 포함하는 예측 가능한 릴리스 주기를 가지고 있다. 새로운 향상 제안은 릴리스 범위가 결정되는 릴리스 주기의 초기 단계에서만 검토된다. 자세한 내용은 [릴리스 주기 문서](release-cycle.md)를 참조하자.
 
-## Why are Enhancements Tracked
+## 향상 제안을 추적하는 이유
 
-As the project evolves, it's important that the community understands how the
-enhancement affects the project.  Individually, it's hard to understand how all
-parts of the system interact, but as a community we can work together to build
-the right design and approach before getting too deep into an implementation.
+프로젝트가 발전함에 따라, 향상 제안이 프로젝트에 어떤 영향을 미치는지 커뮤니티가 이해하는 것이 중요하다. 개인적으로는 시스템의 모든 부분이 어떻게 상호작용하는지 이해하기 어렵지만, 커뮤니티로서 함께 협력하면 구현에 너무 깊이 들어가기 전에 올바른 설계와 접근 방식을 구축할 수 있다.
 
-## When to Comment on an Enhancement Issue
+## 향상 제안 이슈에 코멘트하는 시점
 
-Please comment on the enhancement issue to:
+다음과 같은 경우 향상 제안 이슈에 코멘트하자:
 
-- Request a review or clarification on the process
-- Update status of the enhancement effort
-- Link to relevant issues in other repos
+- 프로세스에 대한 리뷰 또는 명확한 설명을 요청하는 경우
+- 향상 작업의 상태를 업데이트하는 경우
+- 다른 저장소의 관련 이슈를 연결하는 경우

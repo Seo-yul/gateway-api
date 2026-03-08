@@ -37,13 +37,16 @@ type XBackendTrafficPolicy struct {
 	//
 	// +optional
 
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta `json:",inline"`
+	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// Spec defines the desired state of BackendTrafficPolicy.
+	// +required
 	Spec BackendTrafficPolicySpec `json:"spec"`
 
 	// Status defines the current state of BackendTrafficPolicy.
+	// +optional
 	Status PolicyStatus `json:"status,omitempty"`
 }
 
@@ -63,7 +66,7 @@ type BackendTrafficPolicySpec struct {
 	// ServiceImport, or any implementation-specific backendRef) are the only
 	// valid API target references.
 	//
-	// Currently, a TargetRef can not be scoped to a specific port on a
+	// Currently, a TargetRef cannot be scoped to a specific port on a
 	// Service.
 	//
 	// +listType=map
@@ -72,6 +75,7 @@ type BackendTrafficPolicySpec struct {
 	// +listMapKey=name
 	// +kubebuilder:validation:MinItems=1
 	// +kubebuilder:validation:MaxItems=16
+	// +required
 	TargetRefs []LocalPolicyTargetReference `json:"targetRefs"`
 
 	// RetryConstraint defines the configuration for when to allow or prevent
@@ -165,6 +169,6 @@ type BudgetDetails struct {
 	//
 	// +optional
 	// +kubebuilder:default="10s"
-	// +kubebuilder:validation:XValidation:message="interval can not be greater than one hour or less than one second",rule="!(duration(self) < duration('1s') || duration(self) > duration('1h'))"
+	// +kubebuilder:validation:XValidation:message="interval cannot be greater than one hour or less than one second",rule="!(duration(self) < duration('1s') || duration(self) > duration('1h'))"
 	Interval *Duration `json:"interval,omitempty"`
 }

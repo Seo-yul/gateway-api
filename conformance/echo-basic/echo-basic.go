@@ -35,15 +35,17 @@ import (
 	"golang.org/x/net/websocket"
 
 	g "sigs.k8s.io/gateway-api/conformance/echo-basic/grpc"
+	t "sigs.k8s.io/gateway-api/conformance/echo-basic/tcpserver"
 )
 
 // RequestAssertions contains information about the request and the Ingress
 type RequestAssertions struct {
-	Path    string              `json:"path"`
-	Host    string              `json:"host"`
-	Method  string              `json:"method"`
-	Proto   string              `json:"proto"`
-	Headers map[string][]string `json:"headers"`
+	Path     string              `json:"path"`
+	Host     string              `json:"host"`
+	Method   string              `json:"method"`
+	Proto    string              `json:"proto"`
+	Headers  map[string][]string `json:"headers"`
+	HTTPPort string              `json:"httpPort"`
 
 	Context `json:",inline"`
 
@@ -76,7 +78,10 @@ type Context struct {
 	Pod       string `json:"pod"`
 }
 
-var context Context
+var (
+	context  Context
+	httpPort string
+)
 
 func main() {
 	if os.Getenv("GRPC_ECHO_SERVER") != "" {
@@ -84,7 +89,12 @@ func main() {
 		return
 	}
 
-	httpPort := os.Getenv("HTTP_PORT")
+	if os.Getenv("TCP_ECHO_SERVER") != "" {
+		t.Main()
+		return
+	}
+
+	httpPort = os.Getenv("HTTP_PORT")
 	if httpPort == "" {
 		httpPort = "3000"
 	}
@@ -216,6 +226,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		r.Method,
 		r.Proto,
 		r.Header,
+		httpPort,
 
 		context,
 

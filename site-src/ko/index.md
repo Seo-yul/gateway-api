@@ -1,4 +1,4 @@
-# 소개
+# 소개 <a name="what-is-the-gateway-api"></a>
 
 게이트웨이 API는
 쿠버네티스의 L4 및 L7 라우팅에 초점을 맞춘 공식 쿠버네티스 프로젝트이다.
@@ -86,12 +86,12 @@ API 준수를 원하는 구현자든,
 아래의 리소스는 필요한 배경 정보를 제공한다.
 
 - [API 개요](concepts/api-overview.md)
-- [사용자 가이드](guides/index.md)
+- [사용자 가이드](guides/getting-started/index.md)
 - [구현](implementations.md)
-- [API 참조 사양](reference/spec.md)
+- [API 참조 사양](../reference/spec.md)
 - [커뮤니티 링크](contributing/index.md)와 [개발자 가이드](contributing/devguide.md)
 
-## 게이트웨이 API 개념
+## 게이트웨이 API 개념 <a name="gateway-api-concepts"></a>
 이어지는 설계 목표는 게이트웨이 API의 개념을 이끌어낸다.
 이는 게이트웨이가 인그레스와 같은 현재 표준을 어떻게 개선하려는지 보여준다.
 
@@ -205,7 +205,7 @@ API 게이트웨이는 (종종 외부) API 소비자를 위한 공통 인터페�
 프로젝트로 개발되고 있다.
 최신 게이트웨이를 지원하는 프로젝트 및 제품은 [구현 참조](implementations.md)에서 확인할 수 있다.
 게이트웨이 API를 사용해 기여하거나 구현을 구축하는 데 관심이 있다면 주저하지 말고
-[참여하라!](/contributing/index.md)
+[참여하라!](contributing/index.md)
 
 [sig-네트워크]: https://github.com/kubernetes/community/tree/master/sig-network
 

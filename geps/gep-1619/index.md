@@ -360,7 +360,7 @@ Generally, the implementation API programs the dataplane API; however these two 
 
 | **Technology** 	| **Technology Type** 	| **Session Persistence Type** 	| **Configuration Options** 	| **Configuration Association (Global, Gateway, Route, or Backends)** 	| **Notes** 	|
 |---	|---	|---	|---	|---	|---	|
-| Acnodal EPIC 	| Implementation (Envoy) 	| N/A 	| Supports Gateway API Only* 	| N/A 	| *Acnodal Epic solely uses Gateway API; therefore, it doesn’t yet have a way to configure session persistence. [Acnodal EPIC Docs](https://www.epick8sgw.io/docs/) 	|
+| Acnodal EPIC 	| Implementation (Envoy) 	| N/A 	| Supports Gateway API Only* 	| N/A 	| *Acnodal Epic solely uses Gateway API; therefore, it doesn’t yet have a way to configure session persistence. [Acnodal EPIC Docs](https://www.epic-gateway.org/) 	|
 | Amazon Elastic Kubernetes Service | Implementation / Dataplane | N/A | Supports Gateway API Only* | N/A | *Amazon Elastic Kubernetes Service solely uses Gateway API; therefore, it doesn’t yet have a way to configure session persistence. [Amazon Elastic Kubernetes Service Docs](https://www.gateway-api-controller.eks.aws.dev/) |
 | Apache APISIX 	| Implementation (Nginx) 	| [Cookie-Based](https://apisix.apache.org/docs/apisix/admin-api/#upstream) 	| hash_on=[vars \| header \| cookie \| consumer]<br>key=cookie_name 	| [Upstream](https://apisix.apache.org/docs/apisix/admin-api/#upstream) (Route or Backends) 	| N/A 	|
 |  	| Implementation (Nginx) 	| [Header-Based](https://apisix.apache.org/docs/apisix/terminology/upstream/#header) 	| hash_on=[vars \| header \| cookie \| consumer]<br>key=header_name 	| [Upstream](https://apisix.apache.org/docs/apisix/admin-api/#upstream) (Route or Backends) 	| N/A 	|
@@ -519,7 +519,7 @@ type SessionPersistence struct {
     IdleTimeout *Duration `json:"idleTimeout,omitempty"`
 
     // Type defines the type of session persistence such as through
-    // the use a header or cookie. Defaults to cookie based session
+    // the use of a header or cookie. Defaults to cookie based session
     // persistence.
     //
     // Support: Core for "Cookie" type
@@ -678,7 +678,7 @@ route in any given implementation.
 
 The new `BackendLBPolicy` metaresource only supports attaching to a backend. A backend can be a Service,
 ServiceImport (see [GEP-1748](../gep-1748/index.md)), or any implementation-specific backends that are a valid
-[`BackendObjectReference`](../../reference/spec.md#gateway.networking.k8s.io%2fv1.BackendObjectReference). Enabling session
+[`BackendObjectReference`](../../reference/spec.md#backendobjectreference). Enabling session
 persistence for a backend enables subsequently enables it for any route directing traffic to this backend. To learn more
 about the process of attaching a policy to a backend, please refer to [GEP-713](../gep-713/index.md).
 
@@ -741,7 +741,7 @@ standards due to wide acceptance are:
 - SameSite=[Strict|Lax|None]
 - Partitioned
 
-Unless a `sessionPersistence` API field can be satisfied through a manipulating a cookie attribute, the attributes
+Unless a `sessionPersistence` API field can be satisfied through manipulating a cookie attribute, the attributes
 of the cookies are considered as opaque values in this spec and are to be determined by the individual implementations.
 Let's discuss some of these cookie attributes in more detail.
 

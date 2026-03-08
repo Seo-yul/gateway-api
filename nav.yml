@@ -1,0 +1,199 @@
+nav:
+  - Overview:
+      - Introduction: index.md
+      - Concepts:
+          - API Overview: concepts/api-overview.md
+          - Troubleshooting and Status: concepts/troubleshooting.md
+          - Conformance: concepts/conformance.md
+          - Roles and Personas: concepts/roles-and-personas.md
+          - Security: concepts/security.md
+          - Tools: concepts/tooling.md
+          - Use Cases: concepts/use-cases.md
+          - Versioning: concepts/versioning.md
+          - Traffic Matching: concepts/traffic-matching.md
+          - Hostnames: concepts/hostnames.md
+      - Service Mesh:
+          - Overview: mesh/index.md
+          - GAMMA Initiative: mesh/gamma.md
+          - Service Facets: mesh/service-facets.md
+      - Implementations:
+          - List: implementations.md
+          - Matching Wizard: implementations/wizard.md
+          - Comparisons:
+            #   - v1.5: implementations/v1.5.md
+              - v1.4: implementations/v1.4.md
+              - v1.3: implementations/v1.3.md
+              - v1.2: implementations/v1.2.md
+              - v1.1: implementations/v1.1.md
+              - v1.0: implementations/v1.0.md
+      - FAQ: faq.md
+      - Glossary: concepts/glossary.md
+  - Guides:
+      - Getting Started:
+          - Introduction: guides/getting-started/index.md
+          - Deploying a simple Gateway: guides/getting-started/simple-gateway.md
+          - Migrating from Ingress: guides/getting-started/migrating-from-ingress.md
+          - Migrating from Ingress-NGINX: guides/getting-started/migrating-from-ingress-nginx.md
+      - User Guides:
+          - HTTP routing: guides/http-routing.md
+          - HTTP redirects and rewrites: guides/http-redirect-rewrite.md
+          - HTTP header modifier: guides/http-header-modifier.md
+          - HTTP traffic splitting: guides/traffic-splitting.md
+          - HTTP request mirroring: guides/http-request-mirroring.md
+          - HTTP query parameter matching: guides/http-query-param-matching.md
+          - HTTP method matching: guides/http-method-matching.md
+          - HTTP timeouts: guides/http-timeouts.md
+          - HTTP CORS: guides/http-cors.md
+          - Cross-Namespace routing: guides/multiple-ns.md
+          - TLS: guides/tls.md
+          - TLS routing: guides/tls-routing.md
+          - TCP routing: guides/tcp.md
+          - gRPC Routing: guides/grpc-routing.md
+          - Backend Protocol Selection: guides/backend-protocol.md
+          - Infrastructure attributes: guides/infrastructure.md
+          - ListenerSet: guides/listener-set.md
+      - API Design: guides/api-design.md
+      - CRD Management: guides/crd-management.md
+      - Implementer's Guide: guides/implementers.md
+  - Reference:
+      - API Types:
+          - Gateway: api-types/gateway.md
+          - GatewayClass: api-types/gatewayclass.md
+          - GRPCRoute: api-types/grpcroute.md
+          - HTTPRoute: api-types/httproute.md
+          - Policy:
+              - BackendTLSPolicy: api-types/backendtlspolicy.md
+              - BackendTrafficPolicy: api-types/backendtrafficpolicy.md
+          - ReferenceGrant: api-types/referencegrant.md
+          - TLSRoute: api-types/tlsroute.md
+          - ListenerSet: api-types/listenerset.md
+      - API specification:
+          - Development:
+              - Standard: reference/spec.md
+              - Experimental: reference/specx.md
+          - v1.5:
+              - Standard: reference/1.5/spec.md
+              - Experimental: reference/1.5/specx.md
+          - v1.4:
+              - Standard: reference/1.4/spec.md
+              - Experimental: reference/1.4/specx.md
+          - v1.3:
+              - Standard: reference/1.3/spec.md
+              - Experimental: reference/1.3/specx.md
+      - Policy Attachment: reference/policy-attachment.md
+  - Enhancements:
+      - Overview: geps/overview.md
+      - List: geps/landing/tab.md
+      - By State:
+          - Standard: geps/landing/standard.md
+          - Memorandum: geps/landing/memorandum.md
+          - Experimental: geps/landing/experimental.md
+          - Implementable: geps/landing/implementable.md
+          - Provisional: geps/landing/provisional.md
+  - Contributing:
+      - How to Get Involved: contributing/index.md
+      - Developer Guide: contributing/devguide.md
+      - Documentation Style Guide: contributing/style-guide.md
+      - Enhancement Requests: contributing/enhancement-requests.md
+      - Release Cycle: contributing/release-cycle.md
+      - Contributor Ladder: contributing/contributor-ladder.md
+  - 개요:
+      - 소개: ko/index.md
+      - 개념:
+          - API 개요: ko/concepts/api-overview.md
+          - 문제 해결 및 상태: ko/concepts/troubleshooting.md
+          - 호환성: ko/concepts/conformance.md
+          - 역할과 페르소나: ko/concepts/roles-and-personas.md
+          - 보안: ko/concepts/security.md
+          - 도구: ko/concepts/tooling.md
+          - 사용 사례: ko/concepts/use-cases.md
+          - 버전 관리: ko/concepts/versioning.md
+          - 트래픽 매칭: ko/concepts/traffic-matching.md
+      - 서비스 메시:
+          - 개요: ko/mesh/index.md
+          - GAMMA 이니셔티브: ko/mesh/gamma.md
+          - 서비스 측면: ko/mesh/service-facets.md
+      - 구현:
+          - 목록: ko/implementations.md
+          - 비교:
+              - v1.4: ko/implementations/v1.4.md
+              - v1.3: ko/implementations/v1.3.md
+              - v1.2: ko/implementations/v1.2.md
+              - v1.1: ko/implementations/v1.1.md
+              - v1.0: ko/implementations/v1.0.md
+      - FAQ: ko/faq.md
+      - 용어집: ko/concepts/glossary.md
+  - 가이드:
+      - 시작하기:
+          - 소개: ko/guides/getting-started/index.md
+          - 간단한 게이트웨이 배포하기: ko/guides/getting-started/simple-gateway.md
+          - Ingress에서 마이그레이션: ko/guides/getting-started/migrating-from-ingress.md
+          - Ingress-NGINX에서 마이그레이션: ko/guides/getting-started/migrating-from-ingress-nginx.md
+      - 사용자 가이드:
+          - HTTP 라우팅: ko/guides/http-routing.md
+          - HTTP 리디렉션 및 재작성: ko/guides/http-redirect-rewrite.md
+          - HTTP 헤더 수정자: ko/guides/http-header-modifier.md
+          - HTTP 트래픽 분할: ko/guides/traffic-splitting.md
+          - HTTP 요청 미러링: ko/guides/http-request-mirroring.md
+          - HTTP 쿼리 파라미터 매칭: ko/guides/http-query-param-matching.md
+          - HTTP 메서드 매칭: ko/guides/http-method-matching.md
+          - HTTP 타임아웃: ko/guides/http-timeouts.md
+          - HTTP CORS: ko/guides/http-cors.md
+          - 네임스페이스 간 라우팅: ko/guides/multiple-ns.md
+          - TLS: ko/guides/tls.md
+          - TLS 라우팅: ko/guides/tls-routing.md
+          - TCP 라우팅: ko/guides/tcp.md
+          - gRPC 라우팅: ko/guides/grpc-routing.md
+          - 백엔드 프로토콜 선택: ko/guides/backend-protocol.md
+          - 인프라 속성: ko/guides/infrastructure.md
+          - ListenerSet: ko/guides/listener-set.md
+      - API 설계: ko/guides/api-design.md
+      - CRD 관리: ko/guides/crd-management.md
+      - 구현자 가이드: ko/guides/implementers.md
+  - 참조:
+      - API 타입:
+          - Gateway: ko/api-types/gateway.md
+          - GatewayClass: ko/api-types/gatewayclass.md
+          - GRPCRoute: ko/api-types/grpcroute.md
+          - HTTPRoute: ko/api-types/httproute.md
+          - 정책:
+              - BackendTLSPolicy: ko/api-types/backendtlspolicy.md
+              - BackendTrafficPolicy: ko/api-types/backendtrafficpolicy.md
+          - ReferenceGrant: ko/api-types/referencegrant.md
+          - TLSRoute: ko/api-types/tlsroute.md
+          - ListenerSet: ko/api-types/listenerset.md
+      - API 명세:
+          - 개발:
+              - 표준: reference/spec.md
+              - 실험적: reference/specx.md
+          - v1.5:
+              - 표준: reference/1.5/spec.md
+              - 실험적: reference/1.5/specx.md
+          - v1.4:
+              - 표준: reference/1.4/spec.md
+              - 실험적: reference/1.4/specx.md
+          - v1.3:
+              - 표준: reference/1.3/spec.md
+              - 실험적: reference/1.3/specx.md
+      - 정책 연결: ko/reference/policy-attachment.md
+  - 개선 사항:
+      - 개요: ko/geps/overview.md
+      - 목록: ko/geps/landing/tab.md
+      - 상태별:
+          - Standard: ko/geps/landing/standard.md
+          - Memorandum: ko/geps/landing/memorandum.md
+          - Experimental: ko/geps/landing/experimental.md
+          - Implementable: ko/geps/landing/implementable.md
+          - Provisional: ko/geps/landing/provisional.md
+  - 기여:
+      - 참여 방법: ko/contributing/index.md
+      - 개발자 가이드: ko/contributing/devguide.md
+      - 문서 스타일 가이드: ko/contributing/style-guide.md
+      - 개선 요청: ko/contributing/enhancement-requests.md
+      - 릴리스 주기: ko/contributing/release-cycle.md
+      - 기여자 사다리: ko/contributing/contributor-ladder.md
+not_in_nav: |
+  /blog/*
+  /geps/gep-696/*
+  /ko/blog/*
+  /ko/geps/gep-696/*

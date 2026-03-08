@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+###
+# Note: At least 3 implementations have to upload their report under a version folder in order for the table to be generated
+###
+
 import logging
 from io import StringIO
 from mkdocs import plugins
@@ -22,6 +26,7 @@ from fnmatch import fnmatch
 import glob
 import os
 import re
+import semver
 
 log = logging.getLogger(f'mkdocs.plugins.{__name__}')
 
@@ -40,13 +45,10 @@ def process_feature_name(feature):
 def on_files(files, config, **kwargs):
     log.info("generating conformance")
 
-    vers = getConformancePaths()
-    # Iterate over the list of versions. Exclude the pre 1.0 versions.
-    for v in vers[3:]:
-
-        confYamls = getYaml(v)
-        releaseVersion = v.split(os.sep)[-2]
-        file = generate_conformance_tables(confYamls, releaseVersion, config)
+    release_groups = getConformancePaths()
+    for group in release_groups:
+        confYamls = getYaml(group["paths"])
+        file = generate_conformance_tables(confYamls, group["latest"], config)
 
         if file:
           existing_file = files.get_file_from_path(file.src_uri)
@@ -149,7 +151,7 @@ def generate_conformance_tables(reports, currVersion, mkdocsConfig):
 
     return new_file
 
-def generate_profiles_report(reports, route,version):
+def generate_profiles_report(reports, route, version):
 
     http_reports = reports.loc[reports["name"] == route]
     http_reports.set_index('organization')
@@ -159,60 +161,108 @@ def generate_profiles_report(reports, route,version):
         columns=http_reports['organization'])
 
     http_table = http_reports[['organization', 'project',
-                               'version','mode', 'extended.supportedFeatures']].T
+                               'version', 'mode', 'core.result', 'extended.supportedFeatures']].T
     http_table.columns = http_table.iloc[0]
     http_table = http_table[1:].T
+    # change core.result value
 
     for row in http_table.itertuples():
-        if type(row._4) is list:
-            for feat in row._4:
+        if row._4 == "success":
+            http_table.loc[(row.Index, 'core.result')] = ':white_check_mark:'
+        else:
+            http_table.loc[(row.Index, 'core.result')] = ':x:'
+
+        if type(row._5) is list:
+            for feat in row._5:
                 # Process feature name before using it as a column
                 processed_feat = process_feature_name(feat)
-                http_table.loc[row.Index, processed_feat] = ':white_check_mark:'
+                http_table.loc[(http_table.index == row.Index) & \
+                               (http_table['project'] == row.project) & \
+                               (http_table['version'] == row.version) & \
+                               (http_table['mode'] == row.mode), processed_feat] = ':white_check_mark:'
     http_table = http_table.fillna(':x:')
     http_table = http_table.drop(['extended.supportedFeatures'], axis=1)
 
     http_table = http_table.rename(
-        columns={"project": "Project", "version": "Version", "mode":"Mode"})
+        columns={"project": "Project", "version": "Version", "mode": "Mode", "core.result": "Core"})
+    if semver.compare(version.removeprefix('v'), '1.4.0') < 0:
+        http_table = http_table.drop(columns=["Core"])
     if version == 'v1.0.0':
         http_table = http_table.drop(columns=["Mode"])
     return http_table
 
 
 pathTemp = "conformance/reports/*/"
-allVersions = set()
-reportedImplementationsPath = set()
+def parse_release(version):
+    return semver.VersionInfo.parse(version.removeprefix('v'))
 
-# returns v1.0.0 and greater, since that's when reports started being generated in the comparison table
+
+def release_key(version):
+    parsed = parse_release(version)
+    return (parsed.major, parsed.minor, parsed.patch)
 
 
 def getConformancePaths():
-    versions = sorted(glob.glob(pathTemp, recursive=True))
-    report_path = versions[-1]+"**"
-    for v in versions:
-        vers = v.split(os.sep)[-2]
-        allVersions.add(vers)
-        reportedImplementationsPath.add(v+"**")
+    """
+    Return release paths grouped by minor version.
+    """
+    versions = []
+    for v in glob.glob(pathTemp, recursive=True):
+        release = v.split(os.sep)[-2]
+        release_semver = parse_release(release)
+        # Reports prior to v1.0.0 are not included in generated tables.
+        if release_semver < semver.VersionInfo.parse("1.0.0"):
+            continue
+        versions.append((release_semver, release, v))
 
-    return sorted(list(reportedImplementationsPath))
+    versions.sort(key=lambda x: x[0])
+
+    minors = {}
+    for release_semver, release, path in versions:
+        minor = f"v{release_semver.major}.{release_semver.minor}"
+        if minor not in minors:
+            minors[minor] = {"minor": minor, "latest": release, "paths": []}
+        minors[minor]["paths"].append(path + "**")
+        if parse_release(minors[minor]["latest"]) < release_semver:
+            minors[minor]["latest"] = release
+
+    return sorted(minors.values(), key=lambda x: parse_release(x["latest"]))
 
 
-def getYaml(conf_path):
+def getYaml(conf_paths):
     yamls = []
 
-    for p in glob.glob(conf_path, recursive=True):
+    for conf_path in conf_paths:
+        release_version = conf_path.split(os.sep)[-2]
+        for p in glob.glob(conf_path, recursive=True):
 
-        if fnmatch(p, "*.yaml"):
+            if fnmatch(p, "*.yaml"):
 
-            x = load_yaml(p)
-            if 'profiles' in x:
-              profiles = pandas.json_normalize(
-                  x, record_path=['profiles'], meta=["mode","implementation"], errors='ignore')
+                x = load_yaml(p)
+                if 'profiles' in x:
+                    profiles = pandas.json_normalize(
+                        x, record_path=['profiles'], meta=["mode","implementation"], errors='ignore')
 
-              implementation = pandas.json_normalize(profiles.implementation)
-              yamls.append(pandas.concat([implementation, profiles], axis=1))
+                    implementation = pandas.json_normalize(profiles.implementation)
+                    report = pandas.concat([implementation, profiles], axis=1)
+                    report["reportRelease"] = release_version
+                    yamls.append(report)
 
     yamls = pandas.concat(yamls)
+    # If an implementation/profile appears in multiple patches for the same minor,
+    # keep only the newest patch report.
+    yamls["reportReleaseKey"] = yamls["reportRelease"].map(release_key)
+    # For each implementation project, keep only rows from its newest patch
+    # release within this Gateway API minor.
+    latest_release_key = yamls.groupby(
+        ["organization", "project"]
+    )["reportReleaseKey"].transform("max")
+    yamls = yamls[yamls["reportReleaseKey"] == latest_release_key]
+
+    yamls = yamls.sort_values("reportReleaseKey").drop_duplicates(
+        subset=["organization", "project", "version", "name", "mode"], keep="last"
+    )
+    yamls = yamls.drop(columns=["reportReleaseKey"])
     return yamls
 
 

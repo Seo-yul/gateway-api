@@ -1,13 +1,26 @@
 # GEP-3798: Client IP-Based Session Persistence
 
 * Issue: [#3798](https://github.com/kubernetes-sigs/gateway-api/issues/3798)
-* Status: Provisional
+* Status: Deferred
 
 (See [status definitions](../overview.md#gep-states).)
 
 ## Notes and Disclaimers
 
-* This is currently targeting release as `Experimental` in [v1.4.0](https://github.com/kubernetes-sigs/gateway-api/milestone/22). However there was notable concern in [PR#3844](https://github.com/kubernetes-sigs/gateway-api/pull/3844) that it may be difficult to get multiple implementations who will be ready to implement this and move it forward. As such, the primary focus at this point should be finding representatives of implementations who may be interested in implementing this. Otherwise, this GEP may need to be `Deferred` and revisited as part of a later release.
+* **DEFERRED**: This originally targeted release as `Experimental` in [v1.4.0].
+  Notably (in [PR#3844]) there was concern that it may be difficult to get
+  multiple implementations to support this. During the release cycle, this GEP
+  was not able to meet the timeline requirements to progress, so it is now
+  considered deferred. If anyone is interested in picking this back up, it will
+  need to be re-submitted for consideration in a future release with a written
+  plan about how it will achieve implementation from multiple implementations.
+  If this remains in deferred state for a prolonged period, it may eventually
+  be moved to `Withdrawn`, or moved into the alternatives considered for
+  [GEP-1619].
+
+[v1.4.0]:https://github.com/kubernetes-sigs/gateway-api/milestone/22
+[PR#3844]:https://github.com/kubernetes-sigs/gateway-api/pull/3844
+[GEP-1619]:https://gateway-api.sigs.k8s.io/geps/gep-1619/
 
 ## TLDR
 
@@ -75,6 +88,6 @@ Below are some implementations of ClientIP persistence which allows configuring 
 
 * [F5](https://techdocs.f5.com/content/kb/en-us/products/big-ip_ltm/manuals/product/ltm-concepts-11-5-1/11.html#:~:text=is%20persisted%20properly.-,Source%20address%20affinity%20persistence,-Source%20address%20affinity)
 * [Fortinet](https://help.fortinet.com/fadc/4-8-0/olh/Content/FortiADC/handbook/slb_persistence.htm)
-* [Huwaei](https://info.support.huawei.com/hedex/api/pages/EDOC1100149308/AEJ0713J/18/resources/cli/session_persistence.html)
+* [Huawei](https://info.support.huawei.com/hedex/api/pages/EDOC1100149308/AEJ0713J/18/resources/cli/session_persistence.html)
 * [NetScaler](https://docs.netscaler.com/en-us/citrix-adc/current-release/load-balancing/load-balancing-persistence/no-rule-persistence#:~:text=For%20IP%2Dbased%20persistence%2C%20you%20can%20also%20set%20the%20persistMask%20parameter)
 * [AVI](https://techdocs.broadcom.com/us/en/vmware-security-load-balancing/avi-load-balancer/avi-load-balancer/30-2/load-balancing-overview/persistence/client-ip-persistence.html)

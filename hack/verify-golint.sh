@@ -18,7 +18,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly VERSION="v1.64.8"
+readonly VERSION="v2.7.2"
 readonly KUBE_ROOT=$(dirname "${BASH_SOURCE}")/..
 
 cd "${KUBE_ROOT}"
@@ -37,8 +37,10 @@ for module in $(find . -name "go.mod" | xargs -n1 dirname); do
     --security-opt="label=disable" \
     -e GOLANGCI_LINT_CACHE=/cache \
     -e GOFLAGS="-buildvcs=false" \
+    -e GOOS="js" \
+    -e GOARCH="wasm" \
     "golangci/golangci-lint:$VERSION" \
-    golangci-lint run || failed=true
+    golangci-lint run ./... || failed=true
 done
 
 if ${failed}; then

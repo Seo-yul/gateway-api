@@ -97,6 +97,20 @@ const (
 
 	// This option indicates support for HTTPRoute with a backendref with an appProtocol 'kubernetes.io/ws' (extended conformance)
 	SupportHTTPRouteBackendProtocolWebSocket FeatureName = "HTTPRouteBackendProtocolWebSocket"
+
+	// This option indicates support for the name field in the HTTPRouteRule (extended conformance)
+	SupportHTTPRouteNamedRouteRule FeatureName = "HTTPRouteNamedRouteRule"
+
+	// This option indicates support for the cors filter in the HTTPRouteFilter (extended conformance)
+	SupportHTTPRouteCORS FeatureName = "HTTPRouteCORS"
+	// This option indicates support for HTTPRoute additional redirect status code 303 (extended conformance)
+	SupportHTTPRoute303RedirectStatusCode FeatureName = "HTTPRoute303RedirectStatusCode"
+
+	// This option indicates support for HTTPRoute additional redirect status code 303 (extended conformance)
+	SupportHTTPRoute307RedirectStatusCode FeatureName = "HTTPRoute307RedirectStatusCode"
+
+	// This option indicates support for HTTPRoute additional redirect status code 303 (extended conformance)
+	SupportHTTPRoute308RedirectStatusCode FeatureName = "HTTPRoute308RedirectStatusCode"
 )
 
 var (
@@ -190,6 +204,31 @@ var (
 		Name:    SupportHTTPRouteBackendProtocolWebSocket,
 		Channel: FeatureChannelStandard,
 	}
+	// HTTPRouteNamedRouteRule contains metadata for the SupportHTTPRouteNamedRouteRule feature.
+	HTTPRouteNamedRouteRule = Feature{
+		Name:    SupportHTTPRouteNamedRouteRule,
+		Channel: FeatureChannelStandard,
+	}
+	// HTTPRouteCORS contains metadata for the SupportHTTPRouteCORS feature.
+	HTTPRouteCORS = Feature{
+		Name:    SupportHTTPRouteCORS,
+		Channel: FeatureChannelStandard,
+	}
+	// HTTPRoute303RedirectStatusCodeFeature contains metadata for the HTTPRoute303RedirectStatusCode feature.
+	HTTPRoute303RedirectStatusCodeFeature = Feature{
+		Name:    SupportHTTPRoute303RedirectStatusCode,
+		Channel: FeatureChannelStandard,
+	}
+	// HTTPRoute307RedirectStatusCodeFeature contains metadata for the HTTPRoute307RedirectStatusCode feature.
+	HTTPRoute307RedirectStatusCodeFeature = Feature{
+		Name:    SupportHTTPRoute307RedirectStatusCode,
+		Channel: FeatureChannelStandard,
+	}
+	// HTTPRoute308RedirectStatusCodeFeature contains metadata for the HTTPRoute308RedirectStatusCode feature.
+	HTTPRoute308RedirectStatusCodeFeature = Feature{
+		Name:    SupportHTTPRoute308RedirectStatusCode,
+		Channel: FeatureChannelStandard,
+	}
 )
 
 // HTTPRouteExtendedFeatures includes all extended features for HTTPRoute
@@ -214,4 +253,9 @@ var HTTPRouteExtendedFeatures = sets.New(
 	HTTPRouteParentRefPortFeature,
 	HTTPRouteBackendProtocolH2CFeature,
 	HTTPRouteBackendProtocolWebSocketFeature,
+	HTTPRouteNamedRouteRule,
+	HTTPRouteCORS,
+	HTTPRoute303RedirectStatusCodeFeature,
+	HTTPRoute307RedirectStatusCodeFeature,
+	HTTPRoute308RedirectStatusCodeFeature,
 )

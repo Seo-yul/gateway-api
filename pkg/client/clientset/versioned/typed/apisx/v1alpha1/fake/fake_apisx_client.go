@@ -32,8 +32,8 @@ func (c *FakeExperimentalV1alpha1) XBackendTrafficPolicies(namespace string) v1a
 	return newFakeXBackendTrafficPolicies(c, namespace)
 }
 
-func (c *FakeExperimentalV1alpha1) XListenerSets(namespace string) v1alpha1.XListenerSetInterface {
-	return newFakeXListenerSets(c, namespace)
+func (c *FakeExperimentalV1alpha1) XMeshes() v1alpha1.XMeshInterface {
+	return newFakeXMeshes(c)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -68,7 +68,7 @@ func TestNewGatewayRef(t *testing.T) {
 			require.IsType(t, GatewayRef{}, ref)
 			if test.listenerNames == nil {
 				require.Len(t, ref.listenerNames, 1)
-				assert.Equal(t, "", string(*ref.listenerNames[0]))
+				assert.Empty(t, string(*ref.listenerNames[0]))
 			} else {
 				require.Len(t, ref.listenerNames, len(test.listenerNames))
 				for i := 0; i < len(ref.listenerNames); i++ {
@@ -314,7 +314,7 @@ func Test_listenersMatch(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, test.want, listenersMatch(t, test.expected, test.actual))
+			assert.Equal(t, test.want, gatewayListenersMatch(t, test.expected, test.actual))
 		})
 	}
 }

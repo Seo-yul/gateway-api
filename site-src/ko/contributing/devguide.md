@@ -1,36 +1,17 @@
-# Developer Guide
 # 개발자 가이드
 
-## Project Management
 ## 프로젝트 관리
 
-We are using the GitHub issues and project dashboard to manage the list of TODOs
-for this project:
-우리는 이 프로젝트의 할 일 목록을 관리하기 위해 GitHub 이슈와 프로젝트 대시보드를 활용하고 있다.
+이 프로젝트의 할 일 목록을 관리하기 위해 GitHub 이슈와 프로젝트 대시보드를 활용하고 있다.
 
-
-* [Open issues][gh-issues]
-* [Project dashboard][gh-dashboard]
-* [이슈 열기][gh-issues]
+* [이슈 목록][gh-issues]
 * [프로젝트 대시보드][gh-dashboard]
 
-Issues labeled `good first issue` and `help wanted` are especially good for a
-first contribution.
-`good first issue`와 `help wanted`라고 표시된 이슈는 특히
-첫 번째 기여에 특히 좋다.
+`good first issue`와 `help wanted`로 레이블된 이슈는 첫 번째 기여에 특히 좋다.
 
-We use [milestones][gh-milestones] to track our progress towards releases.
-These milestones are generally labeled according to the [semver][semver]
-release version tag that they represent, meaning that in general we only focus
-on the next release in the sequence until it is closed and the release is
-finished. Only Gateway API maintainers are able to create and attach issues to
-milestones.
+릴리스 진행 상황을 추적하기 위해 [마일스톤][gh-milestones]을 사용한다. 이러한 마일스톤은 일반적으로 해당하는 [유의적 버전(semver)][semver] 릴리스 버전 태그에 따라 레이블이 지정되며, 이는 일반적으로 해당 릴리스가 종료되고 릴리스가 완료될 때까지 순서대로 다음 릴리스에만 집중한다는 의미이다. Gateway API 메인테이너만이 마일스톤을 생성하고 이슈를 마일스톤에 연결할 수 있다.
 
-We use [priority labels][prio-labels] to help indicate the timing importance of
-resolving an issue, or whether an issue needs more support from its creator or
-the community to be prioritized. These labels can be set with the [/priority
-command in PR and issue comments][issue-cmds]. For example,
-`/priority important-soon`.
+이슈 해결의 시급성을 나타내거나, 이슈의 우선순위 지정을 위해 작성자 또는 커뮤니티의 추가 지원이 필요한지 여부를 나타내기 위해 [우선순위 레이블][prio-labels]을 사용한다. 이러한 레이블은 [PR 및 이슈 코멘트의 /priority 명령어][issue-cmds]로 설정할 수 있다. 예를 들어, `/priority important-soon`과 같이 사용한다.
 
 [gh-issues]: https://github.com/kubernetes-sigs/gateway-api/issues
 [gh-dashboard]: https://github.com/kubernetes-sigs/gateway-api/projects
@@ -39,20 +20,21 @@ command in PR and issue comments][issue-cmds]. For example,
 [prio-labels]:https://github.com/kubernetes-sigs/gateway-api/labels?q=priority
 [issue-cmds]:https://prow.k8s.io/command-help?repo=kubernetes-sigs%2Fgateway-api
 
-## Prerequisites
+## 사전 준비
 
-Before you start developing with Gateway API, we'd recommend having the
-following prerequisites installed:
+Gateway API 개발을 시작하기 전에 다음 사전 준비 사항을 설치하는 것을 권장한다.
 
-* [Kind](https://kubernetes.io/docs/tasks/tools/#kind): This is a standalone local Kubernetes cluster. At least one container runtime is required. We recommend installing [Docker](https://docs.docker.com/engine/install/). While you can opt for alternatives like [Podman](https://podman.io/docs/installation), please be aware that doing so is at your own risk.
-* [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl): This is the Kubernetes command-line tool.
-* [Go](https://golang.org/doc/install): It is the main programming language in this project. Please check this [file](https://github.com/kubernetes-sigs/gateway-api/blob/main/go.mod#L3) to find out the least `Go` version otherwise you might encounter compilation errors.
-* [Digest::SHA](https://metacpan.org/pod/Digest::SHA): It is a required dependency. You can obtain it by installing the `perl-Digest-SHA` package.
+* [KinD](https://kubernetes.io/docs/tasks/tools/#kind): 독립형 로컬 쿠버네티스 **클러스터(Cluster)**이다. 최소한 하나의 컨테이너 런타임이 필요하다.
+* [Docker](https://docs.docker.com/engine/install/): KinD를 실행하기 위한 사전 요구 사항이다. [Podman](https://podman.io/docs/installation)과 같은 대안을 선택할 수 있지만, 그렇게 하는 것은 본인의 책임이라는 점에 유의하자.
+* [BuildX](https://github.com/docker/buildx): `make verify` 실행을 위한 사전 요구 사항이다.
+* [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl): 쿠버네티스 커맨드라인 도구이다.
+* [Go](https://golang.org/doc/install): 이 프로젝트의 주요 프로그래밍 언어이다. 컴파일 오류가 발생하지 않도록 이 [파일](https://github.com/kubernetes-sigs/gateway-api/blob/main/go.mod#L3)에서 최소 `Go` 버전을 확인하자.
+* [Digest::SHA](https://metacpan.org/pod/Digest::SHA): 필수 의존성이다. `perl-Digest-SHA` 패키지를 설치하여 얻을 수 있다.
 
 
-## Development: Building, Deploying, Testing, and Verifying
+## 개발: 빌드, 배포, 테스트 및 검증
 
-Clone the repo:
+저장소를 복제한다.
 
 ```
 mkdir -p $GOPATH/src/sigs.k8s.io
@@ -61,57 +43,52 @@ git clone https://github.com/kubernetes-sigs/gateway-api
 cd gateway-api
 ```
 
-This project works with Go modules; you can choose to setup your environment
-outside $GOPATH as well.
+이 프로젝트는 Go 모듈을 사용하므로 $GOPATH 외부에 환경을 설정할 수도 있다.
 
 
-### Build the Code
+### 코드 빌드
 
-The project uses `make` to drive the build. `make` will run code generators, and
-run static analysis against the code and generate Kubernetes CRDs. You can kick
-off an overall build from the top-level makefile:
+이 프로젝트는 빌드를 구동하기 위해 `make`를 사용한다. `make`는 이전에 생성된 코드를 정리하고, 코드 생성기를 실행하며, 코드에 대한 정적 분석을 실행하고 쿠버네티스 CRD를 생성한다. 최상위 makefile에서 전체 빌드를 시작할 수 있다.
 
 ```shell
 make generate
 ```
 
 
-#### Add Experimental Fields
+#### 실험적(Experimental) 필드 추가
 
-All additions to the API must start in the Experimental release channel.
-Experimental fields must be marked with the `<gateway:experimental>` annotation
-in Go type definitions. Gateway API CRD generation will only include these
-fields in the experimental set of CRDs.
+API에 대한 모든 추가 사항은 실험적 릴리스 채널에서 시작해야 한다. 실험적 필드는 Go 타입 정의에서 `<gateway:experimental>` 어노테이션으로 표시되어야 한다. Gateway API CRD 생성 시 이러한 필드는 실험적 CRD 세트에만 포함된다.
 
-If experimental fields are removed or renamed, the original field name should be
-removed from the go struct, with a tombstone comment
-([example](https://github.com/kubernetes/kubernetes/blob/707b8b6efd1691b84095c9f995f2c259244e276c/staging/src/k8s.io/api/core/v1/types.go#L4444-L4445))
-ensuring the field name will not be reused.
+실험적 필드가 제거되거나 이름이 변경되면, 원래 필드 이름은 go 구조체에서 제거되어야 하며, 필드 이름이 재사용되지 않도록 톰스톤(tombstone) 주석을 남겨야 한다.
 
-### Deploy the Code
+예시:
 
-Use the following command to deploy CRDs to the preexisting `Kind` cluster.
+```golang
+// DeprecatedField is tombstoned to show why 16 is reserved protobuf tag.
+// DeprecatedField string `json:"deprecatedField,omitempty" protobuf:"bytes,16,opt,name=deprecatedField"`
+```
+
+### 코드 배포
+
+다음 명령어를 사용하여 기존 `Kind` 클러스터에 CRD를 배포한다.
 
 ```shell
 make crd
 ```
 
-Use the following command to check if the CRDs have been deployed.
+다음 명령어를 사용하여 CRD가 배포되었는지 확인한다.
 
 ```shell
 kubectl get crds
 ```
 
-### Test Manually
+### 수동 테스트
 
-Install a [gateway API implementation](../implementations.md) and test out the change. Take a look at some
-[examples](../guides/index.md).
+[Gateway API 구현체](../implementations.md)를 설치하고 변경 사항을 테스트한다. 몇 가지 [예시](/guides/)를 살펴보자.
 
-### Verify
+### 검증 {#verification}
 
-Make sure you run the static analysis over the repo before submitting your
-changes. The [Prow presubmit][prow-setup] will not let your change merge if
-verification fails.
+변경 사항을 제출하기 전에 저장소에서 정적 분석을 실행하자. [Prow presubmit][prow-setup] 검증이 실패하면 변경 사항이 병합되지 않는다.
 
 ```shell
 make verify
@@ -120,52 +97,47 @@ make verify
 [prow-setup]: https://github.com/kubernetes/test-infra/tree/master/config/jobs/kubernetes-sigs/gateway-api
 
 
-## Post-Development: Pull Request, Documentation, and more Tests
-### Submit a Pull Request
+## 개발 후: Pull Request, 문서화, 추가 테스트
+### Pull Request 제출
 
-Gateway API follows a similar pull request process as
-[Kubernetes](https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md).
-Merging a pull request requires the following steps to be completed before the
-pull request will be merged automatically.
+Gateway API는 [Kubernetes](https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md)와 유사한 Pull Request 프로세스를 따른다. Pull Request가 자동으로 병합되려면 다음 단계를 완료해야 한다.
 
-- [Sign the CLA](https://git.k8s.io/community/CLA.md) (prerequisite)
-- [Open a pull request](https://help.github.com/articles/about-pull-requests/)
-- Pass [verification](#verify) tests
-- Get all necessary approvals from reviewers and code owners
+- [CLA 서명](https://git.k8s.io/community/CLA.md) (사전 요구 사항)
+- [Pull Request 열기](https://help.github.com/articles/about-pull-requests/)
+- [검증](#verification) 테스트 통과
+- 리뷰어와 코드 소유자의 모든 필요한 승인 획득
 
 
-### Documentation
+### 문서화
 
-The site documentation is written in Markdown and compiled with
-[mkdocs](https://www.mkdocs.org/). Each PR will automatically include a
-[Netlify](https://netlify.com/) deploy preview. When new code merges, it will
-automatically be deployed with Netlify to
-[gateway-api.sigs.k8s.io](). If you want to
-manually preview docs changes locally, you can install mkdocs and run:
+사이트 문서는 마크다운(Markdown)으로 작성되며 [mkdocs](https://www.mkdocs.org/)로 컴파일된다. 각 PR에는 자동으로 [Netlify](https://netlify.com/) 배포 미리보기가 포함된다. 새로운 코드가 병합되면, Netlify를 통해 자동으로 [gateway-api.sigs.k8s.io]()에 배포된다. 로컬에서 문서 변경 사항을 수동으로 미리보기하려면 mkdocs를 설치하고 다음을 실행한다.
 
 ```shell
  make docs
 ```
 
-To make it easier to use the right version of mkdocs, there is a `.venv`
-target to create a Python virtualenv that includes mkdocs. To use the
-mkdocs live preview server while you edit, you can run mkdocs from
-the virtualenv:
+올바른 버전의 mkdocs를 쉽게 사용하기 위해 컨테이너에서 문서를 빌드하고 서빙할 수 있다.
 
 ```shell
-$ make .venv
-Creating a virtualenv in .venv... OK
-To enter the virtualenv type "source .venv/bin/activate", to exit type "deactivate"
-(.venv) $ source .venv/bin/activate
-(.venv) $ mkdocs serve
-INFO    -  Building documentation...
+$ make build-docs
 ...
+INFO    -  Documentation built in 6.73 seconds
+$ make live-docs
+...
+INFO    -  [15:16:59] Serving on http://0.0.0.0:3000/
 ```
 
-For more information on how documentation should be written, refer to our
-[Documentation Style Guide](style-guide.md).
+그런 다음 http://localhost:3000/ 에서 문서를 확인할 수 있다.
 
-### Conformance Tests
+문서 작성 방법에 대한 자세한 내용은 [문서 스타일 가이드](style-guide.md)를 참조하자.
 
-To develop or run conformance tests, refer to the [Conformance Test
-Documentation](../concepts/conformance.md#running-tests).
+### 적합성 테스트
+
+적합성 테스트를 개발하거나 실행하려면 [적합성 테스트 문서](../concepts/conformance.md#running-tests)를 참조하자.
+
+### 새로운 도구 추가
+이 프로젝트를 빌드하고 관리하는 데 사용되는 도구는 `tools` 디렉토리에 자체적으로 포함되어 있다.
+
+새로운 도구를 추가하려면 `go get -tool -modfile tools/go.mod the.tool.repo/toolname@version`을 사용하고, `go mod tidy -modfile=tools/go.mod`로 특정 모듈을 정리한다.
+
+새로운 도구를 실행하려면 `go tool -modfile=tools/go.mod toolname`을 사용한다.

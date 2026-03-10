@@ -4,27 +4,27 @@
     "Experimental" channel of Gateway API. For more information on release
     channels, refer to our [versioning guide](../concepts/versioning.md).
 
-Gateway API is designed to work with multiple protocols and [TCPRoute][tcproute]
-is one such route which allows for managing [TCP][tcp] traffic.
+Gateway API는 여러 프로토콜과 함께 작동하도록 설계되었으며, [TCPRoute][tcproute]는
+[TCP][tcp] 트래픽을 관리할 수 있는 라우트 중 하나이다.
 
-In this example, we have one Gateway resource and two TCPRoute resources that
-distribute the traffic with the following rules:
+이 예제에서는 하나의 게이트웨이 리소스와 두 개의 TCPRoute 리소스가 다음 규칙에 따라
+트래픽을 분배한다.
 
-- All TCP streams on port 8080 of the Gateway are forwarded to port 6000 of
-  `my-foo-service` Kubernetes Service.
-- All TCP streams on port 8090 of the Gateway are forwarded to port 6000 of
-  `my-bar-service` Kubernetes Service.
+- 게이트웨이의 포트 8080에 대한 모든 TCP 스트림은 `my-foo-service` 쿠버네티스
+  Service의 포트 6000으로 전달된다.
+- 게이트웨이의 포트 8090에 대한 모든 TCP 스트림은 `my-bar-service` 쿠버네티스
+  Service의 포트 6000으로 전달된다.
 
-In this example two `TCP` listeners will be applied to the [Gateway][gateway]
-in order to route them to two separate backend `TCPRoutes`, note that the
-`protocol` set for the `listeners` on the `Gateway` is `TCP`:
+이 예제에서는 두 개의 `TCP` 리스너가 [게이트웨이][gateway]에 적용되어 두 개의
+별도 백엔드 `TCPRoute`로 라우팅된다. `Gateway`의 `listeners`에 설정된
+`protocol`이 `TCP`임에 유의한다.
 
 ```yaml
 {% include 'experimental/basic-tcp.yaml' %}
 ```
 
-In the above example we separate the traffic for the two separate backend TCP
-[Services][svc] by using the `sectionName` field in the `parentRefs`:
+위 예제에서는 `parentRefs`의 `sectionName` 필드를 사용하여 두 개의 별도 백엔드
+TCP [Service][svc]에 대한 트래픽을 분리한다.
 
 ```yaml
 spec:
@@ -33,7 +33,7 @@ spec:
     sectionName: foo
 ```
 
-This corresponds directly with the `name` in the `listeners` in the `Gateway`:
+이는 `Gateway`의 `listeners`에 있는 `name`과 직접 대응된다.
 
 ```yaml
   listeners:
@@ -45,12 +45,12 @@ This corresponds directly with the `name` in the `listeners` in the `Gateway`:
     port: 8090
 ```
 
-In this way each `TCPRoute` "attaches" itself to a different port on the
-`Gateway` so that the service `my-foo-service` is taking traffic for port `8080`
-from outside the cluster and `my-bar-service` takes the port `8090` traffic.
+이 방식으로 각 `TCPRoute`는 `Gateway`의 서로 다른 포트에 "연결"되므로,
+`my-foo-service` 서비스는 클러스터 외부에서 포트 `8080`의 트래픽을 수신하고
+`my-bar-service`는 포트 `8090`의 트래픽을 수신한다.
 
-Note that you can achieve this same result by binding the Routes to the Gateway
-listeners using the `port` field in the `parentRefs`:
+`parentRefs`의 `port` 필드를 사용하여 라우트를 게이트웨이 리스너에 바인딩함으로써
+동일한 결과를 달성할 수도 있다.
 
 ```yaml
 spec:
@@ -59,14 +59,13 @@ spec:
     port: 8080
 ```
 
-Using the `port` field instead of `sectionName` for the attachment has the
-downside of more tightly coupling the relationship between the Gateway and
-its associated Routes. Refer to [Attaching to Gateways][attaching] for more
-details.
+연결에 `sectionName` 대신 `port` 필드를 사용하면 게이트웨이와 관련 라우트 간의
+관계가 더 밀접하게 결합된다는 단점이 있다. 자세한 내용은
+[게이트웨이에 연결하기][attaching]를 참조한다.
 
-[tcproute]:../reference/spec.md#gateway.networking.k8s.io/v1alpha2.TCPRoute
+[tcproute]:../../reference/spec.md#tcproute
 [tcp]:https://datatracker.ietf.org/doc/html/rfc793
-[httproute]:../reference/spec.md#gateway.networking.k8s.io/v1alpha2.HTTPRoute
-[gateway]:../reference/spec.md#gateway.networking.k8s.io/v1alpha2.Gateway
+[httproute]:../../reference/spec.md#httproute
+[gateway]:../../reference/spec.md#gateway
 [svc]:https://kubernetes.io/docs/concepts/services-networking/service/
 [attaching]:../api-types/httproute.md#attaching-to-gateways

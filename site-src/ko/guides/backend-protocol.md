@@ -1,4 +1,4 @@
-# Backend Protocol
+# 백엔드 프로토콜
 
 ??? success "Standard Channel since v1.2.0"
 
@@ -6,11 +6,11 @@
     For more information on release channels, refer to our
     [versioning guide](../concepts/versioning.md).
 
-Not all implementations of Gateway API support automatic protocol selection. In some cases protocols are disabled without an explicit opt-in.
+모든 Gateway API 구현체가 자동 프로토콜 선택을 지원하는 것은 아니다. 일부 경우에는 명시적으로 옵트인하지 않으면 프로토콜이 비활성화된다.
 
-When a Route's backend references a Kubernetes Service, application developers can specify the protocol using `ServicePort` [`appProtocol`][appProtocol] field.
+**Route(라우트)**의 백엔드가 쿠버네티스 Service를 참조하는 경우, 애플리케이션 개발자는 `ServicePort`의 [`appProtocol`][appProtocol] 필드를 사용하여 프로토콜을 지정할 수 있다.
 
-For example the following `store` Kubernetes Service is indicating the port `8080` supports HTTP/2 Prior Knowledge.
+예를 들어, 다음 `store` 쿠버네티스 Service는 포트 `8080`이 HTTP/2 Prior Knowledge를 지원함을 나타낸다.
 
 
 ```yaml
@@ -28,7 +28,7 @@ spec:
     targetPort: 8080
 ```
 
-Currently, Gateway API has conformance testing for:
+현재 Gateway API는 다음에 대한 적합성 테스트를 제공한다.
 
 - `kubernetes.io/h2c` - HTTP/2 Prior Knowledge
 - `kubernetes.io/ws` - WebSocket over HTTP

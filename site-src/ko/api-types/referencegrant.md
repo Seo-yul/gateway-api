@@ -1,48 +1,54 @@
 # ReferenceGrant
 
-??? success "Standard Channel since v0.6.0"
+??? success "v0.6.0 부터 표준 채널"
 
-    The `ReferenceGrant` resource is Beta and part of the
-    Standard Channel since `v0.6.0`. For more information on release
-    channels, refer to our [versioning guide](../concepts/versioning.md).
+    `ReferenceGrant` 리소스는 베타이며 `v0.6.0` 부터
+    표준 채널의 일부이다. 릴리스 채널에 대한 자세한 정보는
+    [버전 관리 가이드](../concepts/versioning.md)를 참조하라.
 
 !!! note
-    This resource was originally named "ReferencePolicy". It was renamed
-    to "ReferenceGrant" to avoid any confusion with policy attachment.
+    이 리소스는 원래 "ReferencePolicy"라는 이름이었다. 정책 연결과의
+    혼동을 피하기 위해 "ReferenceGrant"로 이름이 변경되었다.
 
-A ReferenceGrant can be used to enable cross namespace references within
-Gateway API. In particular, Routes may forward traffic to backends in other
-namespaces, or Gateways may refer to Secrets in another namespace.
+**ReferenceGrant(참조 허가)**는 Gateway API 내에서 교차 네임스페이스 참조를
+활성화하는 데 사용할 수 있다. 특히 라우트가 다른 네임스페이스의 백엔드로
+트래픽을 전달하거나, 게이트웨이가 다른 네임스페이스의 Secret을 참조할 수 있다.
 
 ![Reference Grant](../images/referencegrant-simple.svg)
 <!-- Source: https://docs.google.com/presentation/d/11HEYCgFi-aya7FS91JvAfllHiIlvfgcp7qpi_Azjk4E/edit#slide=id.g13c18e3a7ab_0_171 -->
 
-In the past, we've seen that forwarding traffic across namespace boundaries is a
-desired feature, but without a safeguard like ReferenceGrant,
-[vulnerabilities](https://github.com/kubernetes/kubernetes/issues/103675) can
-emerge.
+과거에 네임스페이스 경계를 넘어 트래픽을 전달하는 것이 필요한 기능이었지만,
+ReferenceGrant와 같은 보호 장치 없이는
+[취약점](https://github.com/kubernetes/kubernetes/issues/103675)이
+발생할 수 있었다.
 
-If an object is referred to from outside its namespace, the object's owner must
-create a ReferenceGrant resource to explicitly allow that reference. Without a
-ReferenceGrant, a cross namespace reference is invalid.
+객체가 자신의 네임스페이스 외부에서 참조되는 경우, 객체의 소유자는
+해당 참조를 명시적으로 허용하기 위해 ReferenceGrant 리소스를 생성해야 한다.
+ReferenceGrant가 없으면 교차 네임스페이스 참조는 유효하지 않다.
 
-## Structure
-Fundamentally a ReferenceGrant is made up of two lists, a list of resources
-references may come from, and a list of resources that may be referenced.
+`ReferenceGrant`는 주의하여 사용하는 것이 권장되며, 이 리소스의 올바른 사용을
+보장하기 위해 클러스터 관리자가 유효성 검사 및 제한을 적용해야 한다.
 
-The `from` list allows you to specify the group, kind, and namespace of
-resources that may reference items described in the `to` list.
+자세한 내용은 [보안 고려 사항](../concepts/security.md#limiting-cross-namespace-references)을
+참조하라.
 
-The `to` list allows you to specify the group and kind of resources that may be
-referenced by items described in the `from` list. The namespace is not necessary
-in the `to` list because a ReferenceGrant can only be used to allow references
-to resources in the same namespace as the ReferenceGrant.
+## 구조
+기본적으로 ReferenceGrant는 두 개의 목록으로 구성된다. 참조가 올 수 있는
+리소스 목록과 참조될 수 있는 리소스 목록이다.
 
-## Example
-The following example shows how a HTTPRoute in namespace `foo` can reference a
-Service in namespace `bar`. In this example a ReferenceGrant in the `bar`
-namespace explicitly allows references to Services from HTTPRoutes in the `foo`
-namespace.
+`from` 목록을 사용하면 `to` 목록에 설명된 항목을 참조할 수 있는 리소스의
+group, kind, namespace를 지정할 수 있다.
+
+`to` 목록을 사용하면 `from` 목록에 설명된 항목이 참조할 수 있는 리소스의
+group과 kind를 지정할 수 있다. `to` 목록에는 네임스페이스가 필요하지 않은데,
+이는 ReferenceGrant가 ReferenceGrant와 동일한 네임스페이스에 있는 리소스에
+대한 참조만 허용하는 데 사용될 수 있기 때문이다.
+
+## 예시
+다음 예시는 네임스페이스 `foo`의 HTTPRoute가 네임스페이스 `bar`의
+Service를 참조하는 방법을 보여준다. 이 예시에서 `bar` 네임스페이스의
+ReferenceGrant는 `foo` 네임스페이스의 HTTPRoute에서 Service로의 참조를
+명시적으로 허용한다.
 
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1
@@ -73,69 +79,63 @@ spec:
     kind: Service
 ```
 
-## API design decisions
-While the API is simplistic in nature, it comes with a few notable decisions:
+## API 설계 결정
+API는 본질적으로 단순하지만, 몇 가지 주목할 만한 결정 사항이 있다.
 
-1. Each ReferenceGrant only supports a single From and To section. Additional
-   trust relationships must be modeled with additional ReferenceGrant
-   resources.
-1. Resource names are intentionally excluded from the "From" section of
-   ReferenceGrant because they rarely provide any meaningful protection. A user
-   that is able to write to resources of a certain kind within a namespace can
-   always rename resources or change the structure of the resources to match a
-   given grant.
-1. A single Namespace is allowed per "From" struct. Although a selector would be
-   more powerful, it encourages unnecessarily insecure configuration.
-1. The effect of these resources is purely additive, they stack on top of each
-   other. This makes it impossible for them to conflict with each other.
+1. 각 ReferenceGrant는 단일 From과 To 섹션만 지원한다. 추가적인
+   신뢰 관계는 추가 ReferenceGrant 리소스로 모델링해야 한다.
+1. 리소스 이름은 ReferenceGrant의 "From" 섹션에서 의도적으로 제외되었는데,
+   이는 의미 있는 보호를 거의 제공하지 않기 때문이다. 네임스페이스 내에서
+   특정 종류의 리소스에 쓸 수 있는 사용자는 항상 리소스의 이름을 변경하거나
+   구조를 변경하여 주어진 허가와 일치시킬 수 있다.
+1. "From" 구조체당 단일 네임스페이스만 허용된다. 셀렉터가 더 강력하겠지만,
+   불필요하게 안전하지 않은 구성을 조장하게 된다.
+1. 이러한 리소스의 효과는 순수하게 추가적이며, 서로 위에 쌓인다.
+   이로 인해 서로 충돌하는 것이 불가능하다.
 
-Please see the [API
-Specification](../reference/spec.md#gateway.networking.k8s.io/v1alpha2.ReferenceGrant)
-for more details on how specific ReferenceGrant fields are interpreted.
+자세한 내용은 특정 ReferenceGrant 필드가 어떻게 해석되는지에 대해
+[API 사양](../../reference/spec.md#referencegrant)을 참조하라.
 
-## Implementation Guidelines
-This API relies on runtime verification. Implementations MUST watch for changes
-to these resources and recalculate the validity of cross-namespace references
-after each change or deletion.
+## 구현 가이드라인
+이 API는 런타임 검증에 의존한다. 구현은 이러한 리소스에 대한 변경을
+반드시 감시하고(MUST) 각 변경 또는 삭제 후 교차 네임스페이스 참조의
+유효성을 재계산해야 한다.
 
-When communicating the status of a cross-namespace reference, implementations
-MUST NOT expose information about the existence of a resource in another
-namespace unless a ReferenceGrant exists allowing the reference to occur. This
-means that if a cross-namespace reference is made without a ReferenceGrant to a
-resource that doesn't exist, any status conditions or warning messages need to
-focus on the fact that a ReferenceGrant does not exist to allow this reference.
-No hints should be provided about whether or not the referenced resource exists.
+교차 네임스페이스 참조의 상태를 전달할 때, 구현은 참조가 허용되는
+ReferenceGrant가 존재하지 않는 한 다른 네임스페이스의 리소스 존재에 대한
+정보를 노출해서는 안 된다(MUST NOT). 이는 ReferenceGrant 없이 존재하지 않는
+리소스에 대한 교차 네임스페이스 참조가 이루어진 경우, 모든 상태 조건이나
+경고 메시지는 이 참조를 허용하는 ReferenceGrant가 존재하지 않는다는 사실에
+초점을 맞춰야 한다는 것을 의미한다. 참조된 리소스가 존재하는지 여부에 대한
+힌트를 제공해서는 안 된다.
 
-## Exceptions
-Cross namespace Route -> Gateway binding follows a slightly different pattern
-where the handshake mechanism is built into the Gateway resource. For more
-information on that approach, refer to the relevant [Security Model
-documentation](../concepts/security-model.md). Although conceptually similar to
-ReferenceGrant, this configuration is built directly into Gateway Listeners,
-and allows for fine-grained per Listener configuration that would not be
-possible with ReferenceGrant.
+## 예외
+교차 네임스페이스 라우트 -> 게이트웨이 바인딩은 핸드셰이크 메커니즘이
+게이트웨이 리소스에 내장된 약간 다른 패턴을 따른다. 이 접근 방식에 대한
+자세한 정보는 관련 [보안 모델 문서](../concepts/security.md)를 참조하라.
+ReferenceGrant와 개념적으로 유사하지만, 이 구성은 게이트웨이 리스너에
+직접 내장되어 있으며, ReferenceGrant로는 불가능한 리스너별
+세밀한 구성을 허용한다.
 
-There are some situations where it MAY be acceptable to ignore ReferenceGrant
-in favor of some other security mechanism. This MAY only be done if other
-mechanisms like NetworkPolicy can effectively limit cross-namespace references
-by the implementation.
+ReferenceGrant를 무시하고 다른 보안 메커니즘을 선호하는 것이 허용될 수 있는
+(MAY) 상황이 있다. 이는 NetworkPolicy와 같은 다른 메커니즘이 구현에 의한
+교차 네임스페이스 참조를 효과적으로 제한할 수 있는 경우에만 수행할 수 있다(MAY).
 
-An implementation choosing to make this exception MUST clearly document that
-ReferenceGrant is not honored by their implementations and detail which
-alternative safeguards are available. Note that this is unlikely to apply to
-ingress implementations of the API and will not apply to all mesh
-implementations.
+이 예외를 선택하는 구현은 ReferenceGrant가 해당 구현에서 존중되지 않는다는
+것을 명확히 문서화하고 어떤 대안적 보호 장치가 사용 가능한지
+상세히 설명해야 한다(MUST). 이는 API의 인그레스 구현에는 적용되지 않을
+가능성이 높으며, 모든 메시 구현에 적용되지는 않는다.
 
-For an example of the risks involved in cross-namespace references, refer to
-[CVE-2021-25740](https://github.com/kubernetes/kubernetes/issues/103675).
-Implementations of this API need to be very careful to avoid confused deputy
-attacks. ReferenceGrant provides a safeguard for that. Exceptions MUST only be
-made by implementations that are absolutely certain that other equally effective
-safeguards are in place.
+교차 네임스페이스 참조에 관련된 위험의 예시는
+[CVE-2021-25740](https://github.com/kubernetes/kubernetes/issues/103675)을
+참조하라. 이 API의 구현은 혼동된 대리인(confused deputy) 공격을 피하기 위해
+매우 주의해야 한다. ReferenceGrant는 이에 대한 보호 장치를 제공한다.
+예외는 동등하게 효과적인 다른 보호 장치가 확실히 갖추어진 구현에서만
+만들어야 한다(MUST).
 
-## Conformance Level
-ReferenceGrant support is a "CORE" conformance level requirement for
-cross-namespace references that originate from the following objects:
+## 적합성 수준
+ReferenceGrant 지원은 다음 객체에서 시작되는 교차 네임스페이스 참조에 대한
+"CORE" 적합성 수준 요구 사항이다.
 
 - Gateway
 - GRPCRoute
@@ -144,17 +144,17 @@ cross-namespace references that originate from the following objects:
 - TCPRoute
 - UDPRoute
 
-That is, all implementations MUST use this flow for any cross namespace
-references in the Gateway and any of the core xRoute types, except as noted
-in the Exceptions section above.
+즉, 모든 구현은 위의 예외 섹션에 명시된 경우를 제외하고, 게이트웨이 및
+모든 핵심 xRoute 타입에서의 교차 네임스페이스 참조에 대해 이 흐름을
+반드시 사용해야 한다(MUST).
 
-Other "ImplementationSpecific" objects and references MUST also use this flow
-for cross-namespace references, except as noted in the Exceptions section above.
+다른 "ImplementationSpecific" 객체 및 참조도 위의 예외 섹션에 명시된
+경우를 제외하고, 교차 네임스페이스 참조에 대해 이 흐름을 반드시
+사용해야 한다(MUST).
 
-## Potential Future API Group Change
+## 향후 API 그룹 변경 가능성
 
-ReferenceGrant is starting to gain interest outside of Gateway API and SIG
-Network use cases. It is possible that this resource may move to a more neutral
-home. Users of the ReferenceGrant API may be required to transition to a
-different API Group (instead of `gateway.networking.k8s.io`) at some point in
-the future.
+ReferenceGrant는 Gateway API 및 SIG Network 사용 사례 외부에서도 관심을
+받기 시작하고 있다. 이 리소스가 더 중립적인 위치로 이동할 수 있다.
+ReferenceGrant API 사용자는 향후 어느 시점에 다른 API 그룹
+(`gateway.networking.k8s.io` 대신)으로 전환해야 할 수 있다.

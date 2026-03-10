@@ -17,7 +17,7 @@ API의 "experimental" 채널에는 "standard" 채널의 모든 것과 함께
 이 개념에 대한 자세한 내용은
 [버전 관리](versioning.md) 문서를 참조하자.
 
-## 2. 지원 수준
+## 2. 지원 수준 <a name="2-support-levels"></a>
 
 불행히도 API의 일부 구현은 정의된 모든 기능을 지원할 수 없을 것이다.
 이를 해결하기 위해
@@ -72,7 +72,7 @@ API가 발전함에 따라 계속 확장될 것이다.
 현재 호환성 테스트는 standard 채널의
 Core 기능 대부분을 다루며, 일부 Extended 기능을 포함한다.
 
-### 테스트 실행
+### 테스트 실행 <a name="running-tests"></a>
 
 호환성 테스트에는 두 가지 주요 대조적인 세트가 있다.
 
@@ -133,7 +133,7 @@ go test ./conformance -run TestConformance -args --supported-features=Mesh,Gatew
 마찬가지로 `-namespace-annotations` 플래그를 사용하여 테스트 네임스페이스에 적용할
 어노테이션을 지정할 수 있다.
 메시 테스트의 경우, 이 플래그는 구현이 메시 워크로드를 호스팅하는 네임스페이스에 레이블을
-요구하는 경우 사용할 수 있다. 예를 들어, 사이드카 주입을 화성화하기 위해 사용할 수 있다.
+요구하는 경우 사용할 수 있다. 예를 들어, 사이드카 주입을 활성화하기 위해 사용할 수 있다.
 
 예를 들어, Linkerd를 테스트할 때 다음과 같이 실행할 수 있다.
 
@@ -182,6 +182,26 @@ go test ./conformance -run TestConformance -args \
 
 [network_plugins]: https://kubernetes.io/ko/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
 [netpol]: https://kubernetes.io/ko/docs/concepts/services-networking/network-policies/
+
+### 호환성 테스트 컴파일
+!!! 참고
+    이 단계는 선택 사항이며, 바이너리는 개발 환경과 다른
+    환경에서 호환성 테스트를 실행하는 데 사용할 수 있다.
+
+개발 환경과 다른 환경에서 실행할 호환성 테스트 바이너리를 생성해야 하는 경우,
+`conformance.test` 바이너리를 다음과 같이 생성할 수 있다.
+
+```
+make conformance-bin
+```
+
+특정 GOOS 및 GOARCH 플래그를 전달하여 다른 아키텍처용 바이너리를 생성할 수 있다.
+
+```
+make GOOS=darwin GOARCH=arm64 conformance-bin
+```
+
+그런 다음 호환성 바이너리를 `./conformance.test <flags>`와 같이 호출할 수 있다.
 
 ### 호환성 프로필
 

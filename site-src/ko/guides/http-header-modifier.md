@@ -1,25 +1,25 @@
-# HTTP Header Modifiers
+# HTTP 헤더 수정
 
-[HTTPRoute resources](../api-types/httproute.md) can modify the headers of HTTP requests and the HTTP responses from clients.
-There are two types of [filters](../api-types/httproute.md#filters-optional) available to meet these requirements: `RequestHeaderModifier` and `ResponseHeaderModifier`.
+[HTTPRoute 리소스](../api-types/httproute.md)는 클라이언트의 HTTP 요청 헤더와 HTTP 응답 헤더를 수정할 수 있다.
+이러한 요구사항을 충족하기 위해 두 가지 유형의 [필터](../api-types/httproute.md#filters-optional)를 사용할 수 있다: `RequestHeaderModifier`와 `ResponseHeaderModifier`.
 
-This guide shows how to use these features.
+이 가이드에서는 이러한 기능의 사용 방법을 설명한다.
 
-Note that these features are compatible. HTTP headers of the incoming requests and the headers of their responses can both be modified using a single [HTTPRoute resource](../api-types/httproute.md).
+이 기능들은 서로 호환된다는 점에 유의한다. 수신 요청의 HTTP 헤더와 해당 응답의 헤더를 단일 [HTTPRoute 리소스](../api-types/httproute.md)를 사용하여 모두 수정할 수 있다.
 
-## HTTP Request Header Modifier
+## HTTP 요청 헤더 수정
 
-HTTP header modification is the process of adding, removing, or modifying HTTP headers in incoming requests.
+HTTP 헤더 수정은 수신 요청의 HTTP 헤더를 추가, 제거 또는 수정하는 과정이다.
 
-To configure HTTP header modification, define a Gateway object with one or more HTTP filters. Each filter specifies a specific modification to make to incoming requests, such as adding a custom header or modifying an existing header.
+HTTP 헤더 수정을 구성하려면 하나 이상의 HTTP 필터가 포함된 게이트웨이 객체를 정의한다. 각 필터는 사용자 정의 헤더 추가 또는 기존 헤더 수정과 같이 수신 요청에 대해 수행할 특정 수정 사항을 지정한다.
 
-To add a header to a HTTP request, use a filter of the type `RequestHeaderModifier`, with the `add` action and the name and value of the header:
+HTTP 요청에 헤더를 추가하려면 `RequestHeaderModifier` 유형의 필터를 `add` 액션과 함께 헤더의 이름 및 값을 지정하여 사용한다.
 
 ```yaml
 {% include 'standard/http-request-header-add.yaml' %}
 ```
 
-To edit an existing header, use the `set` action and specify the value of the header to be modified and the new header value to be set.
+기존 헤더를 편집하려면 `set` 액션을 사용하고 수정할 헤더의 값과 설정할 새 헤더 값을 지정한다.
 
 ```yaml
     filters:
@@ -30,7 +30,7 @@ To edit an existing header, use the `set` action and specify the value of the he
             value: my-new-header-value
 ```
 
-Headers can also be removed, by using the `remove` keyword and a list of header names.
+`remove` 키워드와 헤더 이름 목록을 사용하여 헤더를 제거할 수도 있다.
 
 ```yaml
     filters:
@@ -39,17 +39,17 @@ Headers can also be removed, by using the `remove` keyword and a list of header 
         remove: ["x-request-id"]
 ```
 
-Using the example above would remove the `x-request-id` header from the HTTP request.
+위 예제를 사용하면 HTTP 요청에서 `x-request-id` 헤더가 제거된다.
 
-### HTTP Response Header Modifier
+### HTTP 응답 헤더 수정
 
-Just like editing request headers can be useful, the same goes for response headers. For example, it allows teams to add/remove cookies for only a certain backend, which can help in identifying certain users that were redirected to that backend previously.
+요청 헤더를 편집하는 것이 유용한 것처럼, 응답 헤더도 마찬가지이다. 예를 들어, 특정 백엔드에 대해서만 쿠키를 추가/제거할 수 있으며, 이는 이전에 해당 백엔드로 리디렉션된 특정 사용자를 식별하는 데 도움이 될 수 있다.
 
-Another potential use case could be when you have a frontend that needs to know whether it’s talking to a stable or a beta version of the backend server, in order to render different UI or adapt its response parsing accordingly.
+또 다른 잠재적 사용 사례로, 프론트엔드가 안정 버전의 백엔드 서버와 통신하는지 베타 버전과 통신하는지를 알아야 하는 경우가 있을 수 있으며, 이를 통해 다른 UI를 렌더링하거나 응답 파싱을 조정할 수 있다.
 
-Modifying the HTTP header response leverages a very similar syntax to the one used to modify the original request, albeit with a different filter (`ResponseHeaderModifier`).
+HTTP 응답 헤더 수정은 원래 요청을 수정하는 데 사용되는 구문과 매우 유사한 구문을 사용하지만, 다른 필터(`ResponseHeaderModifier`)를 사용한다.
 
-Headers can be added, edited and removed. Multiple headers can be added, as shown in this example below:
+헤더를 추가, 편집 및 제거할 수 있다. 다음 예제에서 보여주는 것처럼 여러 헤더를 추가할 수 있다.
 
 ```yaml
     filters:

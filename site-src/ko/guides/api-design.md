@@ -1,73 +1,52 @@
-# API Design Guide
+# API 설계 가이드
 
-There are some general design guidelines used throughout this API.
+이 API 전반에 걸쳐 사용되는 몇 가지 일반적인 설계 가이드라인이 있다.
 
 !!! note
     Throughout the Gateway API documentation and specification,
     keywords such as "MUST", "MAY", and "SHOULD" are used
     broadly. These should be interpreted as described in RFC 2119.
 
-## Single resource consistency
+## 단일 리소스 일관성
 
-The Kubernetes API guarantees consistency only on a single resource level. There
-are a couple of consequences for complex resource graphs as opposed to single
-resources:
+쿠버네티스 API는 단일 리소스 수준에서만 일관성을 보장한다. 단일 리소스와 달리 복잡한 리소스 그래프에 대해 몇 가지 결과가 따른다.
 
-*   Error checking of properties spanning multiple resource will be asynchronous
-    and eventually consistent. Simple syntax checks will be possible at the
-    single resource level, but cross resource dependencies will need to be
-    handled by the controller.
-*   Controllers will need to handle broken links between resources and/or
-    mismatched configuration.
+*   여러 리소스에 걸치는 속성에 대한 오류 검사는 비동기적이며 최종적으로 일관성을
+    갖게 된다. 단순한 구문 검사는 단일 리소스 수준에서 가능하지만, 교차 리소스
+    의존성은 컨트롤러에 의해 처리되어야 한다.
+*   컨트롤러는 리소스 간의 끊어진 링크 및/또는 불일치하는 구성을 처리해야 한다.
 
-## Conflicts
+## 충돌 <a name="conflicts"></a>
 
-Separation and delegation of responsibility among independent actors (e.g
-between cluster ops and application developers) can result in conflicts in the
-configuration. For example, two application teams may inadvertently submit
-configuration for the same HTTP path.
+독립적인 행위자(예: 클러스터 운영자와 애플리케이션 개발자) 간의 책임 분리 및 위임은 구성의 충돌을 초래할 수 있다. 예를 들어, 두 애플리케이션 팀이 의도치 않게 동일한 HTTP 경로에 대한 구성을 제출할 수 있다.
 
-In most cases, guidance for conflict resolution is provided along with the
-documentation for fields that may have a conflict. If a conflict does not have a
-prescribed resolution, the following guiding principles should be applied:
+대부분의 경우, 충돌이 발생할 수 있는 필드의 문서와 함께 충돌 해결 지침이 제공된다. 충돌에 대해 규정된 해결 방법이 없는 경우, 다음 기본 원칙을 적용해야 한다.
 
-* Prefer not to break things that are working.
-* Drop as little traffic as possible.
-* Provide a consistent experience when conflicts occur.
-* Make it clear which path has been chosen when a conflict has been identified.
-  Where possible, this should be communicated by setting appropriate status
-  conditions on relevant resources.
-* More specific matches should be given precedence over less specific ones.
-* The resource with the oldest creation timestamp wins.
-* If everything else is equivalent (including creation timestamp), precedences
-  should be given to the resource appearing first in alphabetical order
-  (namespace/name). For example, foo/bar would be given precedence over foo/baz.
+* 작동하고 있는 것을 깨뜨리지 않는 것을 선호한다.
+* 가능한 한 적은 트래픽을 누락시킨다.
+* 충돌이 발생할 때 일관된 경험을 제공한다.
+* 충돌이 식별되었을 때 어떤 경로가 선택되었는지 명확히 한다.
+  가능한 경우, 관련 리소스에 적절한 상태 condition을 설정하여 이를 전달해야 한다.
+* 더 구체적인 매칭이 덜 구체적인 매칭보다 우선순위를 가져야 한다.
+* 가장 오래된 생성 타임스탬프를 가진 리소스가 우선한다.
+* 다른 모든 것이 동등한 경우(생성 타임스탬프 포함), 알파벳 순서(namespace/name)에서
+  먼저 나타나는 리소스에 우선순위를 부여한다. 예를 들어, foo/bar가 foo/baz보다
+  우선순위를 가진다.
 
-## Gracefully Handling Future API Versions
+## 향후 API 버전의 우아한 처리
 
-An important consideration when implementing this API is how it might change in
-the future. Similar to the Ingress API before it, this API is designed to be
-implemented by a variety of different products within the same cluster. That
-means that the API version your implementation was developed with may be
-different than the API version it is used with.
+이 API를 구현할 때 중요한 고려 사항은 미래에 어떻게 변경될 수 있는가이다. 이전의 Ingress API와 유사하게, 이 API는 동일한 클러스터 내에서 다양한 제품에 의해 구현되도록 설계되었다. 이는 구현체가 개발된 API 버전이 사용되는 API 버전과 다를 수 있다는 것을 의미한다.
 
-At a minimum, the following requirements must be met to ensure future versions
-of the API do not break your implementation:
+최소한 향후 API 버전이 구현체를 손상시키지 않도록 다음 요구 사항을 충족해야 한다.
 
-* Handle fields with loosened validation without crashing
-* Handle fields that have transitioned from required to optional without
-  crashing
+* 검증이 완화된 필드를 충돌 없이 처리한다
+* 필수에서 선택으로 전환된 필드를 충돌 없이 처리한다
 
-### Supported API Versions
+### 지원되는 API 버전
 
-The version of Gateway API CRDs that is installed in a cluster can be determined
-by looking at the `gateway.networking.k8s.io/bundle-version` annotation on each
-CRD. Each implementation MUST compare that with the list of versions that it
-recognizes and supports. Implementations with a GatewayClass MUST publish the
-`SupportedVersion` condition on the GatewayClass to indicate whether the CRDs
-installed in the cluster are supported.
+클러스터에 설치된 Gateway API CRD의 버전은 각 CRD의 `gateway.networking.k8s.io/bundle-version` 어노테이션을 확인하여 결정할 수 있다. 각 구현체는 인식하고 지원하는 버전 목록과 이를 비교해야 한다(MUST). GatewayClass를 가진 구현체는 클러스터에 설치된 CRD가 지원되는지 여부를 나타내기 위해 GatewayClass에 `SupportedVersion` condition을 게시해야 한다(MUST).
 
-## Limitations of CRD and Webhook Validation
+## CRD 및 웹훅 검증의 한계
 
 ??? note "Webhook Validation is Deprecated"
 
@@ -75,74 +54,42 @@ installed in the cluster are supported.
     removed in v1.1.0. With that said, all of this guidance will still apply for
     implementations as long as they support v1.0.0 or older releases of the API.
 
-CRD and webhook validation is not the final validation i.e. webhook is "nice UX"
-but not schema enforcement. This validation is intended to provide immediate
-feedback to users when they provide an invalid configuration. Write code
-defensively with the assumption that at least some invalid input (Gateway API
-resources) will reach your controller. Both Webhook and CRD validation is not
-fully reliable because it:
+CRD 및 웹훅 검증은 최종 검증이 아니다. 즉, 웹훅은 "좋은 UX"이지만 스키마 적용은 아니다. 이 검증은 사용자가 유효하지 않은 구성을 제공할 때 즉각적인 피드백을 제공하기 위한 것이다. 최소한 일부 유효하지 않은 입력(Gateway API 리소스)이 컨트롤러에 도달할 것이라는 가정하에 방어적으로 코드를 작성한다. 웹훅과 CRD 검증 모두 완전히 신뢰할 수 없는데, 다음과 같은 이유 때문이다.
 
-* May not be deployed correctly.
-* May be loosened in future API releases. (Fields may contain values with less
-  restrictive validation in newer versions of the API).
+* 올바르게 배포되지 않았을 수 있다.
+* 향후 API 릴리스에서 완화될 수 있다. (필드가 새로운 API 버전에서 덜 제한적인
+  검증을 가진 값을 포함할 수 있다).
 
-*Note: These limitations are not unique to Gateway API and apply more broadly to
-any Kubernetes CRDs and webhooks.*
+*참고: 이러한 한계는 Gateway API에만 고유한 것이 아니며, 모든 쿠버네티스 CRD와 웹훅에 더 넓게 적용된다.*
 
-Implementers should ensure that, even if unexpected values are encountered in
-the API, their implementations are still as secure as possible and handle this
-input gracefully. The most common response would be to reject the configuration
-as malformed and signal the user via a condition in the status block. To avoid
-duplicating work, Gateway API maintainers are considering adding a shared
-validation package that implementations can use for this purpose. This is
-tracked by [#926](https://github.com/kubernetes-sigs/gateway-api/issues/926).
+구현자는 API에서 예기치 않은 값이 발견되더라도 구현체가 가능한 한 안전하고 이 입력을 우아하게 처리하도록 보장해야 한다. 가장 일반적인 대응은 구성을 잘못된 형식으로 거부하고 상태 블록의 condition을 통해 사용자에게 신호를 보내는 것이다. 작업 중복을 피하기 위해, Gateway API 유지보수자들은 구현체가 이 목적으로 사용할 수 있는 공유 검증 패키지를 추가하는 것을 고려하고 있다. 이는 [#926](https://github.com/kubernetes-sigs/gateway-api/issues/926)에서 추적되고 있다.
 
-### Expectations
+### 기대 사항
 
-We expect there will be varying levels of conformance among the
-different providers in the early days of this API. Users can use the
-results of the conformance tests to understand areas where there may
-be differences in behavior from the spec.
+이 API의 초기 단계에서 서로 다른 제공자들 간에 다양한 수준의 적합성이 있을 것으로 예상한다. 사용자는 적합성 테스트 결과를 사용하여 사양과 다른 동작이 있을 수 있는 영역을 파악할 수 있다.
 
-### Implementation-specific
+### 구현체별 사항
 
-In some aspects of the API, we give the user an ability to specify usage of the
-feature, however, the exact behavior may depend on the underlying
-implementation. For example, regular expression matching is present in all
-implementations but specifying an exact behavior is impossible due to
-subtle differences between the underlying libraries used (e.g. PCRE, ECMA,
-Re2). It is still useful for our users to spec out the feature as much as
-possible, but we acknowledge that the behavior for some subset of the API may
-still vary (and that's ok).
+API의 일부 측면에서 사용자에게 기능 사용을 지정하는 능력을 제공하지만, 정확한 동작은 기본 구현체에 따라 다를 수 있다. 예를 들어, 정규식 매칭은 모든 구현체에 존재하지만, 사용되는 기본 라이브러리 간의 미묘한 차이(예: PCRE, ECMA, Re2) 때문에 정확한 동작을 지정하는 것은 불가능하다. 가능한 한 기능을 명세하는 것이 사용자에게 유용하지만, API의 일부 하위 집합에 대한 동작이 여전히 다를 수 있다는 것을 인정한다(그리고 그것은 괜찮다).
 
-These cases will be specified as defining delimited parts of the API
-"implementation-specific".
+이러한 경우는 API의 구분된 부분을 "구현체별(implementation-specific)"로 정의하는 것으로 지정된다.
 
 
-## Kind vs. Resource
+## Kind 대 Resource
 
-Similar to other Kubernetes APIs, Gateway API uses "Kind" instead of "Resource"
-in object references throughout the API. This pattern should be familiar to
-most Kubernetes users.
+다른 쿠버네티스 API와 유사하게, Gateway API는 API 전반의 객체 참조에서 "Resource" 대신 "Kind"를 사용한다. 이 패턴은 대부분의 쿠버네티스 사용자에게 친숙할 것이다.
 
-Per the [Kubernetes API conventions][1], this means that all implementations of
-this API should have a predefined mapping between kinds and resources. Relying
-on dynamic resource mapping is not safe.
+[쿠버네티스 API 규칙][1]에 따르면, 이는 이 API의 모든 구현체가 Kind와 Resource 간에 미리 정의된 매핑을 가져야 한다는 것을 의미한다. 동적 리소스 매핑에 의존하는 것은 안전하지 않다.
 
-## API Conventions
+## API 규칙
 
-Gateway API follows Kubernetes API [conventions][1]. These conventions
-are intended to ease client development and ensure that configuration
-mechanisms can consistently be implemented across a diverse set of use
-cases. In addition to the Kubernetes API conventions, Gateway API has the
-following conventions:
+Gateway API는 쿠버네티스 API [규칙][1]을 따른다. 이러한 규칙은 클라이언트 개발을 용이하게 하고, 다양한 사용 사례에 걸쳐 구성 메커니즘이 일관되게 구현될 수 있도록 하기 위한 것이다. 쿠버네티스 API 규칙 외에도 Gateway API에는 다음과 같은 규칙이 있다.
 
-### List Names
+### 목록 이름
 
-Another convention this project uses is for plural field names for lists
-in our CRDs. We use the following rules:
+이 프로젝트에서 사용하는 또 다른 규칙은 CRD의 목록에 대한 복수형 필드 이름이다. 다음 규칙을 사용한다.
 
-- If the field name is a noun, use a plural value.
-- If the field name is a verb, use a singular value.
+- 필드 이름이 명사인 경우, 복수형 값을 사용한다.
+- 필드 이름이 동사인 경우, 단수형 값을 사용한다.
 
 [1]: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md

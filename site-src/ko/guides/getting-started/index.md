@@ -22,12 +22,14 @@ Gateway API를 처음 사용하는 경우 다음 경로를 권장한다.
 - [TLS 구성](../tls.md)
 - [TCP 라우팅](../tcp.md)
 - [gRPC 라우팅](../grpc-routing.md)
+- [ListenerSet](../listener-set.md)
 
 ## Ingress에서 마이그레이션
 
 쿠버네티스 Ingress에서 마이그레이션하려는 경우, 시작하는 데 도움이 되는 가이드가 있다.
 
 - **[Ingress에서 마이그레이션](./migrating-from-ingress.md)**: 모든 Ingress 구현에서 Gateway API로 마이그레이션하기 위한 일반 가이드이다. 주요 차이점을 다루고 수동 마이그레이션 예제를 제공한다.
+- **[Ingress-NGINX 사용자를 위한 가이드](./migrating-from-ingress-nginx.md)**: 가장 많이 사용되는 Ingress 구현인 Ingress-NGINX 사용자를 위한 가이드이다. 자주 묻는 질문에 대한 답변과 리소스를 제공한다.
 
 ---
 
